@@ -122,6 +122,4 @@ The port and context path may differ depending on the local Tomcat configuration
 - Use test data in screenshots and remove personal account information before publishing.
 - Review the files staged for each commit before pushing to GitHub.
 
-## License
 
-No license is currently included. Add a `LICENSE` file if you want to define how others may use or contribute to this project.
