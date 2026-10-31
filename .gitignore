@@ -1,0 +1,49 @@
+# Java and Eclipse build output
+/build/
+/bin/
+/target/
+/out/
+*.class
+
+# Eclipse workspace metadata (keep the project's .project, .classpath, and .settings files)
+/.metadata/
+**/.metadata/
+
+# Other IDE-local files
+/.idea/
+*.iml
+.vscode/*.log
+
+# Operating system noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# Local credentials and secrets
+.env
+.env.*
+!.env.example
+secrets.*
+*.secret
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Local database exports/backups (keep versioned schema and migration .sql files)
+*.sql.gz
+*.dump
+*.bak.sql
+database/local/
+
+# User-specific Eclipse server configuration
+/Servers/

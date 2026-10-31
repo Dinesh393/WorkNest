@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your projects and collaborations on WorkNest.">
+    <title>Client Dashboard | WorkNest</title>
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/freelancer-dashboard.css">
+
+<style>
+:root {
+    --wn-ink:#24271F; --wn-muted:#6B6D66; --wn-border:#E8E5DC;
+    --wn-paper:#F8F7F2; --wn-white:#FFFFFF; --wn-purple:#5040D8;
+    --wn-purple-soft:#F0EEFF; --wn-green:#176B38; --wn-green-soft:#DFF4E5;
+    --wn-blue:#254EA8; --wn-blue-soft:#E5EDFF; --wn-red:#A52828;
+    --wn-red-soft:#FEF0F0; --wn-shadow:0 12px 34px rgba(36,39,31,.07);
+}
+* { box-sizing:border-box; }
+body.dashboard-body.client-dashboard { background:var(--wn-paper); color:var(--wn-ink); }
+.site-header form { margin:0; }
+.site-header button, .project-card-actions button { cursor:pointer; }
+.dashboard-page {
+    width:min(1120px,calc(100% - 40px)); margin-inline:auto;
+    padding:clamp(32px,5vw,56px) 0 64px;
+}
+.dashboard-welcome { margin-bottom:28px; }
+.dashboard-welcome .eyebrow { margin-bottom:8px; }
+.dashboard-welcome h1 {
+    margin:0 0 10px; color:var(--wn-ink); font-size:clamp(2rem,4vw,3rem);
+    line-height:1.08; letter-spacing:-.045em;
+}
+.dashboard-welcome > p:last-child {
+    max-width:650px; margin:0; color:var(--wn-muted); line-height:1.7;
+}
+.dashboard-stats {
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px; margin:28px 0 38px;
+}
+.dashboard-stat {
+    min-width:0; padding:21px; border:1px solid var(--wn-border);
+    border-radius:15px; background:#fff; box-shadow:0 3px 12px rgba(36,39,31,.025);
+}
+.dashboard-stat__label { color:var(--wn-muted); font-size:.84rem; font-weight:650; }
+.dashboard-stat__value {
+    display:block; margin-top:10px; color:var(--wn-ink);
+    font-size:clamp(1.7rem,3vw,2.2rem); line-height:1.1;
+    font-weight:800; letter-spacing:-.04em; overflow-wrap:anywhere;
+}
+.dashboard-stat__note { margin:9px 0 0; color:#898B84; font-size:.76rem; line-height:1.5; }
+.project-create-section { margin:0 0 42px; }
+.project-create-card {
+    display:flex; align-items:center; justify-content:space-between; gap:24px;
+    padding:26px 28px; border:1px solid #DED9FA; border-radius:16px;
+    background:linear-gradient(115deg,#F1EFFF 0%,#FFFFFF 76%);
+}
+.project-create-content { min-width:0; }
+.project-create-card h2 { margin:0 0 7px; color:var(--wn-ink); font-size:1.25rem; letter-spacing:-.025em; }
+.project-create-card p { margin:0; color:var(--wn-muted); line-height:1.6; }
+.project-create-card > a {
+    display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    min-height:46px; padding:0 18px; border-radius:10px; white-space:nowrap;
+    text-decoration:none; font-weight:750;
+}
+.dashboard-section { margin-top:40px; }
+.dashboard-section__header {
+    display:flex; align-items:flex-end; justify-content:space-between; gap:18px;
+    margin-bottom:18px;
+}
+.dashboard-section__header h2 {
+    margin:0; color:var(--wn-ink); font-size:clamp(1.4rem,2.5vw,1.8rem);
+    letter-spacing:-.035em;
+}
+.dashboard-section__header p { margin:6px 0 0; color:var(--wn-muted); line-height:1.55; }
+.projects-count { color:var(--wn-muted); font-size:.86rem; font-weight:650; white-space:nowrap; }
+.projects-list {
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px;
+}
+.project-card {
+    min-width:0; display:flex; flex-direction:column; padding:22px;
+    border:1px solid var(--wn-border); border-radius:16px; background:#fff;
+    box-shadow:0 3px 12px rgba(36,39,31,.025);
+    transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.project-card:hover { border-color:#D8D2F7; box-shadow:var(--wn-shadow); transform:translateY(-2px); }
+.project-card__header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.project-card__title { min-width:0; margin:0; color:var(--wn-ink); font-size:1.08rem; line-height:1.4; overflow-wrap:anywhere; }
+.project-status {
+    flex:0 0 auto; display:inline-flex; align-items:center; min-height:27px;
+    padding:5px 10px; border-radius:999px; background:#F1F0EC;
+    color:#575950; font-size:.7rem; font-weight:800; letter-spacing:.025em;
+}
+.project-status--open { background:var(--wn-purple-soft); color:var(--wn-purple); }
+.project-status--in_progress { background:var(--wn-green-soft); color:var(--wn-green); }
+.project-status--completed { background:var(--wn-blue-soft); color:var(--wn-blue); }
+.project-status--cancelled { background:var(--wn-red-soft); color:var(--wn-red); }
+.project-card__description {
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3;
+    overflow:hidden; margin:14px 0 0; color:var(--wn-muted); line-height:1.65;
+    overflow-wrap:anywhere;
+}
+.project-card__skills { margin:12px 0 0; color:#55584F; font-size:.84rem; line-height:1.6; overflow-wrap:anywhere; }
+.project-card__details {
+    display:flex; flex-wrap:wrap; gap:8px; margin-top:15px;
+}
+.project-card__details span {
+    padding:7px 10px; border:1px solid #F0EEE8; border-radius:8px;
+    background:#FAF9F6; color:#55584F; font-size:.78rem; font-weight:650;
+    overflow-wrap:anywhere;
+}
+.project-card__footer {
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:16px; padding-top:14px; border-top:1px solid #F0EEE8;
+    color:var(--wn-muted); font-size:.8rem;
+}
+.project-card__footer time { color:var(--wn-ink); font-weight:650; text-align:right; }
+.project-card-actions {
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-auto-rows:minmax(42px,auto); gap:10px; margin-top:17px; padding-top:16px;
+    border-top:1px solid #F0EEE8;
+}
+.project-card-actions > a, .project-card-actions > button {
+    display:inline-flex; align-items:center; justify-content:center; width:100%;
+    min-width:0; min-height:42px; margin:0; padding:8px 12px;
+    border:1px solid transparent; border-radius:9px; font:650 .82rem/1.25 inherit;
+    font-family:inherit; font-size:.82rem; font-weight:700; line-height:1.25;
+    text-align:center; text-decoration:none; overflow-wrap:anywhere;
+    transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease;
+}
+.project-card-actions > a:hover, .project-card-actions > button:hover { transform:translateY(-1px); }
+.project-card-actions > a:focus-visible, .project-card-actions > button:focus-visible,
+.button:focus-visible, dialog button:focus-visible, dialog select:focus-visible {
+    outline:3px solid rgba(80,64,216,.35); outline-offset:3px;
+}
+.view-details-button { background:#24271F; color:#fff; border-color:#24271F; }
+.view-details-button:hover { background:#11140F; }
+.view-proposals-button { background:var(--wn-purple); color:#fff; border-color:var(--wn-purple); }
+.view-proposals-button:hover { background:#4031B8; }
+.edit-project-button { background:#fff; color:var(--wn-ink); border-color:#D8D5CC !important; }
+.edit-project-button:hover { background:#F5F4EF; }
+.change-status-button { background:#EEF3FF; color:#254EA8; border-color:#D4E0FF !important; }
+.change-status-button:hover { background:#E1EAFE; }
+.cancel-project-button { background:var(--wn-red-soft); color:#A52828; border-color:#F4D0D0 !important; }
+.cancel-project-button:hover { background:#FCE3E3; }
+.projects-empty, .projects-loading, .project-form-message {
+    grid-column:1/-1; padding:28px; border:1px dashed #D8D4C9;
+    border-radius:15px; background:rgba(255,255,255,.75); color:var(--wn-muted);
+    text-align:center; line-height:1.65;
+}
+.projects-empty h3 { margin:0 0 7px; color:var(--wn-ink); }
+.projects-empty p { margin:0 auto 16px; max-width:500px; }
+.projects-empty .button { display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:0 15px; border-radius:9px; text-decoration:none; }
+.project-form-message { border-style:solid; border-color:#F0CACA; background:var(--wn-red-soft); color:var(--wn-red); text-align:left; }
+.project-success-message, .cancel-project-feedback, .status-project-feedback {
+    position:fixed; top:18px; left:50%; z-index:1000; transform:translateX(-50%);
+    width:max-content; max-width:min(92vw,520px); margin:0; padding:12px 18px;
+    border:1px solid #A7F3D0; border-radius:11px; background:#ECFDF5;
+    color:#065F46; font-size:.9rem; font-weight:700; text-align:center;
+    box-shadow:0 8px 24px rgba(0,0,0,.13);
+}
+[hidden] { display:none !important; }
+.talent-discovery-section { margin-top:44px; }
+.talent-directory-toolbar {
+    display:grid; grid-template-columns:minmax(220px,2fr) repeat(4,minmax(130px,1fr));
+    gap:12px; margin:18px 0 12px;
+}
+.talent-directory-toolbar input, .talent-directory-toolbar select {
+    width:100%; min-height:46px; padding:0 14px; border:1px solid var(--wn-border);
+    border-radius:10px; background:#fff; color:var(--wn-ink); font:inherit;
+}
+.talent-directory-toolbar input:focus-visible, .talent-directory-toolbar select:focus-visible,
+.talent-shortlist-toggle:focus-within, .talent-clear-filters:focus-visible {
+    outline:3px solid rgba(83,66,226,.22); border-color:var(--wn-purple);
+}
+.talent-directory-controls {
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    gap:12px; margin:0 0 16px; color:var(--wn-muted); font-size:.86rem;
+}
+.talent-directory-controls__filters { display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
+.talent-shortlist-toggle { display:inline-flex; align-items:center; gap:8px; min-height:38px; }
+.talent-shortlist-toggle input { width:17px; height:17px; accent-color:var(--wn-purple); }
+.talent-clear-filters {
+    min-height:38px; padding:0 12px; border:1px solid var(--wn-border);
+    border-radius:8px; background:#fff; color:var(--wn-ink); font:inherit; cursor:pointer;
+}
+.talent-directory-count { margin:0; }
+.talent-filter-error { margin:0 0 12px; color:var(--wn-red); font-size:.86rem; }
+.talent-directory-results {
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px;
+}
+.talent-directory-state {
+    grid-column:1/-1; padding:24px; border:1px dashed var(--wn-border);
+    border-radius:14px; background:rgba(255,255,255,.75); color:var(--wn-muted);
+    line-height:1.6; text-align:center;
+}
+.talent-directory-state__message { margin:0 0 12px; }
+.talent-directory-state--error { border-color:#F0CACA; background:var(--wn-red-soft); color:var(--wn-red); }
+.talent-card { min-width:0; padding:20px; border:1px solid var(--wn-border); border-radius:15px; background:#fff; }
+.talent-card__top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.talent-card h3 { margin:0; color:var(--wn-ink); font-size:1.05rem; }
+.talent-card__headline { margin:5px 0 0; color:var(--wn-muted); font-weight:650; }
+.talent-card__availability { flex:0 0 auto; padding:6px 9px; border-radius:999px; background:var(--wn-purple-soft); color:var(--wn-purple); font-size:.72rem; font-weight:800; }
+.talent-card__overview { margin:14px 0; color:var(--wn-muted); line-height:1.6; }
+.talent-card__meta { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 13px; color:var(--wn-muted); font-size:.82rem; }
+.talent-card__skills { display:flex; flex-wrap:wrap; gap:7px; margin:0 0 16px; }
+.talent-card__skill { padding:6px 9px; border-radius:999px; background:#F3F1FF; color:#5142C4; font-size:.75rem; font-weight:700; }
+.talent-card__actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; }
+.talent-card__link { display:inline-flex; align-items:center; min-height:38px; padding:0 12px; border-radius:9px; background:var(--wn-ink); color:#fff; font-size:.82rem; font-weight:750; text-decoration:none; }
+.talent-card__save {
+    display:inline-flex; align-items:center; min-height:38px; padding:0 12px;
+    border:1px solid var(--wn-border); border-radius:9px; background:#fff;
+    color:var(--wn-ink); font-family:inherit; font-size:.82rem; font-weight:700; cursor:pointer;
+}
+.talent-card__invite {
+    display:inline-flex; align-items:center; min-height:38px; padding:0 12px;
+    border:1px solid var(--wn-purple); border-radius:9px; background:var(--wn-purple);
+    color:#fff; font-family:inherit; font-size:.82rem; font-weight:700; cursor:pointer;
+}
+.talent-card__invite:hover { background:#4031B8; }
+.talent-card__invite:focus-visible { outline:3px solid rgba(83,66,226,.3); outline-offset:2px; }
+.talent-card__invite:disabled { border-color:var(--wn-border); background:#F5F4EF; color:var(--wn-muted); cursor:not-allowed; }
+.invite-dialog { width:min(520px,calc(100% - 28px)); padding:0; border:1px solid var(--wn-border); border-radius:14px; background:#fff; color:var(--wn-ink); }
+.invite-dialog::backdrop { background:rgba(24,26,22,.48); }
+.invite-dialog__content { padding:24px; }
+.invite-dialog__content h2 { margin:0 0 8px; font-size:1.3rem; }
+.invite-dialog__content > p { color:var(--wn-muted); line-height:1.55; }
+.invite-dialog__content label { display:block; margin:16px 0 6px; font-size:.88rem; font-weight:700; }
+.invite-dialog__content input, .invite-dialog__content select, .invite-dialog__content textarea { width:100%; min-height:42px; padding:9px 11px; border:1px solid var(--wn-border); border-radius:8px; background:#fff; color:var(--wn-ink); font:inherit; }
+.invite-dialog__content textarea { min-height:92px; resize:vertical; }
+.invite-dialog__content :is(input,select,textarea):focus-visible { outline:3px solid rgba(83,66,226,.22); border-color:var(--wn-purple); }
+.invite-dialog__note { margin:6px 0 0; color:var(--wn-muted); font-size:.8rem; }
+.invite-dialog__error { margin:12px 0 0; color:var(--wn-red); font-size:.88rem; }
+.invite-dialog__actions { display:flex; justify-content:flex-end; gap:10px; margin-top:20px; }
+.invite-dialog__actions button { min-height:40px; padding:0 14px; border:1px solid var(--wn-border); border-radius:8px; background:#fff; color:var(--wn-ink); font-family:inherit; font-size:.84rem; font-weight:700; cursor:pointer; }
+.invite-dialog__actions [type="submit"] { border-color:var(--wn-purple); background:var(--wn-purple); color:#fff; }
+.invite-dialog__actions button:hover { background:var(--wn-purple-soft); color:var(--wn-purple); }
+.invite-feedback { margin:0 0 14px; padding:12px 14px; border:1px solid var(--wn-green-soft); border-radius:8px; background:#F0FAF2; color:var(--wn-green); }
+.talent-card__save[aria-pressed="true"] { border-color:var(--wn-purple); background:var(--wn-purple-soft); color:var(--wn-purple); }
+.talent-card__link:hover { background:var(--wn-purple); }
+.talent-card__save:hover { background:var(--wn-paper); }
+.talent-card__link:focus-visible, .talent-card__save:focus-visible { outline:3px solid rgba(83,66,226,.3); outline-offset:2px; }
+dialog {
+    width:min(460px,calc(100% - 28px)); max-width:460px; padding:0;
+    border:1px solid var(--wn-border); border-radius:17px; background:#fff;
+    color:var(--wn-ink); box-shadow:0 24px 80px rgba(20,22,18,.25);
+}
+dialog::backdrop { background:rgba(24,26,22,.48); backdrop-filter:blur(3px); }
+.cancel-dialog-content, .status-dialog-content { padding:27px; }
+.cancel-dialog-icon {
+    display:grid; place-items:center; width:40px; height:40px; margin-bottom:14px;
+    border-radius:12px; background:var(--wn-red-soft); color:var(--wn-red); font-weight:800;
+}
+.cancel-dialog-content h2, .status-dialog-content h2 { margin:0 0 9px; font-size:1.35rem; letter-spacing:-.03em; }
+.cancel-dialog-content > p, .status-dialog-content > p { color:var(--wn-muted); line-height:1.6; }
+.status-dialog-content label { display:block; margin:18px 0 7px; font-size:.86rem; font-weight:700; }
+.status-dialog-content select {
+    width:100%; min-height:44px; padding:0 12px; border:1px solid #D8D5CC;
+    border-radius:9px; background:#fff; color:var(--wn-ink); font:inherit;
+}
+.cancel-dialog-actions, .status-dialog-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:10px; margin-top:22px; }
+.cancel-dialog-button, .status-dialog-button {
+    min-height:42px; padding:0 15px; border:1px solid transparent;
+    border-radius:9px; font:700 .86rem inherit; cursor:pointer;
+}
+.cancel-dialog-button--secondary, .status-dialog-button--secondary { background:#F5F4EF; color:var(--wn-ink); border-color:var(--wn-border); }
+.cancel-dialog-button--danger { background:#B42318; color:#fff; }
+.status-dialog-button--primary { background:var(--wn-purple); color:#fff; }
+.cancel-dialog-message, .status-dialog-message { margin:15px 0 0; color:var(--wn-red); font-size:.86rem; line-height:1.5; }
+button:disabled { opacity:.58; cursor:not-allowed !important; transform:none !important; }
+.dashboard-footer { border-top:1px solid var(--wn-border); color:var(--wn-muted); }
+.dashboard-footer p { margin:0; padding:22px 20px; text-align:center; font-size:.82rem; }
+@media (max-width:800px) {
+    .projects-list { grid-template-columns:1fr; }
+    .dashboard-stats { gap:10px; }
+}
+@media (max-width:600px) {
+    .dashboard-page { width:calc(100% - 28px); padding-top:30px; }
+    .dashboard-stats { grid-template-columns:repeat(2,minmax(0,1fr)); margin:22px 0 32px; }
+    .dashboard-stat { padding:16px; }
+    .dashboard-stat__note { font-size:.72rem; }
+    .project-create-card { align-items:stretch; flex-direction:column; padding:21px; }
+    .project-create-card > a { width:100%; }
+    .dashboard-section__header { align-items:flex-start; }
+    .project-card { padding:18px; }
+    .project-card-actions { gap:8px; }
+    .project-card-actions > a, .project-card-actions > button { padding:8px; font-size:.78rem; }
+    .talent-directory-toolbar { grid-template-columns:1fr; }
+    .talent-directory-results { grid-template-columns:1fr; }
+    .cancel-dialog-content, .status-dialog-content { padding:22px; }
+}
+@media (max-width:370px) {
+    .project-card-actions { grid-template-columns:1fr; }
+    .project-card__header { align-items:flex-start; flex-direction:column; }
+    .dashboard-stat { padding:13px; }
+    .dashboard-stat__value { font-size:1.55rem; }
+}
+@media (prefers-reduced-motion:reduce) {
+    *,*::before,*::after { scroll-behavior:auto !important; transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+}
+/* ===== Shared freelancer header: identical on every freelancer page ===== */
+html body.dashboard-body header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 247, 242, .94);
+    border-bottom: 1px solid #E8E5DC;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+html body.dashboard-body header.site-header .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 88px;
+}
+html body.dashboard-body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: #24271F;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-decoration: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B6D66;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background: #F0EEFF;
+    color: #5040D8;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header .wordmark:focus-visible,
+html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+html body.dashboard-body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 16px;
+}
+html body.dashboard-body header.site-header .dashboard-role {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #6B6D66;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+html body.dashboard-body header.site-header .site-header__actions .button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: none;
+}
+@media (max-width: 900px) {
+    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
+    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
+}
+@media (max-width: 650px) {
+    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
+    html body.dashboard-body header.site-header .dashboard-role { display: none; }
+}
+
+/* ---- Stats, filters, badges, countdown ---- */
+.dashboard-stat__value.is-pending { color:#B7B9B2; }
+.dashboard-stat--attention { border-color:#DED9FA; background:linear-gradient(115deg,#F7F5FF 0%,#FFFFFF 80%); }
+.projects-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; margin:0 0 16px; }
+.filter-tabs { display:flex; flex-wrap:wrap; gap:8px; }
+.filter-tab {
+    display:inline-flex; align-items:center; gap:8px; min-height:40px; padding:0 14px;
+    border:1px solid var(--wn-border); border-radius:999px; background:#fff;
+    color:var(--wn-muted); font:inherit; font-size:.86rem; font-weight:700; cursor:pointer;
+}
+.filter-tab:hover { background:#F5F4EF; color:var(--wn-ink); }
+.filter-tab[aria-pressed="true"] { background:var(--wn-purple-soft); border-color:#D8D2F7; color:var(--wn-purple); }
+.filter-tab__count { padding:1px 7px; border-radius:999px; background:rgba(36,39,31,.07); font-size:.76rem; }
+.project-search { flex:1 1 240px; max-width:340px; margin-left:auto; }
+.project-search input {
+    width:100%; min-height:42px; padding:0 14px; border:1px solid #D8D5CC; border-radius:10px;
+    background:#fff; color:var(--wn-ink); font:inherit; font-size:.9rem;
+}
+.proposal-badge {
+    border-color:#DED9FA !important; background:var(--wn-purple-soft) !important; color:var(--wn-purple) !important;
+}
+.proposal-badge--none { border-color:#F0EEE8 !important; background:#FAF9F6 !important; color:#898B84 !important; }
+.deadline-group { text-align:right; }
+.deadline-chip { display:block; margin-top:2px; font-size:.76rem; font-weight:700; color:var(--wn-muted); }
+.deadline-chip--soon { color:#875A00; }
+.deadline-chip--overdue { color:#B42318; }
+.projects-empty .empty-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+.projects-empty .empty-steps { margin:0 auto 18px; padding:0; max-width:420px; list-style:none; text-align:left; color:var(--wn-muted); font-size:.9rem; }
+.projects-empty .empty-steps li { margin-top:6px; }
+.projects-empty .button--ghost { background:#fff; border:1px solid #D8D5CC; color:var(--wn-ink); cursor:pointer; font:inherit; font-weight:700; }
+.visually-hidden { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+@media (max-width:600px) {
+    .project-search { max-width:none; margin-left:0; flex-basis:100%; }
+    .filter-tabs { width:100%; }
+}
+    </style>
+    <link rel="stylesheet" href="../../css/client-ui.css">
+
+
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+<body class="dashboard-body client-dashboard">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link" aria-current="page">Overview</a>
+            <a href="index.html#your-projects" class="site-nav__link">Your projects</a>
+            <a href="create-project.html" class="site-nav__link">Post a project</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <span class="dashboard-role">Client account</span>
+            <form action="../../logout" method="post">
+                <button class="button button--dark" type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+    <main id="main-content" class="dashboard-page">
+        <div id="project-success-message" class="project-success-message" role="status" aria-live="polite" tabindex="-1" hidden></div>
+        <p id="cancel-project-feedback" class="cancel-project-feedback" role="status" aria-live="polite" hidden></p>
+        <p id="status-project-feedback" class="status-project-feedback" role="status" aria-live="polite" hidden></p>
+        <section class="dashboard-welcome">
+            <p class="eyebrow">YOUR WORKSPACE</p>
+            <h1 id="welcome-heading">Welcome back!</h1>
+            <p>Manage your projects, connect with freelancers, and keep your work moving forward.</p>
+        </section>
+        <section class="dashboard-stats" aria-label="Project overview">
+            <article class="dashboard-stat">
+                <span class="dashboard-stat__label">Open projects</span>
+                <strong class="dashboard-stat__value" id="open-projects-count">0</strong>
+                <p class="dashboard-stat__note">Accepting proposals</p>
+            </article>
+            <article class="dashboard-stat dashboard-stat--attention">
+                <span class="dashboard-stat__label">Proposals to review</span>
+                <strong class="dashboard-stat__value is-pending" id="pending-proposals-count">&hellip;</strong>
+                <p class="dashboard-stat__note" id="pending-proposals-note">Checking your open projects</p>
+            </article>
+            <article class="dashboard-stat">
+                <span class="dashboard-stat__label">In progress</span>
+                <strong class="dashboard-stat__value" id="progress-projects-count">0</strong>
+                <p class="dashboard-stat__note">Work underway with a freelancer</p>
+            </article>
+        </section>
+        <section class="dashboard-section project-create-section">
+            <div class="project-create-card">
+                <div class="project-create-content">
+                    <h2>Ready to start a project?</h2>
+                    <p>Tell us what you need, set your budget, and find the right freelancer for the job.</p>
+                </div>
+                <a class="button button--dark" href="create-project.html">
+                    <span aria-hidden="true">+</span>
+                    Post a project
+                </a>
+            </div>
+        </section>
+        <section class="dashboard-section" id="your-projects">
+            <div class="dashboard-section__header">
+                <div>
+                    <h2>Your projects</h2>
+                    <p>Keep track of the work you're managing.</p>
+                </div>
+                <span class="projects-count" id="projects-count">Loading...</span>
+            </div>
+            <div class="projects-toolbar">
+                <div class="filter-tabs" id="filter-tabs" role="group" aria-label="Filter projects by status">
+                    <button type="button" class="filter-tab" data-filter="ALL" aria-pressed="true">All <span class="filter-tab__count" id="count-ALL">0</span></button>
+                    <button type="button" class="filter-tab" data-filter="OPEN" aria-pressed="false">Open <span class="filter-tab__count" id="count-OPEN">0</span></button>
+                    <button type="button" class="filter-tab" data-filter="IN_PROGRESS" aria-pressed="false">In progress <span class="filter-tab__count" id="count-IN_PROGRESS">0</span></button>
+                    <button type="button" class="filter-tab" data-filter="COMPLETED" aria-pressed="false">Completed <span class="filter-tab__count" id="count-COMPLETED">0</span></button>
+                </div>
+                <div class="project-search">
+                    <label class="visually-hidden" for="project-search-input">Search your projects</label>
+                    <input type="search" id="project-search-input" placeholder="Search title, skills or description" autocomplete="off">
+                </div>
+            </div>
+            <div id="projects-error-message" class="project-form-message" role="alert" aria-live="assertive" hidden></div>
+            <div id="projects-list" class="projects-list" aria-live="polite" aria-busy="true">
+                <p class="projects-loading">Loading your projects...</p>
+            </div>
+        </section>
+        <section class="dashboard-section talent-discovery-section"
+                 aria-labelledby="talent-discovery-heading">
+            <div class="dashboard-section__header">
+                <div>
+                    <h2 id="talent-discovery-heading">Find the right talent</h2>
+                    <p>Filter freelancer profiles and save candidates to review later.</p>
+                </div>
+            </div>
+
+            <div class="talent-directory-toolbar">
+                <label class="visually-hidden" for="freelancer-search">Search freelancer profiles</label>
+                <input type="search" id="freelancer-search" maxlength="120"
+                       placeholder="Search by name, skills, or location"
+                       autocomplete="off">
+                <label class="visually-hidden" for="freelancer-availability">Filter by availability</label>
+                <select id="freelancer-availability">
+                    <option value="">Any availability</option>
+                    <option value="AVAILABLE">Available</option>
+                    <option value="PART_TIME">Part-time</option>
+                    <option value="FULL_TIME">Full-time</option>
+                    <option value="UNAVAILABLE">Unavailable</option>
+                </select>
+                <label class="visually-hidden" for="freelancer-min-experience">Minimum experience</label>
+                <select id="freelancer-min-experience">
+                    <option value="">Any experience</option>
+                    <option value="1">1+ years</option>
+                    <option value="3">3+ years</option>
+                    <option value="5">5+ years</option>
+                    <option value="10">10+ years</option>
+                </select>
+                <label class="visually-hidden" for="freelancer-max-rate">Maximum hourly rate in rupees</label>
+                <input type="number" id="freelancer-max-rate" min="0" max="10000000"
+                       step="100" inputmode="numeric" placeholder="Max rate (₹/hour)">
+                <label class="visually-hidden" for="freelancer-sort">Sort freelancer profiles</label>
+                <select id="freelancer-sort">
+                    <option value="recent">Recently updated</option>
+                    <option value="name">Name A to Z</option>
+                    <option value="rate">Lowest hourly rate</option>
+                    <option value="experience">Most experience</option>
+                </select>
+            </div>
+            <div class="talent-directory-controls">
+                <div class="talent-directory-controls__filters">
+                    <label class="talent-shortlist-toggle">
+                        <input type="checkbox" id="freelancer-shortlist-only">
+                        Show saved only <span id="freelancer-shortlist-count">(0)</span>
+                    </label>
+                    <button type="button" class="talent-clear-filters" id="freelancer-clear-filters">
+                        Clear filters
+                    </button>
+                </div>
+                <p class="talent-directory-count" id="freelancer-directory-count" aria-live="polite"></p>
+            </div>
+            <p class="talent-filter-error" id="freelancer-filter-error" role="alert" hidden></p>
+            <p class="invite-feedback" id="freelancer-invite-feedback" role="status" aria-live="polite" hidden></p>
+            <div id="freelancer-directory-message" class="talent-directory-state"
+                 role="status" aria-live="polite">Loading freelancer profiles…</div>
+            <div id="freelancer-directory-results" class="talent-directory-results"
+                 aria-live="polite" aria-busy="true"></div>
+        </section>
+    </main>
+    <footer class="wn-footer">
+        <div class="wn-footer__inner">
+            <p>WorkNest — Good work, done together.</p>
+            <nav aria-label="Footer">
+                <a href="index.html">Overview</a>
+                <a href="index.html#your-projects">Your projects</a>
+                <a href="create-project.html">Post a project</a>
+            </nav>
+        </div>
+    </footer>
+    <dialog id="freelancer-invite-dialog" class="invite-dialog" aria-labelledby="invite-dialog-title">
+        <form id="freelancer-invite-form" class="invite-dialog__content">
+            <h2 id="invite-dialog-title">Invite freelancer to a project</h2>
+            <p id="invite-freelancer-name"></p>
+            <label for="invite-project-select">Open project</label>
+            <select id="invite-project-select" name="projectId" required></select>
+            <label for="invite-offered-amount">Offer amount (₹)</label>
+            <input id="invite-offered-amount" name="offeredAmount" type="number"
+                   min="0.01" max="1000000000" step="0.01" required>
+            <p class="invite-dialog__note" id="invite-budget-note"></p>
+            <label for="invite-client-message">Message to freelancer (optional)</label>
+            <textarea id="invite-client-message" name="clientMessage" maxlength="1000"></textarea>
+            <p id="invite-dialog-error" class="invite-dialog__error" role="alert" hidden></p>
+            <div class="invite-dialog__actions">
+                <button type="button" id="invite-dialog-cancel">Cancel</button>
+                <button type="submit" id="invite-dialog-send">Send invitation</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="cancel-project-dialog" class="cancel-project-dialog">
+        <div class="cancel-dialog-content">
+            <div class="cancel-dialog-icon" aria-hidden="true">!</div>
+            <h2>Delete this project?</h2>
+            <p>Are you sure you want to permanently delete this project? This action cannot be undone.</p>
+            <div class="cancel-dialog-actions">
+                <button type="button" id="keep-project-button" class="cancel-dialog-button cancel-dialog-button--secondary">No, keep it</button>
+                <button type="button" id="confirm-delete-project-button" class="cancel-dialog-button cancel-dialog-button--danger">Yes, delete</button>
+            </div>
+            <p id="cancel-dialog-message" class="cancel-dialog-message" role="alert" aria-live="polite" hidden></p>
+        </div>
+    </dialog>
+    <dialog id="status-project-dialog" class="status-project-dialog">
+        <div class="status-dialog-content">
+            <h2>Update Project Status</h2>
+            <p id="status-project-title"></p>
+            <label for="new-project-status">New status</label>
+            <select id="new-project-status" required>
+                <option value="">Choose a status</option>
+            </select>
+            <p id="status-dialog-message" class="status-dialog-message" role="alert" aria-live="polite" hidden></p>
+            <div class="status-dialog-actions">
+                <button type="button" id="close-status-dialog" class="status-dialog-button status-dialog-button--secondary">Keep Current Status</button>
+                <button type="button" id="save-project-status" class="status-dialog-button status-dialog-button--primary">Save Status</button>
+            </div>
+        </div>
+    </dialog>
+    
+<script type="module">
+"use strict";
+
+const welcomeHeading = document.getElementById("welcome-heading");
+const params = new URLSearchParams(window.location.search);
+const successMessage = document.getElementById("project-success-message");
+
+const projectsList = document.getElementById("projects-list");
+const projectsError = document.getElementById("projects-error-message");
+const projectsCount = document.getElementById("projects-count");
+const openCountEl = document.getElementById("open-projects-count");
+const pendingCountEl = document.getElementById("pending-proposals-count");
+const pendingNoteEl = document.getElementById("pending-proposals-note");
+const progressCountEl = document.getElementById("progress-projects-count");
+const searchInput = document.getElementById("project-search-input");
+const freelancerSearchInput = document.getElementById("freelancer-search");
+const freelancerAvailabilityInput = document.getElementById("freelancer-availability");
+const freelancerExperienceInput = document.getElementById("freelancer-min-experience");
+const freelancerRateInput = document.getElementById("freelancer-max-rate");
+const freelancerSortInput = document.getElementById("freelancer-sort");
+const freelancerSavedOnlyInput = document.getElementById("freelancer-shortlist-only");
+const freelancerShortlistCount = document.getElementById("freelancer-shortlist-count");
+const freelancerDirectoryCount = document.getElementById("freelancer-directory-count");
+const freelancerClearFiltersButton = document.getElementById("freelancer-clear-filters");
+const freelancerDirectoryResults = document.getElementById("freelancer-directory-results");
+const freelancerDirectoryMessage = document.getElementById("freelancer-directory-message");
+const filterTabs = Array.from(document.querySelectorAll(".filter-tab"));
+
+let allProjects = [];
+let proposalStats = null;          // Map(projectId -> { total, pending }) once loaded
+let activeFilter = "ALL";
+let searchQuery = "";
+
+const cancelDialog = document.getElementById("cancel-project-dialog");
+const keepProjectButton = document.getElementById("keep-project-button");
+const confirmDeleteButton = document.getElementById("confirm-delete-project-button");
+const cancelDialogMessage = document.getElementById("cancel-dialog-message");
+const cancelFeedback = document.getElementById("cancel-project-feedback");
+
+const statusDialog = document.getElementById("status-project-dialog");
+const statusProjectTitle = document.getElementById("status-project-title");
+const newProjectStatus = document.getElementById("new-project-status");
+const statusDialogMessage = document.getElementById("status-dialog-message");
+const statusFeedback = document.getElementById("status-project-feedback");
+const closeStatusDialogButton = document.getElementById("close-status-dialog");
+const saveStatusButton = document.getElementById("save-project-status");
+
+let projectToDelete = null;
+let projectForStatusUpdate = null;
+let lastProjectsRefreshAt = 0;
+let activeLoadController = null;
+let freelancerSearchTimer = null;
+let freelancerRequestController = null;
+let allFreelancerProfiles = [];
+const freelancerShortlistStorageKey = "worknest.client.freelancer-shortlist.v1";
+let savedFreelancerIds = loadSavedFreelancerIds();
+const pendingClientInvitationKeys = new Set();
+const freelancerInviteDialog = document.getElementById("freelancer-invite-dialog");
+const freelancerInviteForm = document.getElementById("freelancer-invite-form");
+const inviteProjectSelect = document.getElementById("invite-project-select");
+const inviteAmountInput = document.getElementById("invite-offered-amount");
+const inviteBudgetNote = document.getElementById("invite-budget-note");
+const inviteDialogError = document.getElementById("invite-dialog-error");
+const inviteDialogSendButton = document.getElementById("invite-dialog-send");
+const inviteFeedback = document.getElementById("freelancer-invite-feedback");
+let selectedInviteFreelancer = null;
+
+const allowedStatusTransitions = {
+    OPEN: ["CANCELLED"],
+    IN_PROGRESS: [],
+    COMPLETED: [],
+    CANCELLED: []
+};
+
+function normalizeStatus(value) {
+    return String(value ?? "").trim().toUpperCase();
+}
+
+function showTimedMessage(element, message, duration = 4000) {
+    if (!element) return;
+    if (element._dismissTimer) window.clearTimeout(element._dismissTimer);
+    element.textContent = message;
+    element.hidden = false;
+    element._dismissTimer = window.setTimeout(() => {
+        element.hidden = true;
+        element.textContent = "";
+        element._dismissTimer = null;
+    }, duration);
+}
+
+function safeText(value, fallback = "") {
+    if (value === null || value === undefined) return fallback;
+    const result = String(value).trim();
+    return result || fallback;
+}
+
+function formatCurrencyRange(minValue, maxValue) {
+    if (minValue === null || minValue === undefined ||
+        maxValue === null || maxValue === undefined ||
+        String(minValue).trim() === "" || String(maxValue).trim() === "") {
+        return "Budget not specified";
+    }
+    const min = Number(minValue);
+    const max = Number(maxValue);
+    if (!Number.isFinite(min) || !Number.isFinite(max)) return "Budget not specified";
+    const formatter = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 });
+    return `₹${formatter.format(min)} – ₹${formatter.format(max)}`;
+}
+
+async function readJsonResponse(response, fallbackMessage) {
+    if (response.status === 401) {
+        window.location.replace("../../login.html");
+        throw new Error("Your session has expired. Please log in again.");
+    }
+
+    const contentType = response.headers.get("content-type") || "";
+    let data = {};
+    if (contentType.includes("application/json")) {
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error("The server returned an invalid response. Please try again.");
+        }
+    } else if (response.ok) {
+        throw new Error("The server returned an unexpected response format.");
+    }
+
+    if (!response.ok) {
+        throw new Error(data.error || data.message || fallbackMessage);
+    }
+    return data;
+}
+
+async function loadClientProfile() {
+    try {
+        const response = await fetch("../../profile", {
+            method: "GET",
+            credentials: "same-origin",
+            headers: { "Accept": "text/plain" },
+            cache: "no-store"
+        });
+
+        if (response.status === 401) {
+            window.location.replace("../../login.html");
+            return;
+        }
+        if (!response.ok) throw new Error("Unable to load profile.");
+
+        const fullName = (await response.text()).trim();
+        welcomeHeading.textContent = fullName ? `Welcome back, ${fullName}!` : "Welcome back!";
+    } catch (error) {
+        console.error("Profile loading failed:", error);
+        welcomeHeading.textContent = "Welcome back!";
+    }
+}
+
+function createDeadlineChip(value) {
+    if (!value) return null;
+    const date = new Date(String(value).replace(" ", "T"));
+    if (Number.isNaN(date.getTime())) return null;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
+    const days = Math.round((date - today) / 86400000);
+
+    const chip = document.createElement("span");
+    chip.className = "deadline-chip";
+    if (days < 0) {
+        chip.textContent = `Overdue by ${Math.abs(days)} ${Math.abs(days) === 1 ? "day" : "days"}`;
+        chip.classList.add("deadline-chip--overdue");
+    } else if (days === 0) {
+        chip.textContent = "Due today";
+        chip.classList.add("deadline-chip--soon");
+    } else {
+        chip.textContent = `Deadline in ${days} ${days === 1 ? "day" : "days"}`;
+        if (days <= 3) chip.classList.add("deadline-chip--soon");
+    }
+    return chip;
+}
+
+function createProjectCard(project) {
+    const card = document.createElement("article");
+    card.className = "project-card";
+
+    const projectId = project.projectId ?? project.project_id;
+    const hasProjectId = projectId !== null && projectId !== undefined &&
+        String(projectId).trim() !== "";
+    const projectTitle = safeText(project.title, "Untitled project");
+    const projectStatus = normalizeStatus(project.status) || "UNKNOWN";
+
+    const header = document.createElement("div");
+    header.className = "project-card__header";
+
+    const title = document.createElement("h3");
+    title.className = "project-card__title";
+    title.textContent = projectTitle;
+
+    const status = document.createElement("span");
+    const statusClass = projectStatus.toLowerCase().replace(/[^a-z_]/g, "");
+    status.className = `project-status project-status--${statusClass}`;
+    status.textContent = projectStatus.replaceAll("_", " ");
+    header.append(title, status);
+
+    const description = document.createElement("p");
+    description.className = "project-card__description";
+    description.textContent = safeText(project.description, "No description provided.");
+
+    const skills = document.createElement("p");
+    skills.className = "project-card__skills";
+    skills.textContent = project.requiredSkills
+        ? `Skills: ${String(project.requiredSkills)}`
+        : "Skills not specified";
+
+    const details = document.createElement("div");
+    details.className = "project-card__details";
+
+    const type = document.createElement("span");
+    const projectType = normalizeStatus(project.projectType);
+    type.textContent = projectType === "FIXED" ? "Fixed price"
+        : projectType === "HOURLY" ? "Hourly rate" : "Type not specified";
+
+    const budget = document.createElement("span");
+    budget.textContent = formatCurrencyRange(project.budgetMin, project.budgetMax);
+    details.append(type, budget);
+
+    if (projectStatus === "OPEN" && proposalStats && hasProjectId) {
+        const stat = proposalStats.get(String(projectId));
+        if (stat) {
+            const badge = document.createElement("span");
+            badge.className = "proposal-badge" + (stat.total === 0 ? " proposal-badge--none" : "");
+            badge.textContent = stat.total === 0
+                ? "No proposals yet"
+                : `${stat.total} ${stat.total === 1 ? "proposal" : "proposals"}` +
+                  (stat.pending ? ` · ${stat.pending} to review` : "");
+            details.appendChild(badge);
+        }
+    }
+
+    const footer = document.createElement("div");
+    footer.className = "project-card__footer";
+    const deadlineLabel = document.createElement("span");
+    deadlineLabel.textContent = "Deadline";
+    const deadline = document.createElement("time");
+    const deadlineValue = safeText(project.deadline);
+    deadline.textContent = deadlineValue || "Not specified";
+    if (deadlineValue) deadline.dateTime = deadlineValue;
+    const deadlineGroup = document.createElement("div");
+    deadlineGroup.className = "deadline-group";
+    deadlineGroup.appendChild(deadline);
+    if (["OPEN", "IN_PROGRESS"].includes(projectStatus)) {
+        const chip = createDeadlineChip(deadlineValue);
+        if (chip) deadlineGroup.appendChild(chip);
+    }
+    footer.append(deadlineLabel, deadlineGroup);
+
+    const actions = document.createElement("div");
+    actions.className = "project-card-actions";
+
+    if (hasProjectId) {
+        const detailsLink = document.createElement("a");
+        detailsLink.className = "view-details-button";
+        detailsLink.textContent = "View Details";
+        detailsLink.href = `project-details.html?id=${encodeURIComponent(String(projectId))}`;
+        actions.appendChild(detailsLink);
+
+        const proposalsLink = document.createElement("a");
+        proposalsLink.className = "view-proposals-button";
+        proposalsLink.textContent = "View Proposals";
+        proposalsLink.href = `project-proposals.html?projectId=${encodeURIComponent(String(projectId))}`;
+        actions.appendChild(proposalsLink);
+
+        if (["IN_PROGRESS", "COMPLETED"].includes(projectStatus)) {
+            const workspaceLink = document.createElement("a");
+            workspaceLink.className = "view-details-button";
+            workspaceLink.textContent = "Open Workspace";
+            workspaceLink.href = `project-workspace.html?projectId=${encodeURIComponent(String(projectId))}`;
+            actions.appendChild(workspaceLink);
+        }
+
+        if (projectStatus === "OPEN") {
+            const editLink = document.createElement("a");
+            editLink.className = "edit-project-button";
+            editLink.textContent = "Edit Project";
+            editLink.href = `edit-project.html?id=${encodeURIComponent(String(projectId))}`;
+            actions.appendChild(editLink);
+        }
+
+        if (projectStatus === "OPEN") {
+            const statusButton = document.createElement("button");
+            statusButton.type = "button";
+            statusButton.className = "change-status-button";
+            statusButton.textContent = "Change Status";
+            statusButton.addEventListener("click", () =>
+                openStatusDialog(String(projectId), projectTitle, projectStatus)
+            );
+            actions.appendChild(statusButton);
+        }
+
+        if (projectStatus === "OPEN") {
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "cancel-project-button";
+            deleteButton.textContent = "Delete Project";
+            deleteButton.addEventListener("click", () =>
+                openCancelDialog(String(projectId), projectTitle)
+            );
+            actions.appendChild(deleteButton);
+        }
+    }
+
+    card.append(header, description, skills, details, footer);
+    if (actions.childElementCount) card.appendChild(actions);
+    return card;
+}
+
+function renderEmptyState() {
+    const empty = document.createElement("div");
+    empty.className = "projects-empty";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Post your first project";
+
+    const description = document.createElement("p");
+    description.textContent = "Describe the work you need and freelancers will send you proposals.";
+
+    const steps = document.createElement("ul");
+    steps.className = "empty-steps";
+    ["Describe the work, budget and deadline.", "Review proposals as they arrive.", "Accept one and track progress here."].forEach((text, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${index + 1}. ${text}`;
+        steps.appendChild(li);
+    });
+
+    const createLink = document.createElement("a");
+    createLink.className = "button button--dark";
+    createLink.href = "create-project.html";
+    createLink.textContent = "Post your first project";
+
+    empty.append(heading, description, steps, createLink);
+    projectsList.replaceChildren(empty);
+}
+
+function renderNoMatches() {
+    const empty = document.createElement("div");
+    empty.className = "projects-empty";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "No projects match";
+
+    const description = document.createElement("p");
+    description.textContent = "Try a different search or switch to another status.";
+
+    const actions = document.createElement("div");
+    actions.className = "empty-actions";
+    const clear = document.createElement("button");
+    clear.type = "button";
+    clear.className = "button button--ghost";
+    clear.textContent = "Clear filters";
+    clear.style.minHeight = "42px";
+    clear.style.padding = "0 15px";
+    clear.style.borderRadius = "9px";
+    clear.addEventListener("click", () => {
+        searchInput.value = "";
+        searchQuery = "";
+        setFilter("ALL");
+    });
+    actions.appendChild(clear);
+
+    empty.append(heading, description, actions);
+    projectsList.replaceChildren(empty);
+}
+
+function renderSkeletons() {
+    projectsList.replaceChildren();
+    const hidden = document.createElement("p");
+    hidden.className = "visually-hidden";
+    hidden.textContent = "Loading your projects...";
+    projectsList.appendChild(hidden);
+    for (let i = 0; i < 4; i++) {
+        const card = document.createElement("div");
+        card.className = "skeleton-card";
+        card.setAttribute("aria-hidden", "true");
+        card.innerHTML =
+            '<span class="skeleton skeleton--pill"></span>' +
+            '<span class="skeleton skeleton--title" style="margin-top:12px"></span>' +
+            '<span class="skeleton skeleton--line" style="width:92%"></span>' +
+            '<span class="skeleton skeleton--line" style="width:78%"></span>' +
+            '<span class="skeleton skeleton--box"></span>';
+        projectsList.appendChild(card);
+    }
+}
+
+function countByStatus(status) {
+    return allProjects.filter(project => normalizeStatus(project.status) === status).length;
+}
+
+function updateStats() {
+    openCountEl.textContent = String(countByStatus("OPEN"));
+    progressCountEl.textContent = String(countByStatus("IN_PROGRESS"));
+
+    document.getElementById("count-ALL").textContent = String(allProjects.length);
+    ["OPEN", "IN_PROGRESS", "COMPLETED"].forEach(status => {
+        document.getElementById(`count-${status}`).textContent = String(countByStatus(status));
+    });
+
+    if (!proposalStats) {
+        pendingCountEl.textContent = "…";
+        pendingCountEl.classList.add("is-pending");
+        pendingNoteEl.textContent = countByStatus("OPEN") ? "Checking your open projects" : "No open projects";
+        if (!countByStatus("OPEN")) {
+            pendingCountEl.textContent = "0";
+            pendingCountEl.classList.remove("is-pending");
+        }
+        return;
+    }
+
+    let pending = 0;
+    let withPending = 0;
+    proposalStats.forEach(stat => {
+        pending += stat.pending;
+        if (stat.pending) withPending++;
+    });
+    pendingCountEl.textContent = String(pending);
+    pendingCountEl.classList.remove("is-pending");
+    pendingNoteEl.textContent = pending
+        ? `Across ${withPending} ${withPending === 1 ? "project" : "projects"}`
+        : "You're all caught up";
+}
+
+function matchesQuery(project, query) {
+    if (!query) return true;
+    const haystack = [project.title, project.description, project.requiredSkills]
+        .map(value => String(value ?? "").toLowerCase()).join(" ");
+    return query.split(/\s+/).every(word => haystack.includes(word));
+}
+
+function visibleProjects() {
+    const query = searchQuery.trim().toLowerCase();
+    return allProjects.filter(project => {
+        const statusOk = activeFilter === "ALL" || normalizeStatus(project.status) === activeFilter;
+        return statusOk && matchesQuery(project, query);
+    });
+}
+
+function renderList() {
+    const visible = visibleProjects();
+    projectsList.replaceChildren();
+
+    const filtering = activeFilter !== "ALL" || searchQuery.trim() !== "";
+    projectsCount.textContent = filtering
+        ? `${visible.length} of ${allProjects.length} ${allProjects.length === 1 ? "project" : "projects"}`
+        : `${allProjects.length} ${allProjects.length === 1 ? "project" : "projects"}`;
+
+    if (allProjects.length === 0) {
+        renderEmptyState();
+        return;
+    }
+    if (visible.length === 0) {
+        renderNoMatches();
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    visible.forEach(project => fragment.appendChild(createProjectCard(project)));
+    projectsList.appendChild(fragment);
+}
+
+function setFilter(filter) {
+    activeFilter = filter;
+    filterTabs.forEach(tab => tab.setAttribute("aria-pressed", String(tab.dataset.filter === filter)));
+    renderList();
+}
+
+filterTabs.forEach(tab => tab.addEventListener("click", () => setFilter(tab.dataset.filter)));
+searchInput.addEventListener("input", () => {
+    searchQuery = searchInput.value;
+    renderList();
+});
+
+function renderProjects(projects) {
+    allProjects = projects;
+    proposalStats = null;
+    updateStats();
+    renderList();
+    loadProposalStats(projects);
+}
+
+/* Counts proposals for each OPEN project. Failures are ignored so the dashboard still works. */
+async function loadProposalStats(projects) {
+    const openProjects = projects.filter(project => normalizeStatus(project.status) === "OPEN");
+    if (!openProjects.length) {
+        proposalStats = new Map();
+        updateStats();
+        return;
+    }
+
+    const snapshot = projects;
+    const results = await Promise.all(openProjects.map(async project => {
+        const id = String(project.projectId ?? project.project_id);
+        try {
+            const response = await fetch(`../../client-project-proposals?projectId=${encodeURIComponent(id)}`, {
+                method: "GET",
+                credentials: "same-origin",
+                headers: { "Accept": "application/json" },
+                cache: "no-store"
+            });
+            if (!response.ok) return null;
+            const data = await response.json();
+            const list = Array.isArray(data.proposals) ? data.proposals : [];
+            return [id, {
+                total: list.length,
+                pending: list.filter(p => normalizeStatus(p.status) === "PENDING").length
+            }];
+        } catch {
+            return null;
+        }
+    }));
+
+    if (snapshot !== allProjects) return;   // a newer load replaced this list
+    const stats = new Map(results.filter(Boolean));
+    if (stats.size === 0) {
+        pendingCountEl.textContent = "–";
+        pendingNoteEl.textContent = "Unavailable right now";
+        return;
+    }
+    proposalStats = stats;
+    updateStats();
+    renderList();
+}
+
+async function loadClientProjects() {
+    if (activeLoadController) activeLoadController.abort();
+    activeLoadController = new AbortController();
+    const controller = activeLoadController;
+
+    lastProjectsRefreshAt = Date.now();
+    projectsError.hidden = true;
+    projectsError.textContent = "";
+    projectsList.setAttribute("aria-busy", "true");
+    renderSkeletons();
+    projectsCount.textContent = "Loading...";
+
+    try {
+        const response = await fetch("../../my-projects", {
+            method: "GET",
+            credentials: "same-origin",
+            headers: { "Accept": "application/json" },
+            cache: "no-store",
+            signal: controller.signal
+        });
+
+        const data = await readJsonResponse(response, "Unable to load your projects. Please try again.");
+        if (!Array.isArray(data.projects)) {
+            throw new Error("The server returned an unexpected project list.");
+        }
+        if (controller !== activeLoadController) return;
+        renderProjects(data.projects);
+    } catch (error) {
+        if (error.name === "AbortError") return;
+        console.error("Project loading failed:", error);
+        projectsList.replaceChildren();
+        projectsError.textContent = error.message || "Unable to load projects. Please try again.";
+        projectsError.hidden = false;
+        projectsCount.textContent = "Projects unavailable";
+
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.className = "status-dialog-button status-dialog-button--primary";
+        retry.textContent = "Try again";
+        retry.addEventListener("click", loadClientProjects);
+        projectsList.appendChild(retry);
+    } finally {
+        if (controller === activeLoadController) {
+            projectsList.setAttribute("aria-busy", "false");
+        }
+    }
+}
+
+function loadSavedFreelancerIds() {
+    try {
+        const saved = JSON.parse(sessionStorage.getItem(freelancerShortlistStorageKey) || "[]");
+        return new Set(Array.isArray(saved) ? saved.map(String).filter(id => /^[1-9]\d*$/.test(id)) : []);
+    } catch (_) {
+        return new Set();
+    }
+}
+
+function persistSavedFreelancerIds() {
+    try {
+        sessionStorage.setItem(freelancerShortlistStorageKey, JSON.stringify(Array.from(savedFreelancerIds)));
+    } catch (_) {
+        // Keep the directory usable when browser storage is unavailable.
+    }
+    updateFreelancerShortlistCount();
+}
+
+function updateFreelancerShortlistCount() {
+    freelancerShortlistCount.textContent = "(" + savedFreelancerIds.size + ")";
+}
+
+function setFreelancerDirectoryState(message, isError = false) {
+    freelancerDirectoryResults.replaceChildren();
+    freelancerDirectoryCount.textContent = "";
+    freelancerDirectoryMessage.className = "talent-directory-state" +
+        (isError ? " talent-directory-state--error" : "");
+    freelancerDirectoryMessage.replaceChildren();
+    const text = document.createElement("p");
+    text.className = "talent-directory-state__message";
+    text.textContent = message;
+    freelancerDirectoryMessage.appendChild(text);
+    if (isError) {
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.className = "talent-clear-filters";
+        retry.textContent = "Try again";
+        retry.addEventListener("click", loadFreelancerDirectory);
+        freelancerDirectoryMessage.appendChild(retry);
+    }
+    freelancerDirectoryMessage.hidden = false;
+}
+
+function getVisibleFreelancers() {
+    const availability = freelancerAvailabilityInput.value;
+    const minimumExperience = freelancerExperienceInput.value === ""
+        ? null : Number(freelancerExperienceInput.value);
+    const maximumRate = freelancerRateInput.value === ""
+        ? null : Number(freelancerRateInput.value);
+    let filtered = allFreelancerProfiles.filter(freelancer => {
+        if (freelancerSavedOnlyInput.checked && !savedFreelancerIds.has(String(freelancer.userId))) return false;
+        if (availability && freelancer.availability !== availability) return false;
+        if (minimumExperience !== null && (freelancer.experienceYears === null ||
+                Number(freelancer.experienceYears) < minimumExperience)) return false;
+        if (maximumRate !== null && (freelancer.hourlyRate === null ||
+                Number(freelancer.hourlyRate) > maximumRate)) return false;
+        return true;
+    });
+
+    if (freelancerSortInput.value === "name") {
+        filtered.sort((a, b) => String(a.fullName || "").localeCompare(String(b.fullName || "")));
+    } else if (freelancerSortInput.value === "rate") {
+        filtered.sort((a, b) => Number(a.hourlyRate ?? Number.MAX_SAFE_INTEGER) -
+            Number(b.hourlyRate ?? Number.MAX_SAFE_INTEGER));
+    } else if (freelancerSortInput.value === "experience") {
+        filtered.sort((a, b) => Number(b.experienceYears ?? -1) - Number(a.experienceYears ?? -1));
+    }
+    return filtered;
+}
+
+function renderFreelancerDirectory() {
+    freelancerDirectoryResults.replaceChildren();
+    const rateError = document.getElementById("freelancer-filter-error");
+    const rateIsValid = freelancerRateInput.value === "" ||
+        (freelancerRateInput.validity.valid && Number.isFinite(Number(freelancerRateInput.value)));
+    rateError.hidden = rateIsValid;
+    rateError.textContent = rateIsValid ? "" : "Enter a maximum hourly rate between ₹0 and ₹10,000,000.";
+    freelancerRateInput.setAttribute("aria-invalid", String(!rateIsValid));
+    if (!rateIsValid) {
+        freelancerDirectoryCount.textContent = "";
+        setFreelancerDirectoryState("Correct the rate filter to see matching profiles.");
+        return;
+    }
+    const freelancers = getVisibleFreelancers();
+    freelancerDirectoryCount.textContent = freelancers.length +
+        (freelancers.length === 1 ? " freelancer" : " freelancers");
+    if (!freelancers.length) {
+        const message = freelancerSavedOnlyInput.checked && savedFreelancerIds.size === 0
+            ? "Your shortlist is empty. Save profiles to keep candidates here."
+            : freelancerSavedOnlyInput.checked
+                ? "No saved profiles match these filters. Clear a filter or show all profiles."
+                : "No matching freelancer profiles. Clear a filter or try another search.";
+        setFreelancerDirectoryState(message);
+        freelancerDirectoryCount.textContent = "0 freelancers";
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    freelancers.forEach(freelancer => {
+        const card = document.createElement("article");
+        card.className = "talent-card";
+
+        const top = document.createElement("div");
+        top.className = "talent-card__top";
+        const identity = document.createElement("div");
+        const name = document.createElement("h3");
+        name.textContent = freelancer.fullName || "WorkNest freelancer";
+        identity.appendChild(name);
+        if (freelancer.headline) {
+            const headline = document.createElement("p");
+            headline.className = "talent-card__headline";
+            headline.textContent = freelancer.headline;
+            identity.appendChild(headline);
+        }
+        top.appendChild(identity);
+        if (freelancer.availability) {
+            const availability = document.createElement("span");
+            availability.className = "talent-card__availability";
+            const availabilityLabels = {
+                AVAILABLE: "Available",
+                PART_TIME: "Part-time",
+                FULL_TIME: "Full-time",
+                UNAVAILABLE: "Unavailable"
+            };
+            availability.textContent = availabilityLabels[freelancer.availability] || freelancer.availability;
+            top.appendChild(availability);
+        }
+        card.appendChild(top);
+
+        if (freelancer.overview) {
+            const overview = document.createElement("p");
+            overview.className = "talent-card__overview";
+            overview.textContent = freelancer.overview.length > 220
+                ? freelancer.overview.slice(0, 217) + "…"
+                : freelancer.overview;
+            card.appendChild(overview);
+        }
+
+        const meta = [];
+        if (freelancer.location) meta.push(freelancer.location);
+        if (freelancer.experienceYears !== null && freelancer.experienceYears !== undefined) {
+            meta.push(freelancer.experienceYears +
+                (Number(freelancer.experienceYears) === 1 ? " year experience" : " years experience"));
+        }
+        if (freelancer.hourlyRate !== null && freelancer.hourlyRate !== undefined) {
+            const rate = Number(freelancer.hourlyRate);
+            if (Number.isFinite(rate) && rate >= 0) {
+                meta.push("₹" + new Intl.NumberFormat("en-IN", {
+                    maximumFractionDigits: 2
+                }).format(rate) + "/hour");
+            }
+        }
+        if (meta.length) {
+            const metaRow = document.createElement("p");
+            metaRow.className = "talent-card__meta";
+            metaRow.textContent = meta.join(" · ");
+            card.appendChild(metaRow);
+        }
+
+        const skillList = String(freelancer.skills || "")
+            .split(",").map(skill => skill.trim()).filter(Boolean).slice(0, 8);
+        if (skillList.length) {
+            const skills = document.createElement("div");
+            skills.className = "talent-card__skills";
+            skills.setAttribute("aria-label", "Skills");
+            skillList.forEach(skill => {
+                const tag = document.createElement("span");
+                tag.className = "talent-card__skill";
+                tag.textContent = skill;
+                skills.appendChild(tag);
+            });
+            card.appendChild(skills);
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "talent-card__actions";
+        const profileLink = document.createElement("a");
+        profileLink.className = "talent-card__link";
+        profileLink.href = "freelancer-profile.html?userId=" +
+            encodeURIComponent(String(freelancer.userId));
+        profileLink.textContent = "View profile";
+        actions.appendChild(profileLink);
+
+        const freelancerId = String(freelancer.userId);
+        const inviteButton = document.createElement("button");
+        inviteButton.type = "button";
+        inviteButton.className = "talent-card__invite";
+        inviteButton.textContent = "Hire for a project";
+        inviteButton.addEventListener("click", () => openFreelancerInvite(freelancer));
+        actions.appendChild(inviteButton);
+
+        const saveButton = document.createElement("button");
+        saveButton.type = "button";
+        saveButton.className = "talent-card__save";
+        saveButton.setAttribute("aria-pressed", String(savedFreelancerIds.has(freelancerId)));
+        saveButton.textContent = savedFreelancerIds.has(freelancerId)
+            ? "Remove from shortlist" : "Save to shortlist";
+        saveButton.addEventListener("click", () => {
+            if (savedFreelancerIds.has(freelancerId)) savedFreelancerIds.delete(freelancerId);
+            else savedFreelancerIds.add(freelancerId);
+            persistSavedFreelancerIds();
+            renderFreelancerDirectory();
+        });
+        actions.appendChild(saveButton);
+        card.appendChild(actions);
+        fragment.appendChild(card);
+    });
+
+    freelancerDirectoryResults.appendChild(fragment);
+    freelancerDirectoryMessage.hidden = true;
+}
+
+function invitationKey(projectId, freelancerId) {
+    return String(projectId) + ":" + String(freelancerId);
+}
+
+async function loadClientInvitationStatus() {
+    try {
+        const response = await fetch("../../project-invitations", {
+            credentials: "same-origin",
+            cache: "no-store",
+            headers: { Accept: "application/json" }
+        });
+        const data = await response.json();
+        if (!response.ok || !Array.isArray(data.invitations)) return;
+        pendingClientInvitationKeys.clear();
+        data.invitations.forEach(invitation => {
+            pendingClientInvitationKeys.add(invitationKey(invitation.projectId, invitation.freelancerId));
+        });
+    } catch (_) {
+        // Profile search remains available if invitation status cannot be loaded.
+    }
+}
+
+function setInviteProjectAmount(project) {
+    if (!project) {
+        inviteAmountInput.value = "";
+        inviteBudgetNote.textContent = "Select an open project first.";
+        return;
+    }
+    const minimum = Number(project.budgetMin);
+    const maximum = Number(project.budgetMax);
+    inviteAmountInput.min = Number.isFinite(minimum) ? String(minimum) : "0.01";
+    inviteAmountInput.max = Number.isFinite(maximum) ? String(maximum) : "1000000000";
+    inviteAmountInput.value = Number.isFinite(maximum) ? String(maximum) : "";
+    inviteBudgetNote.textContent = Number.isFinite(minimum) && Number.isFinite(maximum)
+        ? "Offer must be between ₹" + new Intl.NumberFormat("en-IN").format(minimum) +
+          " and ₹" + new Intl.NumberFormat("en-IN").format(maximum) + ". The freelancer must accept."
+        : "The freelancer must accept before work begins.";
+}
+
+async function openFreelancerInvite(freelancer) {
+    selectedInviteFreelancer = freelancer;
+    if (!allProjects.length) await loadClientProjects();
+    const openProjects = allProjects.filter(project => normalizeStatus(project.status) === "OPEN");
+    const availableProjects = openProjects.filter(project =>
+        !pendingClientInvitationKeys.has(invitationKey(project.projectId, freelancer.userId))
+    );
+    inviteProjectSelect.replaceChildren();
+    availableProjects.forEach(project => {
+        const option = document.createElement("option");
+        option.value = String(project.projectId);
+        option.textContent = project.title + " · ₹" +
+            new Intl.NumberFormat("en-IN").format(Number(project.budgetMin)) + "–₹" +
+            new Intl.NumberFormat("en-IN").format(Number(project.budgetMax));
+        inviteProjectSelect.appendChild(option);
+    });
+    document.getElementById("invite-freelancer-name").textContent =
+        "Send an offer to " + (freelancer.fullName || "this freelancer") + ".";
+    document.getElementById("invite-client-message").value = "";
+    inviteDialogError.hidden = true;
+    inviteDialogError.textContent = "";
+    inviteDialogSendButton.disabled = availableProjects.length === 0;
+    if (!availableProjects.length) {
+        inviteDialogError.textContent = openProjects.length
+            ? "You already have a pending invitation for this freelancer on every open project."
+            : "You need an open project before you can send an invitation.";
+        inviteDialogError.hidden = false;
+        setInviteProjectAmount(null);
+    } else {
+        setInviteProjectAmount(availableProjects[0]);
+    }
+    if (!freelancerInviteDialog.open) freelancerInviteDialog.showModal();
+}
+
+inviteProjectSelect.addEventListener("change", () => {
+    const project = allProjects.find(item => String(item.projectId) === inviteProjectSelect.value);
+    setInviteProjectAmount(project);
+});
+
+document.getElementById("invite-dialog-cancel").addEventListener("click", () => {
+    freelancerInviteDialog.close();
+});
+
+freelancerInviteForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!freelancerInviteForm.reportValidity() || !selectedInviteFreelancer) return;
+    inviteDialogError.hidden = true;
+    inviteDialogSendButton.disabled = true;
+    inviteDialogSendButton.textContent = "Sending…";
+    const body = new URLSearchParams({
+        action: "invite",
+        projectId: inviteProjectSelect.value,
+        freelancerId: String(selectedInviteFreelancer.userId),
+        offeredAmount: inviteAmountInput.value,
+        clientMessage: document.getElementById("invite-client-message").value.trim()
+    });
+    try {
+        const response = await fetch("../../project-invitations", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8", Accept: "application/json" },
+            body
+        });
+        const data = await response.json();
+        if (response.status === 401) {
+            window.location.replace("../../login.html");
+            return;
+        }
+        if (!response.ok) throw new Error(data.error || "Unable to send this invitation.");
+        pendingClientInvitationKeys.add(invitationKey(inviteProjectSelect.value, selectedInviteFreelancer.userId));
+        const name = selectedInviteFreelancer.fullName || "Freelancer";
+        const project = allProjects.find(item => String(item.projectId) === inviteProjectSelect.value);
+        freelancerInviteDialog.close();
+        showTimedMessage(inviteFeedback,
+            "Invitation sent to " + name + (project ? " for “" + project.title + "”." : "."));
+        renderFreelancerDirectory();
+    } catch (error) {
+        inviteDialogError.textContent = error.message || "Unable to send this invitation. Please try again.";
+        inviteDialogError.hidden = false;
+        inviteDialogSendButton.disabled = false;
+    } finally {
+        inviteDialogSendButton.textContent = "Send invitation";
+        if (!freelancerInviteDialog.open) inviteDialogSendButton.disabled = false;
+    }
+});
+
+async function loadFreelancerDirectory() {
+    if (freelancerRequestController) freelancerRequestController.abort();
+    const controller = new AbortController();
+    freelancerRequestController = controller;
+    freelancerDirectoryResults.setAttribute("aria-busy", "true");
+    setFreelancerDirectoryState("Loading freelancer profiles…");
+
+    const query = new URLSearchParams();
+    const search = freelancerSearchInput.value.trim();
+    if (search) query.set("q", search);
+    try {
+        const response = await fetch("../../freelancer-directory?" + query.toString(), {
+            credentials: "same-origin",
+            cache: "no-store",
+            headers: { Accept: "application/json" },
+            signal: controller.signal
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Freelancers are unavailable right now.");
+        allFreelancerProfiles = Array.isArray(data.freelancers) ? data.freelancers : [];
+        await loadClientInvitationStatus();
+        updateFreelancerShortlistCount();
+        renderFreelancerDirectory();
+    } catch (error) {
+        if (error.name === "AbortError") return;
+        setFreelancerDirectoryState(error.message || "Could not load freelancers. Please try again.", true);
+    } finally {
+        if (freelancerRequestController === controller) {
+            freelancerRequestController = null;
+            freelancerDirectoryResults.setAttribute("aria-busy", "false");
+        }
+    }
+}
+
+freelancerSearchInput.addEventListener("input", () => {
+    window.clearTimeout(freelancerSearchTimer);
+    freelancerSearchTimer = window.setTimeout(loadFreelancerDirectory, 250);
+});
+[
+    freelancerAvailabilityInput,
+    freelancerExperienceInput,
+    freelancerRateInput,
+    freelancerSortInput,
+    freelancerSavedOnlyInput
+].forEach(control => control.addEventListener("input", renderFreelancerDirectory));
+
+freelancerClearFiltersButton.addEventListener("click", () => {
+    freelancerSearchInput.value = "";
+    freelancerAvailabilityInput.value = "";
+    freelancerExperienceInput.value = "";
+    freelancerRateInput.value = "";
+    freelancerSortInput.value = "recent";
+    freelancerSavedOnlyInput.checked = false;
+    loadFreelancerDirectory();
+});
+
+document.querySelector('.site-header form[action="../../logout"]')?.addEventListener("submit", () => {
+    try { sessionStorage.removeItem(freelancerShortlistStorageKey); } catch (_) { /* ignored */ }
+});
+
+function openCancelDialog(projectId, projectTitle) {
+    projectToDelete = projectId;
+    cancelDialog.querySelector("h2").textContent = "Delete this project?";
+    cancelDialog.querySelector(".cancel-dialog-content > p").textContent =
+        `Are you sure you want to permanently delete "${projectTitle}"? This action cannot be undone.`;
+    cancelDialogMessage.hidden = true;
+    cancelDialogMessage.textContent = "";
+    confirmDeleteButton.disabled = false;
+    keepProjectButton.disabled = false;
+    confirmDeleteButton.textContent = "Yes, delete";
+    cancelDialog.showModal();
+}
+
+keepProjectButton.addEventListener("click", () => cancelDialog.close());
+
+confirmDeleteButton.addEventListener("click", async () => {
+    if (projectToDelete === null || confirmDeleteButton.disabled) return;
+
+    confirmDeleteButton.disabled = true;
+    keepProjectButton.disabled = true;
+    confirmDeleteButton.textContent = "Deleting...";
+    cancelDialogMessage.hidden = true;
+
+    try {
+        const response = await fetch("/WorkNest/cancel-project", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({ projectId: String(projectToDelete) })
+        });
+
+        const data = await readJsonResponse(response, "Unable to delete this project.");
+        cancelDialog.close();
+        projectToDelete = null;
+        showTimedMessage(cancelFeedback, data.message || "Project deleted successfully.");
+        await loadClientProjects();
+    } catch (error) {
+        cancelDialogMessage.textContent = error.message || "An unexpected error occurred.";
+        cancelDialogMessage.hidden = false;
+    } finally {
+        confirmDeleteButton.disabled = false;
+        keepProjectButton.disabled = false;
+        confirmDeleteButton.textContent = "Yes, delete";
+    }
+});
+
+cancelDialog.addEventListener("close", () => {
+    projectToDelete = null;
+});
+
+function openStatusDialog(projectId, projectTitle, currentStatus) {
+    projectForStatusUpdate = { projectId: String(projectId), currentStatus };
+    statusProjectTitle.textContent = projectTitle || "Untitled project";
+
+    newProjectStatus.replaceChildren();
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Choose a status";
+    newProjectStatus.appendChild(placeholder);
+
+    (allowedStatusTransitions[currentStatus] || []).forEach(statusValue => {
+        const option = document.createElement("option");
+        option.value = statusValue;
+        option.textContent = statusValue.replaceAll("_", " ");
+        newProjectStatus.appendChild(option);
+    });
+
+    statusDialogMessage.hidden = true;
+    statusDialogMessage.textContent = "";
+    saveStatusButton.disabled = false;
+    closeStatusDialogButton.disabled = false;
+    saveStatusButton.textContent = "Save Status";
+    statusDialog.showModal();
+}
+
+closeStatusDialogButton.addEventListener("click", () => statusDialog.close());
+
+saveStatusButton.addEventListener("click", async () => {
+    if (!projectForStatusUpdate || saveStatusButton.disabled) return;
+
+    const selectedStatus = newProjectStatus.value;
+    const allowedStatuses = allowedStatusTransitions[projectForStatusUpdate.currentStatus] || [];
+
+    if (!allowedStatuses.includes(selectedStatus)) {
+        statusDialogMessage.textContent = "Please select a valid status.";
+        statusDialogMessage.hidden = false;
+        newProjectStatus.focus();
+        return;
+    }
+
+    saveStatusButton.disabled = true;
+    closeStatusDialogButton.disabled = true;
+    saveStatusButton.textContent = "Saving...";
+    statusDialogMessage.hidden = true;
+
+    try {
+        const response = await fetch("../../update-project-status", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                projectId: projectForStatusUpdate.projectId,
+                status: selectedStatus
+            })
+        });
+
+        const data = await readJsonResponse(response, "Unable to update project status.");
+        statusDialog.close();
+        projectForStatusUpdate = null;
+        showTimedMessage(statusFeedback, data.message || "Project status updated successfully.");
+        await loadClientProjects();
+    } catch (error) {
+        statusDialogMessage.textContent = error.message || "An unexpected error occurred.";
+        statusDialogMessage.hidden = false;
+    } finally {
+        saveStatusButton.disabled = false;
+        closeStatusDialogButton.disabled = false;
+        saveStatusButton.textContent = "Save Status";
+    }
+});
+
+statusDialog.addEventListener("close", () => {
+    projectForStatusUpdate = null;
+});
+
+function refreshProjectsOnReturn() {
+    if (document.visibilityState !== "visible") return;
+    if (Date.now() - lastProjectsRefreshAt < 1800) return;
+    loadClientProjects();
+}
+
+window.addEventListener("pageshow", event => {
+    if (event.persisted) refreshProjectsOnReturn();
+});
+document.addEventListener("visibilitychange", refreshProjectsOnReturn);
+
+if (params.get("projectCreated") === "true") {
+    showTimedMessage(successMessage, "Project created successfully! Your project has been posted.");
+} else if (params.get("projectUpdated") === "true") {
+    showTimedMessage(successMessage, "Project updated successfully.");
+}
+if (params.has("projectCreated") || params.has("projectUpdated")) {
+    window.history.replaceState({}, document.title, window.location.pathname);
+}
+
+loadClientProfile();
+loadClientProjects();
+loadFreelancerDirectory();
+</script>
+
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>

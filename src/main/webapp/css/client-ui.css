@@ -1,0 +1,220 @@
+/* ==========================================================================
+   WorkNest — shared client UI (load AFTER the other stylesheets/page <style>)
+   Status colours, skeleton loaders, banner, focus styles, footer, skill chips.
+   No transitions, on purpose.
+   ========================================================================== */
+
+:root {
+    --wn-ink: #24271F;
+    --wn-muted: #6B6D66;
+    --wn-border: #E8E5DC;
+    --wn-paper: #F8F7F2;
+    --wn-purple: #5040D8;
+    --wn-purple-soft: #F0EEFF;
+    --wn-green: #176B38;
+    --wn-green-soft: #DFF4E5;
+    --wn-blue: #254EA8;
+    --wn-blue-soft: #E5EDFF;
+    --wn-red: #A52828;
+    --wn-red-soft: #FEF0F0;
+    --wn-amber: #875A00;
+    --wn-amber-soft: #FFF2D7;
+}
+
+/* ---------- One set of status colours for every page ---------- */
+.project-status,
+.workspace-status,
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 27px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #F1F0EC;
+    color: #575950;
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .025em;
+    text-transform: uppercase;
+}
+.project-status--open,        .status-open,        .workspace-status--open        { background: var(--wn-purple-soft); color: var(--wn-purple); }
+.project-status--in_progress, .status-in_progress, .workspace-status--progress    { background: var(--wn-green-soft);  color: var(--wn-green); }
+.project-status--completed,   .status-completed,   .workspace-status--completed   { background: var(--wn-blue-soft);   color: var(--wn-blue); }
+.project-status--cancelled,   .status-cancelled,   .workspace-status--cancelled   { background: var(--wn-red-soft);    color: var(--wn-red); }
+
+/* ---------- Skeleton loaders ---------- */
+.skeleton {
+    display: block;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #EFEDE6 0%, #F7F6F1 50%, #EFEDE6 100%);
+    background-size: 200% 100%;
+    animation: wn-skeleton 1.4s linear infinite;
+}
+.skeleton--line  { height: 14px; margin-top: 12px; }
+.skeleton--title { height: 22px; width: 60%; }
+.skeleton--pill  { height: 26px; width: 84px; border-radius: 999px; }
+.skeleton--box   { height: 64px; margin-top: 16px; }
+.skeleton-card {
+    padding: 22px;
+    border: 1px solid var(--wn-border);
+    border-radius: 16px;
+    background: #fff;
+}
+@keyframes wn-skeleton {
+    from { background-position: 200% 0; }
+    to   { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .skeleton { animation: none; }
+}
+
+/* ---------- Top banner (success / error) ---------- */
+.wn-banner {
+    position: fixed;
+    top: 14px;
+    left: 50%;
+    z-index: 1000;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: max-content;
+    max-width: min(92vw, 560px);
+    margin: 0;
+    padding: 12px 14px 12px 18px;
+    border: 1px solid #A7F3D0;
+    border-radius: 11px;
+    background: #ECFDF5;
+    color: #065F46;
+    font-size: .9rem;
+    font-weight: 700;
+    line-height: 1.45;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .13);
+}
+.wn-banner--error { border-color: #F0CACA; background: var(--wn-red-soft); color: var(--wn-red); }
+.wn-banner[hidden] { display: none !important; }
+.wn-banner button {
+    flex: 0 0 auto;
+    padding: 2px 8px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* ---------- Visible keyboard focus ---------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="tab"]:focus-visible,
+summary:focus-visible {
+    outline: 3px solid rgba(80, 64, 216, .4);
+    outline-offset: 2px;
+}
+.project-card:focus-within,
+.proposal-card:focus-within {
+    border-color: #B9B0F2;
+    box-shadow: 0 0 0 3px rgba(80, 64, 216, .12);
+}
+
+/* ---------- Shared footer ---------- */
+.wn-footer {
+    margin-top: 40px;
+    border-top: 1px solid var(--wn-border);
+    color: var(--wn-muted);
+}
+.wn-footer__inner {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 22px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 24px;
+    font-size: .84rem;
+}
+.wn-footer p { margin: 0; }
+.wn-footer nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.wn-footer a { color: var(--wn-muted); font-weight: 600; text-decoration: none; }
+.wn-footer a:hover { color: var(--wn-purple); text-decoration: underline; }
+
+/* ---------- Skill chips ---------- */
+.skill-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 7px 10px;
+    border: 1px solid #D8D5CC;
+    border-radius: 10px;
+    background: #fff;
+    cursor: text;
+}
+.skill-chips:focus-within {
+    border-color: var(--wn-purple);
+    box-shadow: 0 0 0 3px rgba(80, 64, 216, .18);
+}
+.skill-chips.is-invalid { border-color: #C0392B; }
+.skill-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    padding: 5px 6px 5px 11px;
+    border-radius: 999px;
+    background: var(--wn-purple-soft);
+    color: var(--wn-purple);
+    font-size: .86rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+.skill-chip button {
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+.skill-chip button:hover { background: rgba(80, 64, 216, .16); }
+.skill-chips__entry {
+    flex: 1 1 140px;
+    min-width: 120px;
+    padding: 6px 2px;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    font: inherit;
+    color: var(--wn-ink);
+}
+
+/* ---------- Inline field errors ---------- */
+.field-error {
+    margin: 6px 0 0;
+    color: #B42318;
+    font-size: .84rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+.field-error[hidden] { display: none; }
+.is-invalid { border-color: #C0392B !important; }
+
+@media (max-width: 600px) {
+    .wn-footer__inner { width: calc(100% - 28px); }
+}

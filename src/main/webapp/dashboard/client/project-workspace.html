@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your WorkNest project and collaborate with your freelancer.">
+    <title>Client Project Workspace | WorkNest</title>
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <style>
+        :root {
+            --workspace-bg: #F8F7F2;
+            --workspace-card: #FFFFFF;
+            --workspace-text: #24271F;
+            --workspace-muted: #77786F;
+            --workspace-border: #E8E5DC;
+            --workspace-accent: #5040D8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--workspace-bg);
+            color: var(--workspace-text);
+            font-family: Arial, sans-serif;
+        }
+
+        .workspace-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #F8F7F2;
+            border-bottom: 1px solid var(--workspace-border);
+        }
+
+        .workspace-header__inner {
+            max-width: 1180px;
+            min-height: 76px;
+            margin: auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .workspace-logo {
+            color: var(--workspace-text);
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .workspace-logo span {
+            color: var(--workspace-accent);
+        }
+
+        .workspace-nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .workspace-nav a {
+            color: #55564F;
+            text-decoration: none;
+            font-size: .9rem;
+        }
+
+        .workspace-nav a:hover {
+            color: var(--workspace-accent);
+        }
+
+        .workspace-role {
+            padding: 9px 15px;
+            border-radius: 30px;
+            background: #FFFFFF;
+            font-size: .8rem;
+            font-weight: 700;
+        }
+
+        .workspace-logout {
+            padding: 12px 19px;
+            border: 0;
+            border-radius: 8px;
+            background: #24271F;
+            color: #FFFFFF;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .workspace-container {
+            width: min(100% - 40px, 900px);
+            margin: 36px auto 65px;
+        }
+
+        .workspace-back {
+            display: inline-block;
+            margin-bottom: 28px;
+            color: #5040D8;
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 600;
+        }
+
+        .workspace-eyebrow {
+            margin: 0 0 10px;
+            color: #77786F;
+            font-size: .75rem;
+            font-weight: 750;
+            letter-spacing: .1em;
+        }
+
+        .workspace-title {
+            margin: 0;
+            font-family: Georgia, serif;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 500;
+        }
+
+        .workspace-subtitle {
+            margin: 12px 0 28px;
+            color: var(--workspace-muted);
+            line-height: 1.7;
+        }
+
+        .workspace-card {
+            margin-bottom: 24px;
+            padding: 25px;
+            border: 1px solid var(--workspace-border);
+            border-radius: 17px;
+            background: var(--workspace-card);
+            box-shadow: 0 3px 12px rgba(30, 30, 20, .025);
+        }
+
+        .workspace-card h2 {
+            margin: 0 0 10px;
+            font-family: Georgia, serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .workspace-muted {
+            color: var(--workspace-muted);
+            line-height: 1.7;
+        }
+
+        .workspace-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 12px;
+            border-radius: 30px;
+            background: #EDE9FE;
+            color: #5040D8;
+            font-size: .75rem;
+            font-weight: 750;
+        }
+
+        .workspace-status--completed {
+            background: #E3F5E8;
+            color: #18743A;
+        }
+
+        .workspace-status--cancelled {
+            background: #FEECEC;
+            color: #B42318;
+        }
+
+        .workspace-status--progress {
+            background: #FFF3D9;
+            color: #8A5700;
+        }
+
+        .overview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .overview-description {
+            margin: 18px 0;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 23px;
+        }
+
+        .overview-item {
+            padding: 15px;
+            border-radius: 11px;
+            background: #F8F7F2;
+            min-width: 0;
+        }
+
+        .overview-item span {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--workspace-muted);
+            font-size: .78rem;
+        }
+
+        .overview-item strong {
+            display: block;
+            overflow-wrap: anywhere;
+            font-size: .95rem;
+        }
+
+        .workspace-timeline {
+            margin-top: 23px;
+        }
+
+        .activity-item {
+            position: relative;
+            display: grid;
+            grid-template-columns: 18px minmax(0, 1fr);
+            gap: 16px;
+            padding-bottom: 24px;
+        }
+
+        .activity-item:not(:last-child)::before {
+            content: "";
+            position: absolute;
+            top: 18px;
+            bottom: 0;
+            left: 7px;
+            width: 2px;
+            background: #E8E5DC;
+        }
+
+        .activity-marker {
+            position: relative;
+            z-index: 1;
+            width: 16px;
+            height: 16px;
+            margin-top: 3px;
+            border: 4px solid #EDE9FE;
+            border-radius: 50%;
+            background: #5040D8;
+        }
+
+        .activity-content {
+            min-width: 0;
+            padding: 17px;
+            border: 1px solid var(--workspace-border);
+            border-radius: 12px;
+            background: #FFFFFF;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .activity-header h3 {
+            margin: 0;
+            font-size: .98rem;
+        }
+
+        .activity-date {
+            color: var(--workspace-muted);
+            font-size: .77rem;
+        }
+
+        .activity-description {
+            margin: 12px 0;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        .activity-actor {
+            color: var(--workspace-muted);
+            font-size: .8rem;
+        }
+
+        .delivery-success {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin: 18px 0;
+            padding: 18px;
+            border: 1px solid #CDE8D5;
+            border-radius: 13px;
+            background: #F1FAF3;
+        }
+
+        .delivery-success__icon {
+            display: grid;
+            flex: 0 0 40px;
+            width: 40px;
+            height: 40px;
+            place-items: center;
+            border-radius: 50%;
+            background: #DDF3E3;
+            color: #18743A;
+            font-size: 1.3rem;
+        }
+
+        .delivery-success h3 {
+            margin: 0 0 7px;
+            color: #195C32;
+            font-size: 1rem;
+        }
+
+        .delivery-success p {
+            margin: 0;
+            color: #477354;
+            line-height: 1.6;
+        }
+
+        .delivery-item {
+            margin-top: 17px;
+            padding: 20px;
+            border: 1px solid var(--workspace-border);
+            border-radius: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .delivery-item__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .delivery-item__header h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .delivery-status {
+            padding: 7px 11px;
+            border-radius: 30px;
+            background: #FFF3D9;
+            color: #8A5700;
+            font-size: .75rem;
+            font-weight: 750;
+        }
+
+        .delivery-status--approved {
+            background: #E3F5E8;
+            color: #18743A;
+        }
+
+        .delivery-status--revision {
+            background: #FFF0E8;
+            color: #A44719;
+        }
+
+        .delivery-summary {
+            margin: 0;
+            padding: 15px;
+            border-radius: 9px;
+            background: #F8F7F2;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .delivery-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 22px;
+            margin-top: 16px;
+            color: var(--workspace-muted);
+            font-size: .8rem;
+        }
+
+        .delivery-link {
+            display: inline-block;
+            margin-top: 17px;
+            color: var(--workspace-accent);
+            font-weight: 650;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        .delivery-link:hover {
+            text-decoration: underline;
+        }
+
+        .delivery-feedback {
+            margin-top: 16px;
+            padding: 15px;
+            border-left: 3px solid #D18A32;
+            border-radius: 8px;
+            background: #FFF8EB;
+        }
+
+        .delivery-feedback strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #80520D;
+        }
+
+        .delivery-feedback p {
+            margin: 0;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .review-form {
+            display: grid;
+            gap: 14px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--workspace-border);
+        }
+
+        .review-form label {
+            font-size: .9rem;
+            font-weight: 650;
+        }
+
+        .review-form textarea {
+            width: 100%;
+            min-height: 105px;
+            padding: 13px;
+            border: 1px solid #D8D5CC;
+            border-radius: 9px;
+            font: inherit;
+            resize: vertical;
+        }
+
+        .review-form textarea:focus {
+            outline: 2px solid rgba(80, 64, 216, .2);
+            border-color: var(--workspace-accent);
+        }
+
+        .review-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .review-button {
+            padding: 12px 19px;
+            border: 0;
+            border-radius: 9px;
+            font-weight: 650;
+            cursor: pointer;
+        }
+
+        .review-button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        .review-button--approve {
+            background: #18743A;
+            color: white;
+        }
+
+        .review-button--revision {
+            background: #FFF0E8;
+            color: #A44719;
+        }
+
+        .workspace-message {
+            margin-top: 14px;
+            padding: 12px 15px;
+            border-radius: 9px;
+            background: #F1FAF3;
+            color: #18743A;
+            line-height: 1.5;
+        }
+
+        .workspace-message--error {
+            background: #FEECEC;
+            color: #B42318;
+        }
+
+        .workspace-footer {
+            padding: 28px 20px;
+            border-top: 1px solid var(--workspace-border);
+            color: var(--workspace-muted);
+            text-align: center;
+            font-size: .85rem;
+        }
+
+        .workspace-loading {
+            padding: 20px 0;
+            color: var(--workspace-muted);
+        }
+
+        @media (max-width: 650px) {
+            .workspace-header__inner {
+                padding: 12px 18px;
+                flex-wrap: wrap;
+            }
+
+            .workspace-nav {
+                display: none;
+            }
+
+            .workspace-container {
+                width: calc(100% - 28px);
+                margin-top: 24px;
+            }
+
+            .workspace-card {
+                padding: 19px;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .review-actions {
+                flex-direction: column;
+            }
+
+            .review-button {
+                width: 100%;
+            }
+        }
+    
+        /* ===== WorkNest Client Workspace: complete refinement ===== */
+        :root {
+            --workspace-bg: #F8F7F2;
+            --workspace-card: #FFFFFF;
+            --workspace-text: #24271F;
+            --workspace-muted: #77786F;
+            --workspace-border: #E8E5DC;
+            --workspace-accent: #5040D8;
+            --workspace-accent-soft: #F2F0FF;
+            --workspace-success: #18743A;
+            --workspace-warning: #8A5700;
+            --workspace-danger: #A44719;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-width: 320px;
+            color: var(--workspace-text);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .workspace-header {
+            background: rgba(248, 247, 242, .96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .workspace-header__inner {
+            max-width: 1240px;
+        }
+
+        .workspace-logo {
+            letter-spacing: -0.055em;
+            font-size: 1.55rem;
+        }
+
+        .workspace-nav {
+            gap: 24px;
+        }
+
+        .workspace-nav a {
+            position: relative;
+            padding: 8px 0;
+            font-weight: 550;
+            transition: color 160ms ease;
+        }
+
+        .workspace-nav a::after {
+            position: absolute;
+            right: 0;
+            bottom: 1px;
+            left: 0;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--workspace-accent);
+            content: "";
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 160ms ease;
+        }
+
+        .workspace-nav a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .workspace-role {
+            border: 1px solid var(--workspace-border);
+            color: #55564F;
+        }
+
+        .workspace-logout {
+            min-height: 40px;
+            transition: background 160ms ease, transform 160ms ease;
+        }
+
+        .workspace-logout:hover {
+            background: #3A3D34;
+            transform: translateY(-1px);
+        }
+
+        .workspace-container {
+            width: min(calc(100% - 48px), 1080px);
+            margin: 42px auto 64px;
+        }
+
+        .workspace-back {
+            margin-bottom: 30px;
+            transition: color 160ms ease;
+        }
+
+        .workspace-back:hover {
+            color: #3525B5;
+            text-decoration: underline;
+        }
+
+        .workspace-eyebrow {
+            margin-bottom: 11px;
+            color: #77786F;
+        }
+
+        .workspace-title {
+            max-width: 900px;
+            font-family: inherit;
+            font-size: clamp(2rem, 4.5vw, 2.8rem);
+            font-weight: 750;
+            letter-spacing: -0.05em;
+            line-height: 1.12;
+            overflow-wrap: anywhere;
+        }
+
+        .workspace-subtitle {
+            max-width: 720px;
+            margin: 13px 0 30px;
+            font-size: .97rem;
+        }
+
+        .workspace-card {
+            margin-bottom: 25px;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 5px 22px rgba(36, 39, 31, .035);
+            scroll-margin-top: 100px;
+        }
+
+        .workspace-card h2 {
+            margin-bottom: 9px;
+            font-family: inherit;
+            font-size: 1.28rem;
+            font-weight: 750;
+            letter-spacing: -.025em;
+        }
+
+        .workspace-muted {
+            line-height: 1.7;
+        }
+
+        .overview-header {
+            align-items: center;
+        }
+
+        .overview-header h2 {
+            margin: 0;
+        }
+
+        .workspace-status {
+            min-height: 29px;
+            white-space: nowrap;
+            letter-spacing: .025em;
+        }
+
+        .overview-description {
+            margin: 19px 0 21px;
+            color: #4E5048;
+            line-height: 1.8;
+        }
+
+        .overview-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 13px;
+            margin-top: 22px;
+        }
+
+        .overview-item {
+            min-height: 83px;
+            padding: 16px;
+            border: 1px solid #EFEEE8;
+            border-radius: 11px;
+            background: #FAF9F6;
+        }
+
+        .overview-item span {
+            margin-bottom: 9px;
+            font-size: .73rem;
+            font-weight: 650;
+            letter-spacing: .045em;
+            text-transform: uppercase;
+        }
+
+        .overview-item strong {
+            color: #292B25;
+            font-size: .94rem;
+            line-height: 1.5;
+        }
+
+        /* Progress history */
+        #progress-heading,
+        #activity-heading,
+        #delivery-heading {
+            margin-bottom: 8px;
+        }
+
+        #progress-heading + .workspace-muted,
+        #activity-heading + .workspace-muted,
+        #delivery-heading + .workspace-muted {
+            margin: 0;
+        }
+
+        .progress-list {
+            display: grid;
+            gap: 13px;
+            margin-top: 23px;
+        }
+
+        .progress-entry {
+            padding: 18px 19px;
+            border: 1px solid var(--workspace-border);
+            border-radius: 13px;
+            background: #FFFFFF;
+            transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+        }
+
+        .progress-entry:hover {
+            border-color: #DCD6F4;
+            box-shadow: 0 4px 14px rgba(36, 39, 31, .045);
+            transform: translateY(-1px);
+        }
+
+        .progress-entry__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+        }
+
+        .progress-entry__author {
+            color: #292B25;
+            font-size: .94rem;
+            font-weight: 750;
+        }
+
+        .progress-entry__date {
+            color: #85857C;
+            font-size: .77rem;
+        }
+
+        .progress-entry__tag {
+            display: inline-flex;
+            margin-top: 12px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: var(--workspace-accent-soft);
+            color: var(--workspace-accent);
+            font-size: .68rem;
+            font-weight: 750;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .progress-entry__note {
+            margin: 11px 0 0;
+            color: #4E5048;
+            line-height: 1.75;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* Activity timeline */
+        .workspace-timeline {
+            display: grid;
+            gap: 0;
+            margin-top: 25px;
+        }
+
+        .activity-item {
+            grid-template-columns: 27px minmax(0, 1fr);
+            gap: 14px;
+            padding-bottom: 22px;
+        }
+
+        .activity-item:not(:last-child)::before {
+            top: 25px;
+            bottom: -1px;
+            left: 11px;
+            background: #E7E4DC;
+        }
+
+        .activity-marker {
+            display: grid;
+            place-items: center;
+            width: 25px;
+            height: 25px;
+            margin: 0;
+            border: 1px solid #E5E0FA;
+            background: #F0EDFF;
+            color: #5040D8;
+            font-size: .75rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .activity-content {
+            padding: 17px 19px;
+            border-color: #EAE8E1;
+            border-radius: 13px;
+            box-shadow: 0 2px 8px rgba(36, 39, 31, .025);
+            transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+        }
+
+        .activity-content:hover {
+            border-color: #DCD6F4;
+            box-shadow: 0 5px 16px rgba(36, 39, 31, .05);
+            transform: translateY(-1px);
+        }
+
+        .activity-header {
+            align-items: center;
+        }
+
+        .activity-header h3 {
+            color: #292B25;
+            font-size: .96rem;
+            line-height: 1.45;
+        }
+
+        .activity-date {
+            flex: 0 0 auto;
+            color: #85857C;
+            font-size: .76rem;
+        }
+
+        .activity-description {
+            margin: 10px 0 0;
+            color: #55574F;
+            font-size: .91rem;
+        }
+
+        .activity-actor {
+            display: block;
+            margin-top: 12px;
+            font-size: .77rem;
+        }
+
+        .activity-type {
+            display: inline-flex;
+            margin-top: 11px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: #F2F0FC;
+            color: #5546B6;
+            font-size: .67rem;
+            font-weight: 750;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .activity-item--started .activity-marker {
+            border-color: #D5E5FF;
+            background: #EAF2FF;
+            color: #285AA8;
+        }
+
+        .activity-item--progress .activity-marker {
+            border-color: #E5E0FA;
+            background: #F0EDFF;
+            color: #5040D8;
+        }
+
+        .activity-item--submitted .activity-marker {
+            border-color: #F5E2B9;
+            background: #FFF5DF;
+            color: #94610B;
+        }
+
+        .activity-item--revision .activity-marker {
+            border-color: #F4D9C9;
+            background: #FFF0E8;
+            color: #A44719;
+        }
+
+        .activity-item--approved .activity-marker {
+            border-color: #CDE8D5;
+            background: #EAF7ED;
+            color: #18743A;
+        }
+
+        /* Delivery review */
+        .delivery-success {
+            align-items: center;
+            margin: 0 0 18px;
+            border-radius: 13px;
+        }
+
+        .delivery-success h3 {
+            letter-spacing: -.015em;
+        }
+
+        .delivery-item {
+            margin-top: 0;
+            padding: 22px;
+            border-color: #EAE8E1;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(36, 39, 31, .03);
+        }
+
+        .delivery-item__header {
+            padding-bottom: 14px;
+            border-bottom: 1px solid #F0EEE8;
+        }
+
+        .delivery-item__header h3 {
+            color: #292B25;
+            font-size: 1.02rem;
+            font-weight: 750;
+        }
+
+        .delivery-status {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            letter-spacing: .035em;
+        }
+
+        .delivery-summary {
+            border: 1px solid #EFEEE8;
+            color: #45473F;
+            font-size: .93rem;
+        }
+
+        .delivery-meta {
+            font-size: .77rem;
+        }
+
+        .delivery-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            max-width: 100%;
+            line-height: 1.5;
+        }
+
+        .delivery-feedback {
+            border: 1px solid #F3E5C9;
+            border-left: 3px solid #D18A32;
+        }
+
+        .delivery-feedback p {
+            color: #5E4B2C;
+            overflow-wrap: anywhere;
+        }
+
+        .review-form {
+            gap: 13px;
+            margin-top: 21px;
+            padding-top: 20px;
+        }
+
+        .review-form label {
+            color: #292B25;
+            font-size: .91rem;
+        }
+
+        .review-form textarea {
+            min-height: 120px;
+            border-color: #DDD9EA;
+            border-radius: 10px;
+            line-height: 1.6;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+
+        .review-form textarea::placeholder {
+            color: #929187;
+        }
+
+        .review-form textarea:focus {
+            outline: none;
+            border-color: var(--workspace-accent);
+            box-shadow: 0 0 0 3px rgba(80, 64, 216, .11);
+        }
+
+        .review-actions {
+            gap: 10px;
+        }
+
+        .review-button {
+            min-height: 43px;
+            padding: 11px 19px;
+            transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
+        }
+
+        .review-button:not(:disabled):hover {
+            transform: translateY(-1px);
+        }
+
+        .review-button--approve:hover {
+            background: #126330;
+        }
+
+        .review-button--revision:hover {
+            background: #FCE4D8;
+        }
+
+        .review-button:focus-visible,
+        .workspace-logout:focus-visible,
+        .workspace-nav a:focus-visible,
+        .workspace-back:focus-visible,
+        .delivery-link:focus-visible {
+            outline: 2px solid var(--workspace-accent);
+            outline-offset: 3px;
+        }
+
+        .workspace-message {
+            margin-top: 16px;
+            border: 1px solid #CDE8D5;
+            font-size: .9rem;
+        }
+
+        .workspace-message--error {
+            border-color: #F0D5D5;
+        }
+
+        .workspace-loading,
+        .workspace-empty,
+        .workspace-error {
+            margin-top: 20px;
+            padding: 17px 18px;
+            border: 1px dashed #E2DFD6;
+            border-radius: 12px;
+            background: #FBFAF7;
+            color: var(--workspace-muted);
+            line-height: 1.65;
+        }
+
+        .workspace-error {
+            border-color: #F0D5D5;
+            background: #FFF8F8;
+            color: #A52828;
+        }
+
+        .workspace-footer {
+            padding: 27px 20px;
+        }
+
+        @media (max-width: 850px) {
+            .overview-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 650px) {
+            .workspace-header__inner {
+                min-height: 66px;
+                padding: 11px 16px;
+                gap: 12px;
+            }
+
+            .workspace-header__inner > .workspace-nav:first-of-type {
+                display: none;
+            }
+
+            .workspace-header__inner > .workspace-nav:last-of-type {
+                gap: 9px;
+            }
+
+            .workspace-role {
+                padding: 8px 10px;
+            }
+
+            .workspace-logout {
+                min-height: 38px;
+                padding: 9px 12px;
+            }
+
+            .workspace-container {
+                width: calc(100% - 28px);
+                margin: 26px auto 42px;
+            }
+
+            .workspace-back {
+                margin-bottom: 24px;
+            }
+
+            .workspace-title {
+                font-size: clamp(1.85rem, 8vw, 2.25rem);
+            }
+
+            .workspace-subtitle {
+                margin-bottom: 23px;
+            }
+
+            .workspace-card {
+                margin-bottom: 18px;
+                padding: 19px;
+                border-radius: 14px;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .overview-item {
+                min-height: 0;
+                padding: 14px;
+            }
+
+            .activity-item {
+                grid-template-columns: 23px minmax(0, 1fr);
+                gap: 10px;
+                padding-bottom: 18px;
+            }
+
+            .activity-item:not(:last-child)::before {
+                top: 23px;
+                left: 10px;
+            }
+
+            .activity-marker {
+                width: 23px;
+                height: 23px;
+                font-size: .68rem;
+            }
+
+            .activity-content {
+                padding: 14px;
+            }
+
+            .activity-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .progress-entry {
+                padding: 15px;
+            }
+
+            .progress-entry__header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .delivery-item {
+                padding: 16px;
+            }
+
+            .delivery-item__header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .delivery-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .review-actions {
+                flex-direction: column;
+            }
+
+            .review-button {
+                width: 100%;
+            }
+
+            .delivery-success {
+                align-items: flex-start;
+                padding: 15px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+
+        .approval-dialog {
+            width: min(460px, calc(100% - 32px));
+            max-height: min(90vh, 520px);
+            margin: auto;
+            padding: 0;
+            overflow: auto;
+            border: 1px solid var(--workspace-border);
+            border-radius: 16px;
+            background: #FFFFFF;
+            color: var(--workspace-text);
+            box-shadow: 0 24px 80px rgba(25, 27, 22, .24);
+        }
+
+        .approval-dialog::backdrop {
+            background: rgba(24, 26, 21, .48);
+            backdrop-filter: blur(3px);
+        }
+
+        .approval-dialog__content {
+            padding: 26px;
+        }
+
+        .approval-dialog__eyebrow {
+            margin: 0 0 8px;
+            color: var(--workspace-accent);
+            font-size: .72rem;
+            font-weight: 750;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+        }
+
+        .approval-dialog h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            line-height: 1.35;
+        }
+
+        .approval-dialog__description {
+            margin: 12px 0 24px;
+            color: var(--workspace-muted);
+            line-height: 1.65;
+        }
+
+        .approval-dialog__actions {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .review-button--cancel {
+            border: 1px solid var(--workspace-border);
+            background: #FFFFFF;
+            color: var(--workspace-text);
+        }
+
+        .review-button--cancel:hover {
+            background: #F8F7F2;
+        }
+
+        .approval-dialog :focus-visible {
+            outline: 3px solid rgba(80, 64, 216, .35);
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 480px) {
+            .approval-dialog__content {
+                padding: 21px;
+            }
+
+            .approval-dialog__actions {
+                flex-direction: column-reverse;
+            }
+
+            .approval-dialog__actions .review-button {
+                width: 100%;
+            }
+        }
+
+    /* ===== Shared freelancer header: identical on every freelancer page ===== */
+html body header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 247, 242, .94);
+    border-bottom: 1px solid #E8E5DC;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+html body header.site-header .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 88px;
+}
+html body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: #24271F;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-decoration: none;
+}
+html body header.site-header nav.dashboard-nav {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+html body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B6D66;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: none;
+}
+html body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background: #F0EEFF;
+    color: #5040D8;
+}
+html body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body header.site-header .wordmark:focus-visible,
+html body header.site-header .site-header__actions .button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+html body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 16px;
+}
+html body header.site-header .dashboard-role {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #6B6D66;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html body header.site-header .site-header__actions form { margin: 0; }
+html body header.site-header .site-header__actions .button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: none;
+}
+@media (max-width: 900px) {
+    html body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
+    html body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
+    html body header.site-header .site-header__actions { margin-left: auto; }
+}
+@media (max-width: 650px) {
+    html body header.site-header .wordmark { font-size: 1.4rem; }
+    html body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    html body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
+    html body header.site-header .dashboard-role { display: none; }
+}
+
+/* ===== Workspace: progress bar + tabs ===== */
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.ws-progress { padding: 22px 24px; margin-bottom: 20px; border: 1px solid #E8E5DC; border-radius: 16px; background: #fff; }
+.ws-progress__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.ws-progress__head h2 { margin: 0; font-size: 1.1rem; }
+.ws-progress__pct { font-size: 1.3rem; font-weight: 800; color: #5040D8; }
+.ws-progress__track { height: 12px; margin-top: 14px; border-radius: 999px; background: #EFEDE6; overflow: hidden; }
+.ws-progress__fill { display: block; height: 100%; width: 0; border-radius: 999px; background: #5040D8; }
+.ws-progress__fill.is-complete { background: #176B38; }
+.ws-progress__steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.ws-progress__steps li { color: #8A8C84; font-size: .8rem; font-weight: 700; line-height: 1.4; }
+.ws-progress__steps li.is-done { color: #176B38; }
+.ws-progress__steps li.is-current { color: #5040D8; }
+.ws-progress__note { margin: 12px 0 0; color: #6B6D66; font-size: .86rem; }
+.ws-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; padding: 6px; border: 1px solid #E8E5DC; border-radius: 14px; background: #fff; }
+.ws-tab {
+    position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px;
+    border: 0; border-radius: 10px; background: transparent; color: #6B6D66; font: inherit; font-size: .92rem; font-weight: 700; cursor: pointer;
+}
+.ws-tab:hover { background: #F5F4EF; color: #24271F; }
+.ws-tab[aria-selected="true"] { background: #F0EEFF; color: #5040D8; }
+.ws-tab__dot { display: none; width: 9px; height: 9px; border-radius: 50%; background: #D92D20; }
+.ws-tab.has-unread .ws-tab__dot { display: inline-block; }
+.ws-tabpanel[hidden] { display: none !important; }
+@media (max-width: 600px) {
+    .ws-progress { padding: 18px; }
+    .ws-progress__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ws-tabs { flex-wrap: nowrap; overflow-x: auto; }
+    .ws-tab { flex: 0 0 auto; }
+}
+    </style>
+    <link rel="stylesheet" href="../../css/client-ui.css">
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+<body>
+    <header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link">Overview</a>
+            <a href="index.html#your-projects" class="site-nav__link" aria-current="page">Your projects</a>
+            <a href="create-project.html" class="site-nav__link">Post a project</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <span class="dashboard-role">Client account</span>
+            <form action="../../logout" method="post">
+                <button class="button button--dark" type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+    <main class="workspace-container">
+        <a class="workspace-back" href="./index.html#your-projects">
+            ← Back to My Projects
+        </a>
+
+        <section>
+            <p class="workspace-eyebrow">CLIENT PROJECT WORKSPACE</p>
+            <h1 class="workspace-title" id="project-title">Loading project...</h1>
+            <p class="workspace-subtitle">
+                Monitor your project, communicate progress and review completed work.
+            </p>
+        </section>
+
+        <section class="workspace-card" aria-labelledby="overview-heading">
+            <div class="overview-header">
+                <h2 id="overview-heading">Project Overview</h2>
+                <span class="workspace-status" id="project-status">Loading...</span>
+            </div>
+            <p class="overview-description" id="project-description">
+                Loading project description...
+            </p>
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <span>Project ID</span>
+                    <strong id="project-id">Loading...</strong>
+                </div>
+                <div class="overview-item">
+                    <span>Freelancer</span>
+                    <strong id="freelancer-name">Loading...</strong>
+                </div>
+                <div class="overview-item">
+                    <span>Agreed amount</span>
+                    <strong id="project-amount">Loading...</strong>
+                </div>
+                <div class="overview-item">
+                    <span>Deadline</span>
+                    <strong id="project-deadline">Loading...</strong>
+                </div>
+                <div class="overview-item">
+                    <span>Project type</span>
+                    <strong id="project-type">Loading...</strong>
+                </div>
+                <div class="overview-item">
+                    <span>Required skills</span>
+                    <strong id="project-skills">Loading...</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="ws-progress" aria-labelledby="ws-progress-heading">
+            <div class="ws-progress__head">
+                <h2 id="ws-progress-heading">Project completion</h2>
+                <span class="ws-progress__pct" id="ws-progress-pct">0%</span>
+            </div>
+            <div class="ws-progress__track" role="progressbar" aria-labelledby="ws-progress-heading"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="ws-progress-bar">
+                <span class="ws-progress__fill" id="ws-progress-fill"></span>
+            </div>
+            <ol class="ws-progress__steps" id="ws-progress-steps">
+                <li data-step="hired">Freelancer hired</li>
+                <li data-step="update">First progress update</li>
+                <li data-step="delivery">Final delivery submitted</li>
+                <li data-step="approved">Delivery approved</li>
+            </ol>
+            <p class="ws-progress__note">Progress reflects completed project milestones, not elapsed time.</p>
+            <p class="ws-progress__note" id="ws-progress-note"></p>
+        </section>
+
+        <div class="ws-tabs" role="tablist" aria-label="Workspace sections">
+            <button type="button" class="ws-tab" role="tab" id="tab-progress" data-tab="progress" aria-controls="panel-progress" aria-selected="true">
+                Progress <span class="ws-tab__dot" aria-hidden="true"></span><span class="visually-hidden" data-unread-label></span>
+            </button>
+            <button type="button" class="ws-tab" role="tab" id="tab-activity" data-tab="activity" aria-controls="panel-activity" aria-selected="false" tabindex="-1">
+                Activity <span class="ws-tab__dot" aria-hidden="true"></span><span class="visually-hidden" data-unread-label></span>
+            </button>
+            <button type="button" class="ws-tab" role="tab" id="tab-delivery" data-tab="delivery" aria-controls="panel-delivery" aria-selected="false" tabindex="-1">
+                Delivery <span class="ws-tab__dot" aria-hidden="true"></span><span class="visually-hidden" data-unread-label></span>
+            </button>
+        </div>
+
+        <section class="workspace-card ws-tabpanel" id="panel-progress" role="tabpanel" aria-labelledby="tab-progress">
+            <h2 id="progress-heading">Project Progress</h2>
+            <p class="workspace-muted">
+                Follow the updates shared by your freelancer.
+            </p>
+            <div id="progress-list" class="workspace-loading">
+                Loading progress updates...
+            </div>
+        </section>
+
+        <section class="workspace-card ws-tabpanel" id="panel-activity" role="tabpanel" aria-labelledby="tab-activity" hidden>
+            <h2 id="activity-heading">Project Activity</h2>
+            <p class="workspace-muted">
+                A chronological record of your project's journey.
+            </p>
+            <div id="activity-list" class="workspace-loading">
+                Loading project activity...
+            </div>
+        </section>
+
+        <section class="workspace-card ws-tabpanel" id="panel-delivery" role="tabpanel" aria-labelledby="tab-delivery" hidden>
+            <h2 id="delivery-heading">Final Project Delivery</h2>
+            <p class="workspace-muted">
+                Review your freelancer's submitted work and provide feedback.
+            </p>
+            <div id="delivery-list" class="workspace-loading">
+                Loading delivery information...
+            </div>
+            <div id="review-message" role="status" aria-live="polite" hidden></div>
+            <p class="workspace-muted">Coordinate payment arrangements directly with your freelancer.</p>
+        </section>
+    </main>
+
+    <dialog id="approve-delivery-dialog" class="approval-dialog"
+            aria-labelledby="approve-delivery-title"
+            aria-describedby="approve-delivery-description">
+        <div class="approval-dialog__content">
+            <p class="approval-dialog__eyebrow">Final delivery</p>
+            <h2 id="approve-delivery-title">Approve this delivery?</h2>
+            <p id="approve-delivery-description" class="approval-dialog__description">
+                Approving the delivery will mark this project as completed.
+            </p>
+            <div class="approval-dialog__actions">
+                <button id="cancel-approval" type="button"
+                        class="review-button review-button--cancel">Cancel</button>
+                <button id="confirm-approval" type="button"
+                        class="review-button review-button--approve">Approve delivery</button>
+            </div>
+        </div>
+    </dialog>
+
+    <footer class="workspace-footer">
+        <p>© WorkNest. Built for better collaboration.</p>
+    </footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get("projectId");
+
+        const elements = {
+            title: document.getElementById("project-title"),
+            status: document.getElementById("project-status"),
+            description: document.getElementById("project-description"),
+            id: document.getElementById("project-id"),
+            freelancer: document.getElementById("freelancer-name"),
+            amount: document.getElementById("project-amount"),
+            deadline: document.getElementById("project-deadline"),
+            type: document.getElementById("project-type"),
+            skills: document.getElementById("project-skills"),
+            progress: document.getElementById("progress-list"),
+            activity: document.getElementById("activity-list"),
+            delivery: document.getElementById("delivery-list"),
+            reviewMessage: document.getElementById("review-message"),
+        };
+
+        let currentSubmission = null;
+        let workspaceStatus = "";
+        let updateCount = 0;
+        let submissionLoaded = false;
+        const approvalDialog = document.getElementById("approve-delivery-dialog");
+        const cancelApprovalButton = document.getElementById("cancel-approval");
+        const confirmApprovalButton = document.getElementById("confirm-approval");
+        let pendingApproval = null;
+
+        function openApprovalDialog(submission, textarea, approveButton, revisionButton) {
+            pendingApproval = { submission, textarea, approveButton, revisionButton };
+            approvalDialog.showModal();
+            cancelApprovalButton.focus();
+        }
+
+        cancelApprovalButton.addEventListener("click", () => {
+            pendingApproval = null;
+            approvalDialog.close("cancel");
+        });
+
+        approvalDialog.addEventListener("cancel", () => {
+            pendingApproval = null;
+        });
+
+        approvalDialog.addEventListener("close", () => {
+            confirmApprovalButton.disabled = false;
+            confirmApprovalButton.textContent = "Approve delivery";
+        });
+
+        confirmApprovalButton.addEventListener("click", () => {
+            if (!pendingApproval) return;
+
+            const approval = pendingApproval;
+            pendingApproval = null;
+            approvalDialog.close("approve");
+            submitReview(
+                approval.submission,
+                "APPROVE",
+                approval.textarea.value,
+                approval.approveButton,
+                approval.revisionButton
+            );
+        });
+
+        function setText(element, value, fallback = "Not available") {
+            element.textContent =
+                value === null || value === undefined || value === ""
+                    ? fallback
+                    : String(value);
+        }
+
+        function formatDate(value) {
+            if (!value) return "Not specified";
+
+            const raw = String(value).trim();
+            let date;
+
+            // Date-only SQL values are parsed in local time to avoid timezone day shifts.
+            const dateOnly = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (dateOnly) {
+                date = new Date(
+                    Number(dateOnly[1]),
+                    Number(dateOnly[2]) - 1,
+                    Number(dateOnly[3])
+                );
+            } else {
+                date = new Date(raw);
+            }
+
+            if (Number.isNaN(date.getTime())) return raw;
+
+            return date.toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            });
+        }
+
+        function formatTimestamp(value) {
+            if (!value) return "Date unavailable";
+
+            const raw = String(value).trim();
+            const normalized = raw.includes("T") ? raw : raw.replace(" ", "T");
+            const date = new Date(normalized);
+
+            if (Number.isNaN(date.getTime())) return raw;
+
+            return date.toLocaleString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        }
+
+        function toDateTimeAttribute(value) {
+            if (!value) return "";
+            const raw = String(value).trim();
+            const normalized = raw.includes("T") ? raw : raw.replace(" ", "T");
+            const date = new Date(normalized);
+            return Number.isNaN(date.getTime()) ? "" : date.toISOString();
+        }
+
+        function formatCurrency(value, projectType) {
+            if (value === null || value === undefined || value === "") {
+                return "Not available";
+            }
+
+            const amount = Number(value);
+
+            if (!Number.isFinite(amount)) return String(value);
+
+            return "₹" + amount.toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + (projectType === "HOURLY" ? " / hour" : "");
+        }
+
+        function showMessage(message, isError = false) {
+            elements.reviewMessage.textContent = message;
+            elements.reviewMessage.className = "workspace-message";
+            if (isError) {
+                elements.reviewMessage.classList.add("workspace-message--error");
+            }
+            elements.reviewMessage.hidden = false;
+        }
+
+        async function fetchJson(url, options = {}) {
+            const response = await fetch(url, {
+                credentials: "same-origin",
+                cache: "no-store",
+                ...options,
+                headers: {
+                    "Accept": "application/json",
+                    ...(options.headers || {})
+                }
+            });
+
+            if (response.status === 401) {
+                window.location.replace("../../login.html");
+                throw new Error("Your session has expired. Please log in again.");
+            }
+
+            const contentType = response.headers.get("content-type") || "";
+
+            if (!contentType.includes("application/json")) {
+                throw new Error("The server returned an unexpected response. Check the servlet mapping.");
+            }
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (parseError) {
+                throw new Error("The server response could not be read. Please try again.");
+            }
+
+            if (!data || typeof data !== "object") {
+                throw new Error("The server returned an invalid response.");
+            }
+
+            if (!response.ok || data.success === false) {
+                throw new Error(data.error || data.message || "The request could not be completed.");
+            }
+
+            return data;
+        }
+
+        function renderProject(project) {
+            setText(elements.title, project.title, "Untitled project");
+            setText(elements.description, project.description, "No project description provided.");
+            setText(elements.id, project.projectId);
+
+            const status = String(project.status || "UNKNOWN").toUpperCase();
+            workspaceStatus = status;
+            setText(elements.status, status.replaceAll("_", " "));
+            elements.status.className = "workspace-status";
+
+            if (status === "COMPLETED") {
+                elements.status.classList.add("workspace-status--completed");
+            } else if (status === "CANCELLED") {
+                elements.status.classList.add("workspace-status--cancelled");
+            } else if (status === "IN_PROGRESS") {
+                elements.status.classList.add("workspace-status--progress");
+            }
+
+            setText(elements.amount, formatCurrency(
+                project.agreedAmount,
+                project.projectType
+            ));
+            setText(elements.deadline, formatDate(project.deadline));
+            setText(
+                elements.type,
+                project.projectType === "HOURLY" ? "Hourly" :
+                project.projectType === "FIXED" ? "Fixed price" : "Not specified"
+            );
+            setText(elements.skills, project.requiredSkills);
+        }
+
+        async function loadProjectOverview() {
+            const data = await fetchJson("../../my-projects");
+
+            if (!Array.isArray(data.projects)) {
+                throw new Error("Unable to read project information.");
+            }
+
+            const project = data.projects.find(
+                item => String(item.projectId) === String(projectId)
+            );
+
+            if (!project) {
+                throw new Error("Project not found or you do not have access to it.");
+            }
+
+            renderProject(project);
+
+            await loadFreelancerName();
+        }
+
+        async function loadFreelancerName() {
+            try {
+                const data = await fetchJson(
+                    "../../client-project-proposals?projectId=" +
+                    encodeURIComponent(projectId)
+                );
+
+                const proposals = Array.isArray(data.proposals)
+                    ? data.proposals
+                    : [];
+
+                const accepted = proposals.find(
+                    proposal => proposal.status === "ACCEPTED"
+                );
+
+                setText(
+                    elements.freelancer,
+                    accepted ? accepted.freelancerName : null,
+                    "Freelancer information unavailable"
+                );
+            } catch (error) {
+                console.error("Freelancer information could not be loaded:", error);
+                setText(elements.freelancer, null, "Freelancer information unavailable");
+            }
+        }
+
+        async function loadProgress() {
+            try {
+                const data = await fetchJson(
+                    "../../project-updates?projectId=" +
+                    encodeURIComponent(projectId)
+                );
+
+                const updates = Array.isArray(data.updates) ? data.updates : [];
+                updateCount = updates.length;
+
+                elements.progress.replaceChildren();
+
+                if (updates.length === 0) {
+                    const empty = document.createElement("p");
+                    empty.className = "workspace-empty";
+                    empty.textContent = "No progress updates have been posted yet.";
+                    elements.progress.appendChild(empty);
+                    return;
+                }
+
+                const list = document.createElement("div");
+                list.className = "progress-list";
+
+                updates.forEach(update => {
+                    const item = document.createElement("article");
+                    item.className = "progress-entry";
+
+                    const header = document.createElement("div");
+                    header.className = "progress-entry__header";
+
+                    const author = document.createElement("strong");
+                    author.className = "progress-entry__author";
+                    author.textContent = update.freelancerName || "Freelancer";
+
+                    const date = document.createElement("time");
+                    date.className = "progress-entry__date";
+                    date.textContent = formatTimestamp(update.createdAt);
+                    date.dateTime = toDateTimeAttribute(update.createdAt);
+
+                    header.append(author, date);
+
+                    const tag = document.createElement("span");
+                    tag.className = "progress-entry__tag";
+                    tag.textContent = "Progress update";
+
+                    const note = document.createElement("p");
+                    note.className = "progress-entry__note";
+                    note.textContent = update.updateNote || "No update details provided.";
+
+                    item.append(header, tag, note);
+                    list.appendChild(item);
+                });
+
+                elements.progress.appendChild(list);
+            } catch (error) {
+                console.error("Progress loading failed:", error);
+                renderError(elements.progress, error.message, loadProgress);
+            }
+        }
+
+        function getActivityMeta(type) {
+            const knownTypes = {
+                PROJECT_STARTED: {
+                    className: "activity-item--started",
+                    icon: "↗",
+                    label: "Project started"
+                },
+                PROGRESS_UPDATE: {
+                    className: "activity-item--progress",
+                    icon: "↻",
+                    label: "Progress update"
+                },
+                DELIVERY_SUBMITTED: {
+                    className: "activity-item--submitted",
+                    icon: "↑",
+                    label: "Delivery submitted"
+                },
+                REVISION_REQUESTED: {
+                    className: "activity-item--revision",
+                    icon: "!",
+                    label: "Revision requested"
+                },
+                DELIVERY_APPROVED: {
+                    className: "activity-item--approved",
+                    icon: "✓",
+                    label: "Delivery approved"
+                }
+            };
+
+            return knownTypes[type] || {
+                className: "activity-item--progress",
+                icon: "•",
+                label: type
+                    ? type.replaceAll("_", " ").toLowerCase()
+                    : "Project activity"
+            };
+        }
+
+        async function loadActivity() {
+            try {
+                const data = await fetchJson(
+                    "../../project-activity?projectId=" +
+                    encodeURIComponent(projectId)
+                );
+
+                const activities = Array.isArray(data.activities)
+                    ? data.activities
+                    : [];
+
+                elements.activity.replaceChildren();
+
+                if (activities.length === 0) {
+                    const empty = document.createElement("p");
+                    empty.className = "workspace-empty";
+                    empty.textContent = "No project activity has been recorded yet.";
+                    elements.activity.appendChild(empty);
+                    return;
+                }
+
+                const timeline = document.createElement("div");
+                timeline.className = "workspace-timeline";
+
+                activities.forEach(activity => {
+                    const item = document.createElement("article");
+                    item.className = "activity-item";
+
+                    const activityType = String(activity.type || "").toUpperCase();
+                    const activityMeta = getActivityMeta(activityType);
+                    item.classList.add(activityMeta.className);
+
+                    const marker = document.createElement("span");
+                    marker.className = "activity-marker";
+                    marker.setAttribute("aria-hidden", "true");
+                    marker.textContent = activityMeta.icon;
+
+                    const content = document.createElement("div");
+                    content.className = "activity-content";
+
+                    const header = document.createElement("div");
+                    header.className = "activity-header";
+
+                    const title = document.createElement("h3");
+                    title.textContent = activity.title || "Project activity";
+
+                    const date = document.createElement("time");
+                    date.className = "activity-date";
+                    date.textContent = formatTimestamp(activity.createdAt);
+
+                    date.dateTime = toDateTimeAttribute(activity.createdAt);
+
+                    header.append(title, date);
+                    content.appendChild(header);
+
+                    const typeLabel = document.createElement("span");
+                    typeLabel.className = "activity-type";
+                    typeLabel.textContent = activityMeta.label;
+                    content.appendChild(typeLabel);
+
+                    if (activity.description) {
+                        const description = document.createElement("p");
+                        description.className = "activity-description";
+                        description.textContent = activity.description;
+                        content.appendChild(description);
+                    }
+
+                    const actor = document.createElement("span");
+                    actor.className = "activity-actor";
+                    actor.textContent = "By " + (activity.actor || "WorkNest");
+                    content.appendChild(actor);
+
+                    item.append(marker, content);
+                    timeline.appendChild(item);
+                });
+
+                elements.activity.appendChild(timeline);
+            } catch (error) {
+                console.error("Activity loading failed:", error);
+                renderError(elements.activity, error.message, loadActivity);
+            }
+        }
+
+        function renderError(container, message, retry) {
+            container.replaceChildren();
+            const error = document.createElement("p");
+            error.className = "workspace-error";
+            error.textContent = message;
+            container.appendChild(error);
+            if (typeof retry === "function") {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "review-button review-button--revision";
+                button.textContent = "Try again";
+                button.addEventListener("click", retry);
+                container.appendChild(button);
+            }
+        }
+
+        function renderDelivery(submission) {
+            elements.delivery.replaceChildren();
+
+            if (!submission) {
+                const empty = document.createElement("p");
+                empty.className = "workspace-muted";
+                empty.textContent = "The freelancer has not submitted a final delivery yet.";
+                elements.delivery.appendChild(empty);
+                return;
+            }
+
+            currentSubmission = submission;
+
+            const status = String(submission.status || "SUBMITTED").toUpperCase();
+            const approved = status === "APPROVED";
+            const revision = status === "REVISION_REQUESTED";
+
+            if (approved) {
+                const success = document.createElement("div");
+                success.className = "delivery-success";
+
+                const icon = document.createElement("span");
+                icon.className = "delivery-success__icon";
+                icon.textContent = "✓";
+
+                const content = document.createElement("div");
+                const heading = document.createElement("h3");
+                heading.textContent = "Project delivery approved!";
+
+                const message = document.createElement("p");
+                message.textContent = "You have successfully approved the freelancer's final delivery.";
+
+                content.append(heading, message);
+                success.append(icon, content);
+                elements.delivery.appendChild(success);
+            }
+
+            const card = document.createElement("article");
+            card.className = "delivery-item";
+
+            const header = document.createElement("div");
+            header.className = "delivery-item__header";
+
+            const title = document.createElement("h3");
+            title.textContent = "Delivery summary";
+
+            const badge = document.createElement("span");
+            badge.className = "delivery-status";
+
+            if (approved) {
+                badge.classList.add("delivery-status--approved");
+            } else if (revision) {
+                badge.classList.add("delivery-status--revision");
+            }
+
+            badge.textContent = status.replaceAll("_", " ");
+            header.append(title, badge);
+
+            const summary = document.createElement("p");
+            summary.className = "delivery-summary";
+            summary.textContent = submission.submissionNote || "No delivery summary provided.";
+
+            const meta = document.createElement("div");
+            meta.className = "delivery-meta";
+
+            const submitted = document.createElement("span");
+            submitted.textContent = "Submitted: " + formatTimestamp(submission.submittedAt);
+            meta.appendChild(submitted);
+
+            if (submission.reviewedAt) {
+                const reviewed = document.createElement("span");
+                reviewed.textContent = "Reviewed: " + formatTimestamp(submission.reviewedAt);
+                meta.appendChild(reviewed);
+            }
+
+            card.append(header, summary, meta);
+
+            if (submission.deliveryUrl) {
+                try {
+                    const deliveryUrl = new URL(
+                        String(submission.deliveryUrl),
+                        window.location.href
+                    );
+
+                    if (deliveryUrl.protocol === "http:" || deliveryUrl.protocol === "https:") {
+                        const link = document.createElement("a");
+                        link.className = "delivery-link";
+                        link.href = deliveryUrl.href;
+                        link.target = "_blank";
+                        link.rel = "noopener noreferrer";
+                        link.textContent = "Open submitted project ↗";
+                        card.appendChild(link);
+                    } else {
+                        const invalidLink = document.createElement("p");
+                        invalidLink.className = "workspace-muted";
+                        invalidLink.textContent = "The submitted project link is not a valid web URL.";
+                        card.appendChild(invalidLink);
+                    }
+                } catch (urlError) {
+                    const invalidLink = document.createElement("p");
+                    invalidLink.className = "workspace-muted";
+                    invalidLink.textContent = "The submitted project link could not be opened.";
+                    card.appendChild(invalidLink);
+                }
+            }
+
+            if (revision && submission.clientFeedback) {
+                const feedback = document.createElement("div");
+                feedback.className = "delivery-feedback";
+
+                const heading = document.createElement("strong");
+                heading.textContent = "Your revision feedback";
+
+                const text = document.createElement("p");
+                text.textContent = submission.clientFeedback;
+
+                feedback.append(heading, text);
+                card.appendChild(feedback);
+            }
+
+            elements.delivery.appendChild(card);
+
+            if (revision) {
+                const waiting = document.createElement("p");
+                waiting.className = "workspace-message";
+                waiting.textContent = "Revision requested. You can review the updated delivery here once the freelancer resubmits it.";
+                elements.delivery.appendChild(waiting);
+                return;
+            }
+
+            if (status === "SUBMITTED") {
+                renderReviewForm(card, submission);
+            } else if (!approved) {
+                const pending = document.createElement("p");
+                pending.className = "workspace-muted";
+                pending.textContent = "This delivery is not currently available for review.";
+                elements.delivery.appendChild(pending);
+            }
+        }
+
+        function renderReviewForm(card, submission) {
+            const form = document.createElement("form");
+            form.className = "review-form";
+
+            const label = document.createElement("label");
+            label.textContent = "Feedback for the freelancer";
+            label.htmlFor = "client-feedback";
+
+            const textarea = document.createElement("textarea");
+            textarea.id = "client-feedback";
+            textarea.name = "feedback";
+            textarea.placeholder = "Share your feedback or explain any changes required.";
+
+            const actions = document.createElement("div");
+            actions.className = "review-actions";
+
+            const approveButton = document.createElement("button");
+            approveButton.type = "button";
+            approveButton.className = "review-button review-button--approve";
+            approveButton.textContent = "Approve Delivery";
+
+            const revisionButton = document.createElement("button");
+            revisionButton.type = "button";
+            revisionButton.className = "review-button review-button--revision";
+            revisionButton.textContent = "Request Revision";
+
+            approveButton.addEventListener("click", () =>
+                openApprovalDialog(submission, textarea, approveButton, revisionButton)
+            );
+
+            revisionButton.addEventListener("click", () => {
+                const feedback = textarea.value.trim();
+
+                if (!feedback) {
+                    showMessage("Please enter feedback explaining the required revisions.", true);
+                    textarea.focus();
+                    return;
+                }
+
+                submitReview(submission, "REQUEST_REVISION", feedback, approveButton, revisionButton);
+            });
+
+            actions.append(approveButton, revisionButton);
+            form.append(label, textarea, actions);
+            card.appendChild(form);
+        }
+
+        async function loadDelivery() {
+            try {
+                const data = await fetchJson(
+                    "../../project-submission?projectId=" +
+                    encodeURIComponent(projectId)
+                );
+
+                submissionLoaded = true;
+                renderDelivery(data.submission || null);
+            } catch (error) {
+                console.error("Delivery loading failed:", error);
+                renderError(elements.delivery, error.message, loadDelivery);
+            }
+        }
+
+        async function submitReview(submission, action, feedback, approveButton, revisionButton) {
+            approveButton.disabled = true;
+            revisionButton.disabled = true;
+            approveButton.textContent = action === "APPROVE"
+                ? "Approving..."
+                : "Processing...";
+            revisionButton.textContent = action === "REQUEST_REVISION"
+                ? "Sending request..."
+                : "Request Revision";
+
+            const body = new URLSearchParams();
+            body.set("projectId", projectId);
+            body.set("submissionId", submission.submissionId);
+            body.set("action", action);
+            body.set("feedback", feedback || "");
+
+            try {
+                const data = await fetchJson("../../review-submission", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                    },
+                    body: body.toString()
+                });
+
+                showMessage(
+                    data.message ||
+                    (action === "APPROVE"
+                        ? "Delivery approved successfully."
+                        : "Revision requested successfully.")
+                );
+
+                await Promise.all([
+                    loadDelivery(),
+                    loadActivity()
+                ]);
+
+                if (action === "APPROVE") {
+                    await loadProjectOverview();
+                }
+            } catch (error) {
+                showMessage(error.message, true);
+                approveButton.disabled = false;
+                revisionButton.disabled = false;
+                approveButton.textContent = "Approve Delivery";
+                revisionButton.textContent = "Request Revision";
+            }
+        }
+
+        async function initializeWorkspace() {
+            if (!projectId || !/^\d+$/.test(projectId) || Number(projectId) <= 0) {
+                renderError(elements.progress, "A valid project ID is required.");
+                renderError(elements.activity, "A valid project ID is required.");
+                renderError(elements.delivery, "A valid project ID is required.");
+                setText(elements.title, "Project unavailable");
+                setText(elements.status, "Unavailable");
+                setText(elements.description, "A valid project ID is required to open this workspace.");
+                return;
+            }
+
+            try {
+                await loadProjectOverview();
+
+                await Promise.all([
+                    loadProgress(),
+                    loadActivity(),
+                    loadDelivery()
+                ]);
+            } catch (error) {
+                console.error("Workspace loading failed:", error);
+                setText(elements.title, "Unable to load project");
+                renderError(elements.progress, error.message, initializeWorkspace);
+                renderError(elements.activity, error.message, initializeWorkspace);
+                renderError(elements.delivery, error.message, initializeWorkspace);
+            }
+        }
+
+        /* ---------- Completion bar ---------- */
+        function updateCompletion() {
+            const status = workspaceStatus;
+            const submissionStatus = currentSubmission
+                ? String(currentSubmission.status || "").toUpperCase() : "";
+
+            const hired = status === "IN_PROGRESS" || status === "COMPLETED";
+            const hasUpdate = updateCount > 0 || status === "COMPLETED";
+            const delivered = Boolean(currentSubmission) || status === "COMPLETED";
+            const approved = status === "COMPLETED" || submissionStatus === "APPROVED";
+
+            let pct = 0;
+            if (hired) pct = 25;
+            if (hired && hasUpdate) pct = 50;
+            if (delivered) pct = submissionStatus === "REVISION_REQUESTED" ? 60 : 75;
+            if (approved) pct = 100;
+            if (status === "CANCELLED") pct = 0;
+
+            document.getElementById("ws-progress-pct").textContent = pct + "%";
+            const bar = document.getElementById("ws-progress-bar");
+            bar.setAttribute("aria-valuenow", String(pct));
+            const fill = document.getElementById("ws-progress-fill");
+            fill.style.width = pct + "%";
+            fill.classList.toggle("is-complete", pct === 100);
+
+            const done = { hired: hired, update: hired && hasUpdate, delivery: delivered, approved: approved };
+            let currentMarked = false;
+            document.querySelectorAll("#ws-progress-steps li").forEach(li => {
+                const isDone = done[li.dataset.step];
+                li.classList.toggle("is-done", Boolean(isDone));
+                li.classList.remove("is-current");
+                if (!isDone && !currentMarked && status !== "CANCELLED") {
+                    li.classList.add("is-current");
+                    currentMarked = true;
+                }
+            });
+
+            const note = document.getElementById("ws-progress-note");
+            if (status === "CANCELLED") note.textContent = "This project was cancelled.";
+            else if (approved) note.textContent = "Delivery approved. This project is complete.";
+            else if (submissionStatus === "REVISION_REQUESTED") note.textContent = "Revisions requested. Waiting for the freelancer's updated delivery.";
+            else if (delivered) note.textContent = "Final delivery submitted. It is ready for your review.";
+            else if (hasUpdate) note.textContent = "Work is underway. Check Progress for the latest update.";
+            else if (hired) note.textContent = "Your freelancer is hired. The first update will appear here.";
+            else note.textContent = "Progress starts once you accept a proposal.";
+        }
+
+        /* ---------- Tabs and unread dots ---------- */
+        const tabNames = ["progress", "activity", "delivery"];
+        const seenKey = name => "worknest:workspace:" + projectId + ":" + name;
+
+        function readSeen(name) {
+            try { return localStorage.getItem(seenKey(name)); } catch (e) { return null; }
+        }
+        function writeSeen(name, value) {
+            try { localStorage.setItem(seenKey(name), value); } catch (e) { /* storage unavailable */ }
+        }
+
+        /* A signature changes whenever new content appears in that section. */
+        function signatureFor(name) {
+            const container = elements[name === "progress" ? "progress" : name === "activity" ? "activity" : "delivery"];
+            const stamps = Array.from(container.querySelectorAll("time[datetime]"))
+                .map(t => t.getAttribute("datetime")).filter(Boolean).sort();
+            if (name !== "delivery" && stamps.length) return stamps[stamps.length - 1] + "|" + stamps.length;
+            const text = (container.textContent || "").replace(/\s+/g, " ").trim();
+            if (!text || /^(Loading|No |The freelancer has not)/.test(text)) return "";
+            return String(text.length) + ":" + text.slice(0, 80);
+        }
+
+        function setUnread(name, unread) {
+            const tab = document.getElementById("tab-" + name);
+            tab.classList.toggle("has-unread", unread);
+            tab.querySelector("[data-unread-label]").textContent = unread ? " (new)" : "";
+        }
+
+        function refreshUnread(activeName) {
+            tabNames.forEach(name => {
+                const signature = signatureFor(name);
+                if (name === activeName) {
+                    if (signature) writeSeen(name, signature);
+                    setUnread(name, false);
+                } else {
+                    setUnread(name, Boolean(signature) && readSeen(name) !== signature);
+                }
+            });
+        }
+
+        let activeTab = "progress";
+        function selectTab(name, moveFocus) {
+            activeTab = name;
+            tabNames.forEach(tabName => {
+                const selected = tabName === name;
+                const tab = document.getElementById("tab-" + tabName);
+                tab.setAttribute("aria-selected", String(selected));
+                tab.tabIndex = selected ? 0 : -1;
+                document.getElementById("panel-" + tabName).hidden = !selected;
+                if (selected && moveFocus) tab.focus();
+            });
+            refreshUnread(name);
+        }
+
+        document.querySelectorAll(".ws-tab").forEach(tab => {
+            tab.addEventListener("click", () => selectTab(tab.dataset.tab, false));
+            tab.addEventListener("keydown", event => {
+                const index = tabNames.indexOf(tab.dataset.tab);
+                let next = null;
+                if (event.key === "ArrowRight") next = tabNames[(index + 1) % tabNames.length];
+                else if (event.key === "ArrowLeft") next = tabNames[(index - 1 + tabNames.length) % tabNames.length];
+                else if (event.key === "Home") next = tabNames[0];
+                else if (event.key === "End") next = tabNames[tabNames.length - 1];
+                if (next) { event.preventDefault(); selectTab(next, true); }
+            });
+        });
+
+        // After a review is submitted the delivery section reloads itself, so refresh the bar too.
+        const deliveryObserver = new MutationObserver(() => {
+            updateCompletion();
+            refreshUnread(activeTab);
+        });
+        deliveryObserver.observe(elements.delivery, { childList: true, subtree: true });
+
+        initializeWorkspace().then(() => {
+            updateCompletion();
+            // Open on Delivery when something is waiting for the client's review.
+            const waiting = currentSubmission &&
+                String(currentSubmission.status || "").toUpperCase() === "SUBMITTED" &&
+                workspaceStatus === "IN_PROGRESS";
+            selectTab(waiting ? "delivery" : "progress", false);
+        });
+    </script>
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>

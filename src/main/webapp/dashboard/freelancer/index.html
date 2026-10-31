@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Freelancer Dashboard | WorkNest</title>
+    <meta name="description"
+          content="Manage your freelance projects, track proposals, and discover new opportunities on WorkNest.">
+
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/freelancer-dashboard.css">
+
+    <style>
+        :root {
+            --wn-ink: #24271F;
+            --wn-muted: #6B6D66;
+            --wn-border: #E8E5DC;
+            --wn-paper: #F8F7F2;
+            --wn-white: #FFFFFF;
+            --wn-purple: #5040D8;
+            --wn-purple-soft: #F0EEFF;
+            --wn-green: #176B38;
+            --wn-green-soft: #DFF4E5;
+            --wn-amber: #8A5700;
+            --wn-amber-soft: #FFF0D5;
+            --wn-blue: #254EA8;
+            --wn-blue-soft: #E5EDFF;
+            --wn-red: #A52828;
+            --wn-red-soft: #FEF0F0;
+            --wn-shadow: 0 12px 34px rgba(36, 39, 31, .06);
+        }
+
+        * { box-sizing: border-box; }
+
+        body.dashboard-body {
+            background: var(--wn-paper);
+            color: var(--wn-ink);
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(248, 247, 242, .94);
+            border-bottom: 1px solid var(--wn-border);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .site-header__inner {
+            min-height: 72px;
+            gap: 22px;
+        }
+
+        .wordmark {
+            flex: 0 0 auto;
+            font-weight: 800;
+            letter-spacing: -.055em;
+        }
+
+        .dashboard-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .dashboard-nav .site-nav__link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 9px 12px;
+            border-radius: 9px;
+            color: var(--wn-muted);
+            font-size: .9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color .18s ease, background-color .18s ease, box-shadow .18s ease;
+        }.dashboard-nav .site-nav__link:focus-visible {
+            outline: 3px solid rgba(80, 64, 216, .28);
+            outline-offset: 2px;
+        }
+
+        .dashboard-nav .site-nav__link:focus-visible,
+        .dashboard-mobile-nav a:focus-visible,
+        .freelancer-active-project a:focus-visible,
+        .freelancer-active-project--clickable:focus-visible {
+            outline: 3px solid rgba(80, 64, 216, .35);
+            outline-offset: 3px;
+        }
+
+        .site-header__actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 0 0 auto;
+        }
+
+        .dashboard-role {
+            display: inline-flex;
+            align-items: center;
+            min-height: 32px;
+            padding: 0 11px;
+            border: 1px solid var(--wn-border);
+            border-radius: 999px;
+            background: var(--wn-white);
+            color: var(--wn-muted);
+            font-size: .78rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .dashboard-page {
+            width: min(1120px, calc(100% - 40px));
+            margin-inline: auto;
+            padding-top: clamp(34px, 5vw, 58px);
+            padding-bottom: 64px;
+        }
+
+        .dashboard-welcome {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 28px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-welcome h1 {
+            margin: 7px 0 10px;
+            color: var(--wn-ink);
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.08;
+            letter-spacing: -.045em;
+        }
+
+        .dashboard-description {
+            max-width: 610px;
+            margin: 0;
+            color: var(--wn-muted);
+            line-height: 1.7;
+        }
+
+        .dashboard-welcome .button {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 11px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin: 28px 0 42px;
+        }
+
+        .dashboard-stat {
+            min-width: 0;
+            padding: 21px;
+            border: 1px solid var(--wn-border);
+            border-radius: 15px;
+            background: var(--wn-white);
+            box-shadow: 0 3px 12px rgba(36, 39, 31, .025);
+        }
+
+        .dashboard-stat__label {
+            margin: 0 0 13px;
+            color: var(--wn-muted);
+            font-size: .84rem;
+            font-weight: 650;
+        }
+
+        .dashboard-stat__value {
+            display: block;
+            margin: 0;
+            color: var(--wn-ink);
+            font-size: clamp(1.65rem, 3vw, 2.15rem);
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -.04em;
+            overflow-wrap: anywhere;
+        }
+
+        .dashboard-stat__note {
+            margin: 10px 0 0;
+            color: #898B84;
+            font-size: .76rem;
+            line-height: 1.5;
+        }
+
+        .dashboard-section {
+            margin-top: 42px;
+        }
+
+        .dashboard-section__heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .dashboard-section__heading h2 {
+            margin: 5px 0 0;
+            color: var(--wn-ink);
+            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+            letter-spacing: -.035em;
+        }
+
+        .dashboard-muted {
+            color: var(--wn-muted);
+            font-size: .86rem;
+            font-weight: 600;
+        }
+
+        .freelancer-active-projects {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .freelancer-active-project {
+            min-width: 0;
+            padding: 23px;
+            border: 1px solid var(--wn-border);
+            border-radius: 16px;
+            background: var(--wn-white);
+            box-shadow: 0 3px 12px rgba(36, 39, 31, .025);
+            transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+        }
+
+        .freelancer-active-project--clickable { cursor: pointer; }
+
+        .freelancer-active-project--clickable:hover {
+            border-color: #C9C2F5;
+            box-shadow: var(--wn-shadow);
+            transform: translateY(-2px);
+        }
+
+        .freelancer-active-project__header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .freelancer-active-project h3 {
+            min-width: 0;
+            margin: 0;
+            color: var(--wn-ink);
+            font-size: 1.08rem;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+
+        .freelancer-project-status {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            min-height: 27px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: var(--wn-amber-soft);
+            color: var(--wn-amber);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .025em;
+        }
+
+        .freelancer-project-status--completed {
+            background: var(--wn-blue-soft);
+            color: var(--wn-blue);
+        }
+
+        .freelancer-project-status--accepted {
+            background: var(--wn-green-soft);
+            color: var(--wn-green);
+        }
+
+        .freelancer-project-status--rejected {
+            background: var(--wn-red-soft);
+            color: var(--wn-red);
+        }
+
+        .freelancer-active-project__meta {
+            margin: 13px 0 0;
+            color: var(--wn-muted);
+            font-size: .9rem;
+            line-height: 1.65;
+            overflow-wrap: anywhere;
+        }
+
+        .freelancer-active-project__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 19px;
+            padding-top: 16px;
+            border-top: 1px solid #F0EEE8;
+        }
+
+        .freelancer-active-project__hint {
+            color: var(--wn-muted);
+            font-size: .8rem;
+            line-height: 1.45;
+        }
+
+        .freelancer-active-project__open {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            padding: 0 13px;
+            border: 1px solid #D9D4FA;
+            border-radius: 9px;
+            background: var(--wn-purple-soft);
+            color: var(--wn-purple);
+            font-size: .82rem;
+            font-weight: 750;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .freelancer-active-project__open:hover {
+            border-color: var(--wn-purple);
+            background: #E8E4FF;
+        }
+
+        .dashboard-empty,
+        .dashboard-load-error {
+            grid-column: 1 / -1;
+            padding: clamp(25px, 5vw, 42px);
+            border: 1px dashed #D8D4C9;
+            border-radius: 16px;
+            background: rgba(255,255,255,.72);
+            text-align: center;
+        }
+
+        .dashboard-empty h3,
+        .dashboard-load-error h3 {
+            margin: 0 0 8px;
+            color: var(--wn-ink);
+            font-size: 1.15rem;
+        }
+
+        .dashboard-empty p,
+        .dashboard-load-error p {
+            max-width: 520px;
+            margin: 0 auto 17px;
+            color: var(--wn-muted);
+            line-height: 1.65;
+        }
+
+        .dashboard-empty .text-link,
+        .dashboard-load-error button {
+            color: var(--wn-purple);
+            font-weight: 750;
+        }
+
+        .dashboard-load-error button {
+            padding: 9px 14px;
+            border: 1px solid #D9D4FA;
+            border-radius: 9px;
+            background: var(--wn-purple-soft);
+            cursor: pointer;
+        }
+
+        .freelancer-dashboard-message {
+            margin: 18px 0 0;
+            color: var(--wn-muted);
+            font-size: .9rem;
+            line-height: 1.6;
+        }
+
+        .freelancer-dashboard-message--error { color: var(--wn-red); }
+
+
+        .dashboard-footer {
+            border-top: 1px solid var(--wn-border);
+            color: var(--wn-muted);
+        }
+
+        .dashboard-footer p {
+            margin: 0;
+            padding: 22px 20px;
+            text-align: center;
+            font-size: .82rem;
+        }
+
+        .dashboard-mobile-nav { display: none; }
+
+        @media (max-width: 900px) {
+            .site-header__inner { flex-wrap: wrap; padding-block: 12px; }
+            .dashboard-nav { order: 3; width: 100%; justify-content: flex-start; }
+            .dashboard-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 650px) {
+            .site-header__inner { gap: 10px; }
+            .dashboard-nav {
+                gap: 3px;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding: 3px 0 5px;
+                scrollbar-width: thin;
+            }
+            .dashboard-nav .site-nav__link {
+                flex: 0 0 auto;
+                padding: 8px 10px;
+                font-size: .82rem;
+            }
+            .site-header__actions { margin-left: auto; gap: 8px; }
+            .dashboard-role { display: none; }
+            .dashboard-page {
+                width: min(100% - 28px, 1120px);
+                padding-top: 30px;
+            }
+            .dashboard-welcome {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 18px;
+            }
+            .dashboard-welcome .button { width: 100%; }
+            .dashboard-stats { gap: 10px; margin: 23px 0 34px; }
+            .dashboard-stat { padding: 16px; }
+            .dashboard-stat__note { font-size: .72rem; }
+            .freelancer-active-projects { grid-template-columns: 1fr; }
+            .freelancer-active-project { padding: 19px; }
+        }
+
+        @media (max-width: 380px) {
+            .dashboard-stats { grid-template-columns: 1fr 1fr; }
+            .dashboard-stat { padding: 13px; }
+            .dashboard-stat__value { font-size: 1.5rem; }
+            .freelancer-active-project__header { flex-direction: column; }
+            .freelancer-active-project__footer { align-items: flex-start; flex-direction: column; }
+            .freelancer-active-project__open { width: 100%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+        
+       
+.site-nav__link {
+    padding: 9px 12px;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+}
+/* ===== Shared freelancer header: identical on every freelancer page ===== */
+html body.dashboard-body header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 247, 242, .94);
+    border-bottom: 1px solid #E8E5DC;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+html body.dashboard-body header.site-header .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 88px;
+}
+html body.dashboard-body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: #24271F;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-decoration: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B6D66;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background: #F0EEFF;
+    color: #5040D8;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header .wordmark:focus-visible,
+html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+html body.dashboard-body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 16px;
+}
+html body.dashboard-body header.site-header .dashboard-role {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #6B6D66;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+html body.dashboard-body header.site-header .site-header__actions .button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: none;
+}
+@media (max-width: 900px) {
+    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
+    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
+}
+@media (max-width: 650px) {
+    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
+    html body.dashboard-body header.site-header .dashboard-role { display: none; }
+}
+    </style>
+    <link rel="stylesheet" href="../../css/client-ui.css">
+
+
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+
+<body class="dashboard-body freelancer-dashboard">
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link" aria-current="page">Overview</a>
+            <a href="my-projects.html" class="site-nav__link">My projects</a>
+            <a href="find-work.html" class="site-nav__link">Find work</a>
+            <a href="my-proposals.html" class="site-nav__link">My proposals</a>
+            <a href="profile.html" class="site-nav__link">My profile</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <span class="dashboard-role">Freelancer</span>
+            <form action="../../logout" method="post">
+                <button class="button button--dark" type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<main class="dashboard-page" id="main-content">
+
+    <!-- Welcome section -->
+    <section class="dashboard-welcome"
+             id="overview"
+             aria-labelledby="welcome-heading">
+
+        <div>
+            <p class="eyebrow">YOUR WORKSPACE</p>
+
+            <h1 id="welcome-heading">Welcome back!</h1>
+
+            <p class="dashboard-description">
+                Keep your projects moving and discover your next opportunity.
+            </p>
+        </div>
+
+        <a href="find-work.html" class="button button--primary">
+            Explore opportunities
+            <span aria-hidden="true">→</span>
+        </a>
+
+    </section>
+
+    <!-- Overview cards -->
+    <section class="dashboard-stats" aria-label="Project overview">
+
+        <article class="dashboard-stat">
+            <p class="dashboard-stat__label">Active projects</p>
+            <p class="dashboard-stat__value" id="active-projects-count">—</p>
+            <p class="dashboard-stat__note">Projects in progress</p>
+        </article>
+
+        <article class="dashboard-stat">
+            <p class="dashboard-stat__label">Completed projects</p>
+            <p class="dashboard-stat__value" id="completed-projects-count">—</p>
+            <p class="dashboard-stat__note">Successfully completed</p>
+        </article>
+
+        <article class="dashboard-stat">
+            <p class="dashboard-stat__label">Pending proposals</p>
+            <p class="dashboard-stat__value" id="pending-proposals-count">—</p>
+            <p class="dashboard-stat__note">Awaiting client responses</p>
+        </article>
+
+        <article class="dashboard-stat">
+            <p class="dashboard-stat__label">Payment arrangements</p>
+            <p class="dashboard-stat__value">Direct</p>
+            <p class="dashboard-stat__note">Coordinate payment with your client after delivery.</p>
+        </article>
+
+    </section>
+
+    <p id="dashboard-message" class="freelancer-dashboard-message" role="status" aria-live="polite" hidden></p>
+
+    <!-- Active and completed projects -->
+    <section class="dashboard-section"
+             id="projects"
+             aria-labelledby="projects-heading">
+
+        <div class="dashboard-section__heading">
+            <div>
+                <p class="eyebrow">YOUR WORK</p>
+                <h2 id="projects-heading">My projects</h2>
+            </div>
+
+            <span class="dashboard-muted" id="projects-count">Loading...</span>
+        </div>
+
+        <div id="freelancer-projects-list"
+             class="freelancer-active-projects"
+             aria-live="polite"
+             aria-busy="true">
+
+            <p class="freelancer-dashboard-message">
+                Loading your projects...
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="dashboard-footer">
+    <p>© WorkNest. Built for better collaboration.</p>
+</footer>
+
+
+<script type="module">
+"use strict";
+
+const contextPath = "/WorkNest";
+
+const welcomeHeading = document.getElementById("welcome-heading");
+const activeCount = document.getElementById("active-projects-count");
+const completedCount = document.getElementById("completed-projects-count");
+const pendingCount = document.getElementById("pending-proposals-count");
+const projectsCount = document.getElementById("projects-count");
+const projectsList = document.getElementById("freelancer-projects-list");
+const dashboardMessage = document.getElementById("dashboard-message");
+
+let latestProposals = [];
+
+function normalizeStatus(value) {
+    return String(value ?? "").trim().toUpperCase();
+}
+
+function showDashboardMessage(message, isError = false) {
+    dashboardMessage.textContent = message;
+    dashboardMessage.className = "freelancer-dashboard-message" +
+        (isError ? " freelancer-dashboard-message--error" : "");
+    dashboardMessage.hidden = !message;
+}
+
+function formatAmount(amount) {
+    if (amount === null || amount === undefined || String(amount).trim() === "") {
+        return "Amount unavailable";
+    }
+
+    const value = Number(amount);
+    if (!Number.isFinite(value)) return "Amount unavailable";
+
+    return new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 2
+    }).format(value);
+}
+
+function safeText(value, fallback = "") {
+    if (value === null || value === undefined) return fallback;
+    const text = String(value).trim();
+    return text || fallback;
+}
+
+function createProjectCard(proposal) {
+    const card = document.createElement("article");
+    card.className = "freelancer-active-project";
+
+    const proposalStatus = normalizeStatus(proposal.status);
+    const projectStatus = normalizeStatus(proposal.projectStatus);
+    const projectId = proposal.projectId ?? proposal.project_id;
+    const projectTitle = safeText(proposal.projectTitle, "Untitled project");
+    const hasProjectId = projectId !== null && projectId !== undefined &&
+        String(projectId).trim() !== "";
+    const isAccepted = proposalStatus === "ACCEPTED";
+    const canOpenWorkspace = isAccepted && hasProjectId;
+
+    const header = document.createElement("div");
+    header.className = "freelancer-active-project__header";
+
+    const title = document.createElement("h3");
+    title.textContent = projectTitle;
+
+    const status = document.createElement("span");
+    status.className = "freelancer-project-status";
+
+    if (isAccepted && projectStatus === "COMPLETED") {
+        status.textContent = "COMPLETED";
+        status.classList.add("freelancer-project-status--completed");
+    } else if (isAccepted && projectStatus === "IN_PROGRESS") {
+        status.textContent = "IN PROGRESS";
+        status.classList.add("freelancer-project-status--accepted");
+    } else if (proposalStatus === "REJECTED") {
+        status.textContent = "NOT SELECTED";
+        status.classList.add("freelancer-project-status--rejected");
+    } else {
+        status.textContent = proposalStatus.replaceAll("_", " ") || "UNKNOWN";
+    }
+
+    header.append(title, status);
+
+    const projectType = normalizeStatus(proposal.projectType);
+    const amountLabel = projectType === "HOURLY" ? "Proposed hourly rate" : "Proposed amount";
+    const amount = document.createElement("p");
+    amount.className = "freelancer-active-project__meta";
+    amount.textContent = `${amountLabel}: ${formatAmount(proposal.proposedAmount)}`;
+
+    const message = document.createElement("p");
+    message.className = "freelancer-active-project__meta";
+
+    if (isAccepted && projectStatus === "IN_PROGRESS") {
+        message.textContent = "Your proposal has been accepted. This project is currently in progress.";
+    } else if (isAccepted && projectStatus === "COMPLETED") {
+        message.textContent = "This project has been marked as completed.";
+    } else if (proposalStatus === "REJECTED") {
+        message.textContent = "The client did not select this proposal. You can explore other opportunities.";
+    } else if (proposalStatus === "PENDING") {
+        message.textContent = "Your proposal is waiting for the client's response.";
+    } else {
+        message.textContent = `Project status: ${projectStatus.replaceAll("_", " ") || "Not available"}.`;
+    }
+
+    card.append(header, amount, message);
+
+    if (canOpenWorkspace) {
+        const footer = document.createElement("div");
+        footer.className = "freelancer-active-project__footer";
+
+        const hint = document.createElement("span");
+        hint.className = "freelancer-active-project__hint";
+        hint.textContent = projectStatus === "COMPLETED"
+            ? "Review the completed project and its delivery."
+            : "View progress, activity and final delivery.";
+
+        const workspaceLink = document.createElement("a");
+        workspaceLink.className = "freelancer-active-project__open";
+        workspaceLink.href = `project-workspace.html?projectId=${encodeURIComponent(String(projectId))}`;
+        workspaceLink.textContent = "Open workspace";
+        workspaceLink.setAttribute("aria-label", `Open workspace for ${projectTitle}`);
+
+        footer.append(hint, workspaceLink);
+        card.appendChild(footer);
+    }
+
+    return card;
+}
+
+function renderEmptyState() {
+    const empty = document.createElement("div");
+    empty.className = "dashboard-empty";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Your next project starts here";
+
+    const description = document.createElement("p");
+    description.textContent =
+        "When you submit proposals, their status and accepted projects will appear here.";
+
+    const link = document.createElement("a");
+    link.href = "find-work.html";
+    link.className = "text-link";
+    link.textContent = "Explore opportunities →";
+
+    empty.append(heading, description, link);
+    projectsList.replaceChildren(empty);
+}
+
+function renderLoadError(message) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "dashboard-load-error";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "We couldn't load your projects";
+
+    const description = document.createElement("p");
+    description.textContent = message || "Please check your connection and try again.";
+
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.textContent = "Try again";
+    retry.addEventListener("click", loadProposals);
+
+    wrapper.append(heading, description, retry);
+    projectsList.replaceChildren(wrapper);
+}
+
+async function readJsonResponse(response, fallbackMessage) {
+    const contentType = response.headers.get("content-type") || "";
+    let data = {};
+
+    if (contentType.includes("application/json")) {
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error("The server returned an invalid response. Please try again.");
+        }
+    } else if (response.ok) {
+        throw new Error("The server returned an unexpected response format.");
+    }
+
+    if (response.status === 401) {
+        window.location.replace("../../login.html");
+        throw new Error("Your session has expired. Please log in again.");
+    }
+
+    if (!response.ok) {
+        throw new Error(data.error || data.message || fallbackMessage);
+    }
+
+    return data;
+}
+
+async function loadProfile() {
+    try {
+        const response = await fetch(`${contextPath}/profile`, {
+            method: "GET",
+            credentials: "same-origin",
+            headers: { "Accept": "text/plain" },
+            cache: "no-store"
+        });
+
+        if (response.status === 401) {
+            window.location.replace("../../login.html");
+            return;
+        }
+
+        if (!response.ok) throw new Error("Unable to load profile.");
+
+        const fullName = (await response.text()).trim();
+        if (fullName) welcomeHeading.textContent = `Welcome back, ${fullName}!`;
+    } catch (error) {
+        console.error("Profile loading failed:", error);
+        welcomeHeading.textContent = "Welcome back!";
+    }
+}
+
+async function loadProposals() {
+    projectsList.setAttribute("aria-busy", "true");
+    projectsCount.textContent = "Loading...";
+    showDashboardMessage("");
+
+    const loading = document.createElement("p");
+    loading.className = "freelancer-dashboard-message";
+    loading.textContent = "Loading your projects...";
+    projectsList.replaceChildren(loading);
+
+    try {
+        const response = await fetch(`${contextPath}/my-proposals`, {
+            method: "GET",
+            credentials: "same-origin",
+            headers: { "Accept": "application/json" },
+            cache: "no-store"
+        });
+
+        const data = await readJsonResponse(response, "Unable to load your proposals.");
+        if (!Array.isArray(data.proposals)) {
+            throw new Error("The server returned an unexpected project list.");
+        }
+
+        latestProposals = data.proposals;
+        const proposals = latestProposals;
+
+        const activeProjects = proposals.filter(proposal =>
+            normalizeStatus(proposal.status) === "ACCEPTED" &&
+            normalizeStatus(proposal.projectStatus) === "IN_PROGRESS"
+        );
+
+        const completedProjects = proposals.filter(proposal =>
+            normalizeStatus(proposal.status) === "ACCEPTED" &&
+            normalizeStatus(proposal.projectStatus) === "COMPLETED"
+        );
+
+        const pendingProposals = proposals.filter(proposal =>
+            normalizeStatus(proposal.status) === "PENDING"
+        );
+
+        activeCount.textContent = activeProjects.length;
+        completedCount.textContent = completedProjects.length;
+        pendingCount.textContent = pendingProposals.length;
+
+        const displayedProposals = proposals.filter(proposal =>
+            ["ACCEPTED", "PENDING", "REJECTED"].includes(normalizeStatus(proposal.status))
+        );
+
+        projectsCount.textContent =
+            `${displayedProposals.length} ${displayedProposals.length === 1 ? "item" : "items"}`;
+
+        if (displayedProposals.length === 0) {
+            renderEmptyState();
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        displayedProposals.forEach(proposal => {
+            fragment.appendChild(createProjectCard(proposal));
+        });
+        projectsList.replaceChildren(fragment);
+    } catch (error) {
+        console.error("Unable to load freelancer proposals:", error);
+        activeCount.textContent = "—";
+        completedCount.textContent = "—";
+        pendingCount.textContent = "—";
+        projectsCount.textContent = "Unavailable";
+        renderLoadError(error.message);
+        showDashboardMessage("Your project information could not be loaded.", true);
+    } finally {
+        projectsList.setAttribute("aria-busy", "false");
+    }
+}
+
+await Promise.all([loadProfile(), loadProposals()]);
+
+// Refresh dashboard data when the user returns to this tab or page.
+let lastRefreshAt = Date.now();
+async function refreshDashboardIfStale() {
+    if (document.visibilityState !== "visible") return;
+    if (Date.now() - lastRefreshAt < 2500) return;
+    lastRefreshAt = Date.now();
+    await loadProposals();
+}
+
+window.addEventListener("pageshow", event => {
+    if (event.persisted) refreshDashboardIfStale();
+});
+
+document.addEventListener("visibilitychange", refreshDashboardIfStale);
+</script>
+
+
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>

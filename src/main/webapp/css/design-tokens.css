@@ -1,0 +1,58 @@
+:root {
+  --color-page: #f8f7f2;
+  --color-surface: #ffffff;
+  --color-surface-muted: #eeede6;
+  --color-ink: #242820;
+  --color-ink-soft: #50564d;
+  --color-ink-muted: #74796f;
+  --color-accent: #315b43;
+  --color-border: #d8d9d0;
+
+  --font-body: "DM Sans", sans-serif;
+  --font-display: "DM Serif Display", serif;
+
+  --content-width: 80rem;
+  --border-width: 1px;
+  --radius-pill: 50%;
+  --layer-base: 1;
+  --layer-header: 100;
+  --layer-menu: 200;
+  --header-height: 5.5rem;
+  --touch-target: 2.75rem;
+  --radius-sm: 0.25rem;
+  --reading-width: 65ch;
+  --text-xl: 1.25rem;
+  --color-accent-hover: #264a37;
+  --color-accent-soft: #e6eee8;
+  --color-on-accent: #ffffff;
+  --color-focus: #315b43;
+  --color-success: #2f7d4f;
+  --shadow-sheet: 0 12px 32px rgba(36, 40, 32, 0.10);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-2xl: clamp(2rem, 4vw, 3.25rem);
+  --text-hero: clamp(2.75rem, 5.5vw, 5.5rem);
+
+  --line-tight: 1.05;
+  --line-heading: 1.15;
+  --line-body: 1.65;
+  --letter-wide: 0.08em;
+  --letter-tight: -0.035em;
+}

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Post a new project on WorkNest and find the right freelancer.">
+
+    <title>Post a Project | WorkNest</title>
+
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/create-project.css">
+    <link rel="stylesheet" href="../../css/client-ui.css">
+    <style>
+/* ===== Shared freelancer header: identical on every freelancer page ===== */
+html body.dashboard-body header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 247, 242, .94);
+    border-bottom: 1px solid #E8E5DC;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+html body.dashboard-body header.site-header .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 88px;
+}
+html body.dashboard-body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: #24271F;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-decoration: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B6D66;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background: #F0EEFF;
+    color: #5040D8;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header .wordmark:focus-visible,
+html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+html body.dashboard-body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 16px;
+}
+html body.dashboard-body header.site-header .dashboard-role {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #6B6D66;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+html body.dashboard-body header.site-header .site-header__actions .button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: none;
+}
+@media (max-width: 900px) {
+    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
+    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
+}
+@media (max-width: 650px) {
+    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
+    html body.dashboard-body header.site-header .dashboard-role { display: none; }
+}
+
+/* ===== Create project ===== */
+/* Back link: same look as the other client pages */
+a.back-link {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: #24271F;
+    font-weight: 600;
+    text-decoration: none;
+}
+a.back-link:hover { color: #5040D8; }
+    </style>
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+
+<body class="dashboard-body create-project-page">
+
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link">Overview</a>
+            <a href="index.html#your-projects" class="site-nav__link">Your projects</a>
+            <a href="create-project.html" class="site-nav__link" aria-current="page">Post a project</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <span class="dashboard-role">Client account</span>
+            <form action="../../logout" method="post">
+                <button class="button button--dark" type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+    <div id="wn-banner" class="wn-banner" role="status" aria-live="polite" hidden>
+        <span id="wn-banner-text"></span>
+        <button type="button" id="wn-banner-close" aria-label="Dismiss message">&times;</button>
+    </div>
+
+    <main id="main-content" class="create-project-main">
+
+        <a class="back-link" href="index.html">&larr; Back to dashboard</a>
+
+        <section class="project-form-heading">
+            <p class="eyebrow">LET'S GET STARTED</p>
+            <h1>Post a project</h1>
+            <p>
+                Tell us about the work you need done.
+                Clear requirements help you find the right freelancer.
+            </p>
+        </section>
+
+        <form id="project-form"
+              class="project-form"
+              action="../../create-project"
+              method="post"
+              novalidate>
+
+            <section class="project-form-section" id="section-details">
+                <div class="form-section-heading">
+                    <span class="form-step">01</span>
+                    <div>
+                        <h2>Project details</h2>
+                        <p>Explain what you want to accomplish.</p>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="title">Project title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="e.g. Build an e-commerce website"
+                        minlength="5"
+                        maxlength="150"
+                        aria-describedby="title-help title-error"
+                        required>
+                    <p class="form-help" id="title-help">
+                        Use a clear title that describes the work.
+                    </p>
+                    <p class="field-error" id="title-error" role="alert" hidden></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="description">Project description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="6"
+                        minlength="30"
+                        maxlength="10000"
+                        placeholder="Describe your project, goals, requirements, and expected deliverables..."
+                        aria-describedby="description-help description-error"
+                        required></textarea>
+                    <p class="form-help" id="description-help">
+                        Include the main requirements and what the freelancer
+                        should deliver.
+                    </p>
+                    <p class="field-error" id="description-error" role="alert" hidden></p>
+                </div>
+
+                <div class="form-field">
+                    <label for="required-skills">Required skills</label>
+                    <input
+                        type="text"
+                        id="required-skills"
+                        name="requiredSkills"
+                        maxlength="500"
+                        data-placeholder="e.g. Spring Boot, then Enter; Java, then Enter"
+                        aria-describedby="skills-help skills-error">
+                    <p class="form-help" id="skills-help">
+                        Type a skill, including spaces, then press Enter. You can also separate skills with commas.
+                        Click &times; or press Backspace to remove one.
+                    </p>
+                    <p class="field-error" id="skills-error" role="alert" hidden></p>
+                </div>
+            </section>
+
+            <section class="project-form-section" id="section-budget">
+                <div class="form-section-heading">
+                    <span class="form-step">02</span>
+                    <div>
+                        <h2>Budget and timeline</h2>
+                        <p>Set your expected budget and completion date.</p>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="project-type">Payment type</label>
+                    <select id="project-type" name="projectType" aria-describedby="type-help type-error" required>
+                        <option value="">Choose payment type</option>
+                        <option value="FIXED">Fixed price</option>
+                        <option value="HOURLY">Hourly rate</option>
+                    </select>
+                    <p class="form-help" id="type-help">
+                        Fixed price is for the whole project.
+                        Hourly is based on time worked.
+                    </p>
+                    <p class="field-error" id="type-error" role="alert" hidden></p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="budget-min">Minimum budget (₹)</label>
+                        <input
+                            type="number"
+                            id="budget-min"
+                            name="budgetMin"
+                            min="1"
+                            max="999999999999"
+                            step="0.01"
+                            placeholder="10000"
+                            aria-describedby="budget-min-error"
+                            required>
+                        <p class="field-error" id="budget-min-error" role="alert" hidden></p>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="budget-max">Maximum budget (₹)</label>
+                        <input
+                            type="number"
+                            id="budget-max"
+                            name="budgetMax"
+                            min="1"
+                            max="999999999999"
+                            step="0.01"
+                            placeholder="20000"
+                            aria-describedby="budget-max-error"
+                            required>
+                        <p class="field-error" id="budget-max-error" role="alert" hidden></p>
+                    </div>
+                </div>
+
+                <p class="form-help">
+                    For hourly projects, enter your minimum and maximum
+                    hourly rates.
+                </p>
+
+                <div class="form-field">
+                    <label for="deadline">Expected deadline</label>
+                    <input
+                        type="date"
+                        id="deadline"
+                        name="deadline"
+                        aria-describedby="deadline-help deadline-error"
+                        required>
+                    <p class="form-help" id="deadline-help">
+                        Choose the date by which you would like the work
+                        completed.
+                    </p>
+                    <p class="field-error" id="deadline-error" role="alert" hidden></p>
+                </div>
+            </section>
+
+            <!-- Form-level message (server errors and "fix the highlighted fields") -->
+            <div id="project-form-message"
+                 class="project-form-message"
+                 role="alert"
+                 aria-live="polite"
+                 tabindex="-1"
+                 hidden></div>
+
+            <div class="project-form-actions">
+                <a class="button button--secondary" href="index.html">Cancel</a>
+
+                <button class="button button--dark" type="submit">
+                    Submit project
+                    <span aria-hidden="true">&rarr;</span>
+                </button>
+            </div>
+
+            <p class="project-form-note">
+                Review your project details before submitting.
+            </p>
+
+        </form>
+    </main>
+
+    <footer class="wn-footer">
+        <div class="wn-footer__inner">
+            <p>WorkNest — Good work, done together.</p>
+            <nav aria-label="Footer">
+                <a href="index.html">Overview</a>
+                <a href="index.html#your-projects">Your projects</a>
+                <a href="create-project.html">Post a project</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="../../js/skill-chips.js"></script>
+    <script>
+    "use strict";
+
+    const form = document.getElementById("project-form");
+    const titleInput = document.getElementById("title");
+    const descriptionInput = document.getElementById("description");
+    const skillsInput = document.getElementById("required-skills");
+    const typeInput = document.getElementById("project-type");
+    const budgetMinInput = document.getElementById("budget-min");
+    const budgetMaxInput = document.getElementById("budget-max");
+    const deadlineInput = document.getElementById("deadline");
+    const messageElement = document.getElementById("project-form-message");
+    const banner = document.getElementById("wn-banner");
+    const bannerText = document.getElementById("wn-banner-text");
+    let bannerTimer = null;
+
+    /* ---------- Banner ---------- */
+    function showBanner(text, type) {
+        bannerText.textContent = text;
+        banner.className = "wn-banner" + (type === "error" ? " wn-banner--error" : "");
+        banner.hidden = false;
+        window.clearTimeout(bannerTimer);
+        bannerTimer = window.setTimeout(function () { banner.hidden = true; }, 4500);
+    }
+    document.getElementById("wn-banner-close").addEventListener("click", function () { banner.hidden = true; });
+
+    /* ---------- Skill chips (Space or comma adds a chip) ---------- */
+    const chips = initSkillChips(skillsInput, { max: 500, onChange: function () { validateField("skills"); } });
+
+    /* ---------- Deadline cannot be in the past ---------- */
+    const today = new Date();
+    const localToday = [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, "0"),
+        String(today.getDate()).padStart(2, "0")
+    ].join("-");
+    deadlineInput.min = localToday;
+
+    /* ---------- Inline validation ---------- */
+    const rules = {
+        title: {
+            input: titleInput, error: "title-error",
+            check: function () {
+                const v = titleInput.value.trim();
+                if (v.length < 5) return "Enter a title of at least 5 characters.";
+                if (v.length > 150) return "Keep the title to 150 characters or fewer.";
+                return "";
+            }
+        },
+        description: {
+            input: descriptionInput, error: "description-error",
+            check: function () {
+                const v = descriptionInput.value.trim();
+                if (v.length < 30) return "Describe the project in at least 30 characters (" + v.length + " so far).";
+                if (v.length > 10000) return "Keep the description to 10,000 characters or fewer.";
+                return "";
+            }
+        },
+        skills: {
+            input: chips.entry, box: chips.container, error: "skills-error",
+            check: function () { return chips.get().length ? "" : "Add at least one skill, then press Enter."; }
+        },
+        type: {
+            input: typeInput, error: "type-error",
+            check: function () {
+                return typeInput.value === "FIXED" || typeInput.value === "HOURLY"
+                    ? "" : "Choose a valid payment type.";
+            }
+        },
+        budgetMin: {
+            input: budgetMinInput, error: "budget-min-error",
+            check: function () {
+                const raw = budgetMinInput.value.trim();
+                const v = Number(raw);
+                if (raw === "" || !Number.isFinite(v) || v < 1) return "Enter a minimum budget of at least ₹1.";
+                if (v > 999999999999) return "The minimum budget cannot exceed ₹999,999,999,999.";
+                return "";
+            }
+        },
+        budgetMax: {
+            input: budgetMaxInput, error: "budget-max-error",
+            check: function () {
+                const raw = budgetMaxInput.value.trim();
+                const max = Number(raw);
+                if (raw === "" || !Number.isFinite(max) || max < 1) return "Enter a maximum budget of at least ₹1.";
+                if (max > 999999999999) return "The maximum budget cannot exceed ₹999,999,999,999.";
+                const minRaw = budgetMinInput.value.trim();
+                const min = Number(minRaw);
+                if (minRaw !== "" && Number.isFinite(min) && max < min) {
+                    return "Maximum must be at least the minimum budget.";
+                }
+                return "";
+            }
+        },
+        deadline: {
+            input: deadlineInput, error: "deadline-error",
+            check: function () {
+                if (!deadlineInput.value) return "Choose a deadline.";
+                if (deadlineInput.value < localToday) return "Choose today or a future date.";
+                return "";
+            }
+        }
+    };
+
+    // The client directory can carry a freelancer's public skills into a new project.
+    const suggestedSkills = new URLSearchParams(window.location.search).get("skills");
+    if (suggestedSkills) chips.set(suggestedSkills.slice(0, 500));
+
+    function validateField(name) {
+        const rule = rules[name];
+        const message = rule.check();
+        const errorEl = document.getElementById(rule.error);
+        errorEl.textContent = message;
+        errorEl.hidden = !message;
+        (rule.box || rule.input).classList.toggle("is-invalid", Boolean(message));
+        rule.input.setAttribute("aria-invalid", message ? "true" : "false");
+        return !message;
+    }
+
+    function clearFieldError(name) {
+        const rule = rules[name];
+        const errorEl = document.getElementById(rule.error);
+        errorEl.hidden = true;
+        errorEl.textContent = "";
+        (rule.box || rule.input).classList.remove("is-invalid");
+        rule.input.removeAttribute("aria-invalid");
+    }
+
+    const touched = new Set();
+    Object.keys(rules).forEach(function (name) {
+        const input = rules[name].input;
+        input.addEventListener("blur", function () {
+            if (name === "skills") return;
+            touched.add(name);
+            validateField(name);
+        });
+        input.addEventListener("input", function () {
+            if (touched.has(name)) validateField(name);
+        });
+    });
+    // Re-check the max budget whenever the minimum changes.
+    budgetMinInput.addEventListener("input", function () {
+        if (touched.has("budgetMax")) validateField("budgetMax");
+    });
+    typeInput.addEventListener("change", function () { touched.add("type"); validateField("type"); });
+    deadlineInput.addEventListener("change", function () { touched.add("deadline"); validateField("deadline"); });
+
+    /* ---------- Submit ---------- */
+    form.addEventListener("submit", function (event) {
+        chips.commit();
+        const names = Object.keys(rules);
+        const invalid = names.filter(function (name) { touched.add(name); return !validateField(name); });
+
+        if (invalid.length) {
+            event.preventDefault();
+            messageElement.textContent = "Please fix the " + invalid.length +
+                (invalid.length === 1 ? " field" : " fields") + " marked below.";
+            messageElement.hidden = false;
+            const first = rules[invalid[0]].input;
+            first.focus();
+            return;
+        }
+        messageElement.hidden = true;
+    });
+
+    /* ---------- Server-side errors after a redirect ---------- */
+    (function showServerError() {
+        const error = new URLSearchParams(window.location.search).get("error");
+        const fieldFor = { title: "title", description: "description", skills: "skills", type: "type", budget: "budgetMax", deadline: "deadline" };
+        const messages = {
+            title: "Please enter a valid project title between 5 and 150 characters.",
+            description: "Please enter a project description between 30 and 10,000 characters.",
+            skills: "Please enter the skills required for this project.",
+            type: "Please select a valid project type.",
+            budget: "Please enter a valid budget range. The maximum must be at least the minimum.",
+            deadline: "Please select today or a future date.",
+            server: "Something went wrong while creating your project. Please try again."
+        };
+        if (!messages[error]) return;
+
+        messageElement.textContent = messages[error];
+        messageElement.hidden = false;
+        showBanner(messages[error], "error");
+        if (fieldFor[error]) {
+            touched.add(fieldFor[error]);
+            validateField(fieldFor[error]);
+        }
+        messageElement.focus();
+    })();
+    </script>
+
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Project | WorkNest</title>
+
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/freelancer-dashboard.css">
+
+    <style>
+        .edit-project-container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 24px 48px;
+        }
+
+        .edit-project-heading {
+            margin-bottom: 28px;
+        }
+
+        .edit-project-heading h1 {
+            margin-bottom: 8px;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            color: #24271F;
+        }
+
+        .edit-project-heading p {
+            color: #6B6D66;
+            line-height: 1.6;
+        }
+
+        .edit-project-card {
+            background: #FFFFFF;
+            border: 1px solid #E8E5DC;
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: 0 8px 28px rgba(36, 39, 31, 0.04);
+        }
+
+        .edit-project-form {
+            display: grid;
+            gap: 22px;
+        }
+
+        .form-field {
+            display: grid;
+            gap: 8px;
+        }
+
+        .form-field label {
+            font-size: 0.94rem;
+            font-weight: 600;
+            color: #24271F;
+        }
+
+        .form-field input,
+        .form-field textarea,
+        .form-field select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border: 1px solid #DAD8CF;
+            border-radius: 9px;
+            background: #FFFFFF;
+            color: #24271F;
+            font: inherit;
+            outline: none;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus,
+        .form-field select:focus {
+            border-color: #5040D8;
+            box-shadow: 0 0 0 3px rgba(80, 64, 216, 0.12);
+        }
+
+        .form-field textarea {
+            min-height: 150px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-field small {
+            color: #77796F;
+            line-height: 1.5;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-message {
+            padding: 13px 15px;
+            border-radius: 9px;
+            line-height: 1.5;
+        }
+
+        .form-message[hidden] {
+            display: none;
+        }
+
+        .form-message--error {
+            background: #FFF0EF;
+            color: #A52820;
+            border: 1px solid #F2C6C2;
+        }
+
+        .form-message--success {
+            background: #ECF8EF;
+            color: #216E39;
+            border: 1px solid #B9E2C3;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 12px;
+            padding-top: 8px;
+        }
+
+        .edit-button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 44px;
+            padding: 0 20px;
+            border: 1px solid #E8E5DC;
+            border-radius: 9px;
+            font: inherit;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .edit-button:hover {
+            opacity: 0.85;
+        }
+
+        .edit-button--primary {
+            color: #FFFFFF;
+            background: #24271F;
+            border-color: #24271F;
+        }
+
+        .edit-button--secondary {
+            color: #24271F;
+            background: #FFFFFF;
+        }
+
+        .edit-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .edit-loading {
+            color: #6B6D66;
+            padding: 20px 0;
+        }
+
+        @media (max-width: 600px) {
+            .edit-project-container {
+                margin-top: 24px;
+                padding: 0 16px 32px;
+            }
+
+            .edit-project-card {
+                padding: 22px 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .edit-button {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    /* ===== Shared freelancer header: identical on every freelancer page ===== */
+html body.dashboard-body header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 247, 242, .94);
+    border-bottom: 1px solid #E8E5DC;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+html body.dashboard-body header.site-header .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 88px;
+}
+html body.dashboard-body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: #24271F;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-decoration: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B6D66;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background: #F0EEFF;
+    color: #5040D8;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header .wordmark:focus-visible,
+html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+html body.dashboard-body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 16px;
+}
+html body.dashboard-body header.site-header .dashboard-role {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #6B6D66;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+html body.dashboard-body header.site-header .site-header__actions .button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: none;
+}
+@media (max-width: 900px) {
+    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
+    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
+}
+@media (max-width: 650px) {
+    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
+    html body.dashboard-body header.site-header .dashboard-role { display: none; }
+}
+    </style>
+    <link rel="stylesheet" href="../../css/client-ui.css">
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+
+<body class="dashboard-body client-dashboard">
+
+<header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link">Overview</a>
+            <a href="index.html#your-projects" class="site-nav__link" aria-current="page">Your projects</a>
+            <a href="create-project.html" class="site-nav__link">Post a project</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <span class="dashboard-role">Client account</span>
+            <form action="../../logout" method="post">
+                <button class="button button--dark" type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<main class="edit-project-container">
+
+    <a href="index.html" class="back-link">
+        &larr; Back to dashboard
+    </a>
+
+    <div class="edit-project-heading">
+        <h1>Edit your project</h1>
+        <p>Update the project details so freelancers know exactly what you need.</p>
+    </div>
+
+    <p id="loading-message" class="edit-loading" role="status">
+        Loading project details...
+    </p>
+
+    <div id="form-message"
+         class="form-message"
+         role="alert"
+         aria-live="polite"
+         hidden></div>
+
+    <section id="edit-project-card"
+             class="edit-project-card"
+             hidden>
+
+        <form id="edit-project-form" class="edit-project-form" novalidate>
+
+            <div class="form-field">
+                <label for="title">Project title</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    maxlength="150"
+                    required>
+            </div>
+
+            <div class="form-field">
+                <label for="description">Project description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    required></textarea>
+                <small>Explain the requirements, deliverables, and expected outcome.</small>
+            </div>
+
+            <div class="form-field">
+                <label for="requiredSkills">Required skills</label>
+                <input
+                    type="text"
+                    id="requiredSkills"
+                    name="requiredSkills"
+                    maxlength="500"
+                    data-placeholder="Type a skill, then press Space">
+                <small>Type a skill and press Space. Each skill becomes a chip; click &times; or press Backspace to remove one.</small>
+            </div>
+
+            <div class="form-field">
+                <label for="projectType">Project type</label>
+                <select id="projectType" name="projectType" required>
+                    <option value="FIXED">Fixed price</option>
+                    <option value="HOURLY">Hourly</option>
+                </select>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="budgetMin">Minimum budget (₹)</label>
+                    <input
+                        type="number"
+                        id="budgetMin"
+                        name="budgetMin"
+                        min="0.01"
+                        step="0.01"
+                        required>
+                </div>
+
+                <div class="form-field">
+                    <label for="budgetMax">Maximum budget (₹)</label>
+                    <input
+                        type="number"
+                        id="budgetMax"
+                        name="budgetMax"
+                        min="0.01"
+                        step="0.01"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="deadline">Project deadline</label>
+                <input
+                    type="date"
+                    id="deadline"
+                    name="deadline"
+                    required>
+            </div>
+
+            <div class="form-actions">
+                <a href="index.html" class="edit-button edit-button--secondary">
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    id="save-button"
+                    class="edit-button edit-button--primary">
+                    Save Changes
+                </button>
+            </div>
+
+        </form>
+    </section>
+
+</main>
+
+<footer class="wn-footer">
+    <div class="wn-footer__inner">
+        <p>WorkNest — Good work, done together.</p>
+        <nav aria-label="Footer">
+            <a href="index.html">Overview</a>
+            <a href="index.html#your-projects">Your projects</a>
+            <a href="create-project.html">Post a project</a>
+        </nav>
+    </div>
+</footer>
+
+<script src="../../js/skill-chips.js"></script>
+<script>
+    const contextPath = "/WorkNest";
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get("id");
+
+    const loadingMessage = document.getElementById("loading-message");
+    const messageBox = document.getElementById("form-message");
+    const projectCard = document.getElementById("edit-project-card");
+    const projectForm = document.getElementById("edit-project-form");
+    const saveButton = document.getElementById("save-button");
+    const skillChips = initSkillChips(document.getElementById("requiredSkills"));
+
+    function showMessage(message, type = "error") {
+        messageBox.textContent = message;
+        messageBox.className = "form-message form-message--" + type;
+        messageBox.hidden = false;
+    }
+
+    function hideMessage() {
+        messageBox.textContent = "";
+        messageBox.hidden = true;
+    }
+
+    async function readResponse(response) {
+        const contentType = response.headers.get("content-type") || "";
+
+        if (contentType.includes("application/json")) {
+            return await response.json();
+        }
+
+        const text = await response.text();
+        return { message: text || "The server returned an unexpected response." };
+    }
+
+    function handleUnauthorized() {
+        window.location.href = "../../login.html";
+    }
+
+    function setField(name, value) {
+        const field = document.getElementById(name);
+        field.value = value ?? "";
+        if (field.skillChips) field.skillChips.set(field.value);
+    }
+
+    async function loadProject() {
+        if (!projectId || !/^[1-9]\d*$/.test(projectId)) {
+            loadingMessage.hidden = true;
+            showMessage("Invalid project ID. Please return to your dashboard.");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${contextPath}/project-details?id=${encodeURIComponent(projectId)}`,
+                {
+                    method: "GET",
+                    credentials: "same-origin",
+                    headers: { "Accept": "application/json" }
+                }
+            );
+
+            if (response.status === 401) {
+                handleUnauthorized();
+                return;
+            }
+
+            const data = await readResponse(response);
+
+            if (!response.ok) {
+                throw new Error(data.message || "Unable to load this project.");
+            }
+
+            const project = data.project || data;
+
+            setField("title", project.title);
+            setField("description", project.description);
+            setField("requiredSkills", project.requiredSkills);
+            setField("projectType", project.projectType);
+            setField("budgetMin", project.budgetMin);
+            setField("budgetMax", project.budgetMax);
+            setField("deadline", project.deadline);
+
+            loadingMessage.hidden = true;
+            projectCard.hidden = false;
+
+        } catch (error) {
+            loadingMessage.hidden = true;
+            showMessage(error.message || "Could not load project details. Please try again.");
+        }
+    }
+
+    projectForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        hideMessage();
+
+        if (!projectForm.reportValidity()) {
+            return;
+        }
+
+        const budgetMin = Number(document.getElementById("budgetMin").value);
+        const budgetMax = Number(document.getElementById("budgetMax").value);
+
+        if (!Number.isFinite(budgetMin) || !Number.isFinite(budgetMax) ||
+            budgetMin <= 0 || budgetMax < budgetMin) {
+            showMessage("Enter valid budgets. The maximum budget must be at least the minimum.");
+            return;
+        }
+
+        const deadline = document.getElementById("deadline").value;
+
+        if (!deadline) {
+            showMessage("Please select a project deadline.");
+            return;
+        }
+
+        const payload = {
+            projectId: projectId,
+            title: document.getElementById("title").value.trim(),
+            description: document.getElementById("description").value.trim(),
+            requiredSkills: document.getElementById("requiredSkills").value.trim(),
+            projectType: document.getElementById("projectType").value,
+            budgetMin: budgetMin,
+            budgetMax: budgetMax,
+            deadline: deadline
+        };
+
+        if (!payload.requiredSkills) {
+            showMessage("Add at least one required skill, then press Space.");
+            skillChips.focus();
+            return;
+        }
+
+        if (!payload.title || !payload.description) {
+            showMessage("Please complete all required fields.");
+            return;
+        }
+
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving...";
+
+        try {
+            const response = await fetch(`${contextPath}/update-project`, {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.status === 401) {
+                handleUnauthorized();
+                return;
+            }
+
+            const data = await readResponse(response);
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    `Unable to update project. HTTP ${response.status}`
+                );
+            }
+
+            window.location.href =
+                `index.html?projectUpdated=true&id=${encodeURIComponent(projectId)}`;
+
+        } catch (error) {
+            showMessage(error.message || "An error occurred while saving your changes.");
+        } finally {
+            saveButton.disabled = false;
+            saveButton.textContent = "Save Changes";
+        }
+    });
+
+    loadProject();
+</script>
+
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>

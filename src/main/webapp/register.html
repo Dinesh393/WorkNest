@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create your WorkNest account and start working better together.">
+    <title>Create an account | WorkNest</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/design-tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/register.css">
+</head>
+
+<body class="auth-body">
+
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="wordmark" href="index.html" aria-label="WorkNest home">
+                worknest<span class="wordmark__period">.</span>
+            </a>
+
+            <a class="site-nav__link" href="login.html">
+                Already have an account? <strong>Log in</strong>
+            </a>
+        </div>
+    </header>
+
+    <main id="main-content" class="auth-page">
+
+        <section class="auth-intro">
+            <p class="eyebrow">
+                <span class="eyebrow__line" aria-hidden="true"></span>
+                A better way to work independently
+            </p>
+
+            <h1>
+                Good work starts with
+                <em>the right connection.</em>
+            </h1>
+
+            <p class="auth-intro__description">
+                Join WorkNest to discover meaningful projects,
+                work with the right people, and keep everything moving.
+            </p>
+
+            <ul class="auth-benefits">
+                <li>Find opportunities that match your goals.</li>
+                <li>Set clear expectations from the start.</li>
+                <li>Keep projects and collaboration organised.</li>
+            </ul>
+        </section>
+
+        <section class="auth-panel" aria-labelledby="register-heading">
+
+            <div class="auth-panel__heading">
+                <p class="auth-panel__eyebrow">YOUR WORKNEST ACCOUNT</p>
+                <h2 id="register-heading">Create your account</h2>
+                <p>First, tell us a little about yourself.</p>
+            </div>
+
+            <!-- Registration messages -->
+            <p id="register-message"
+               class="form-message"
+               role="alert"
+               aria-live="polite"
+               tabindex="-1"
+               hidden></p>
+
+            <form id="register-form" action="register" method="post">
+
+                <fieldset class="account-types">
+                    <legend>How will you use WorkNest?</legend>
+
+                    <label class="account-type">
+                        <input
+                            type="radio"
+                            name="role"
+                            value="FREELANCER"
+                            required>
+                        <span class="account-type__content">
+                            <strong>I'm a freelancer</strong>
+                            <span>I want to find projects and work with clients.</span>
+                        </span>
+                    </label>
+
+                    <label class="account-type">
+                        <input
+                            type="radio"
+                            name="role"
+                            value="CLIENT"
+                            required>
+                        <span class="account-type__content">
+                            <strong>I'm a client</strong>
+                            <span>I want to find talent and manage projects.</span>
+                        </span>
+                    </label>
+                </fieldset>
+
+                <div class="form-field">
+                    <label for="full-name">Full name</label>
+                    <input
+                        type="text"
+                        id="full-name"
+                        name="fullName"
+                        autocomplete="name"
+                        placeholder="Enter your full name"
+                        maxlength="100"
+                        required>
+                </div>
+
+                <div class="form-field">
+                    <label for="email">Email address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        autocomplete="email"
+                        placeholder="you@example.com"
+                        maxlength="254"
+                        required>
+                </div>
+
+                <div class="form-field">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        autocomplete="new-password"
+                        placeholder="Create a strong password"
+                        minlength="6"
+                        maxlength="100"
+                        aria-describedby="password-help"
+                        required>
+                    <p class="form-help" id="password-help">
+                        Use at least 6 characters. Avoid passwords you use elsewhere.
+                    </p>
+                </div>
+
+                <div class="form-field">
+                    <label for="confirm-password">Confirm password</label>
+                    <input
+                        type="password"
+                        id="confirm-password"
+                        name="confirmPassword"
+                        autocomplete="new-password"
+                        placeholder="Enter your password again"
+                        minlength="6"
+                        maxlength="100"
+                        required>
+                </div>
+
+                <label class="terms-agreement">
+                    <input
+                        type="checkbox"
+                        name="termsAccepted"
+                        value="true"
+                        required>
+                    <span>
+                        I agree to the WorkNest terms of service and privacy policy.
+                    </span>
+                </label>
+
+                <button class="button button--dark auth-submit" type="submit">
+                    Create account
+                    <span aria-hidden="true">→</span>
+                </button>
+
+                <p class="auth-legal">
+                    Your information will be handled securely.
+                </p>
+            </form>
+
+            <p class="auth-switch">
+                Already registered?
+                <a href="login.html">Log in instead</a>
+            </p>
+
+        </section>
+    </main>
+
+    <footer class="auth-footer">
+        <a class="wordmark wordmark--footer" href="index.html">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+        <p>Good work, done together.</p>
+    </footer>
+
+    <script>
+        (() => {
+            const params = new URLSearchParams(window.location.search);
+            const error = params.get("error");
+            const messageElement = document.getElementById("register-message");
+
+            const messages = {
+                name: "Please enter a valid name of no more than 100 characters.",
+                email: "Please enter a valid email address.",
+                password: "Your password must be between 6 and 100 characters.",
+                confirmPassword: "Your passwords do not match.",
+                role: "Please select whether you're a freelancer or a client.",
+                terms: "Please accept the terms and conditions.",
+                exists: "An account with this email already exists.",
+                server: "Registration is temporarily unavailable. Please try again later."
+            };
+
+            if (messages[error]) {
+                messageElement.textContent = messages[error];
+                messageElement.hidden = false;
+                messageElement.focus();
+            }
+        })();
+    </script>
+
+</body>
+</html>

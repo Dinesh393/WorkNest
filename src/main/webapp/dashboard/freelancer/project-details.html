@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View freelance project details on WorkNest.">
+    <title>Project Details | WorkNest</title>
+
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/freelancer-dashboard.css">
+
+    <style>
+        .freelancer-details-page {
+            width: min(960px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 42px 0 64px;
+            color: #24271F;
+        }
+
+        .freelancer-details-page .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #45473F;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .freelancer-details-page .back-link:hover {
+            color: #5040D8;
+        }
+
+        .freelancer-details-page .details-eyebrow {
+            margin: 0 0 9px;
+            color: #77796F;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .freelancer-details-page .details-heading {
+            margin: 0 0 14px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: -0.04em;
+            overflow-wrap: anywhere;
+        }
+
+        .freelancer-details-page .details-intro {
+            margin: 0 0 28px;
+            color: #6B6D66;
+            line-height: 1.7;
+        }
+
+        .freelancer-details-page .details-card {
+            padding: clamp(22px, 4vw, 36px);
+            border: 1px solid #E8E5DC;
+            border-radius: 16px;
+            background: #FFFFFF;
+            box-shadow: 0 4px 18px rgba(36, 39, 31, 0.03);
+        }
+
+        .freelancer-details-page .details-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .freelancer-details-page .details-type,
+        .freelancer-details-page .details-status {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 0 11px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .freelancer-details-page .details-type {
+            background: #F2F1EC;
+            color: #55574F;
+        }
+
+        .freelancer-details-page .details-status {
+            background: #E8F5EB;
+            color: #267444;
+        }
+
+        .freelancer-details-page .details-section {
+            margin-top: 28px;
+        }
+
+        .freelancer-details-page .details-section h2 {
+            margin: 0 0 12px;
+            color: #24271F;
+            font-size: 1.05rem;
+            font-weight: 650;
+        }
+
+        .freelancer-details-page .details-description {
+            margin: 0;
+            color: #62645C;
+            line-height: 1.8;
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+
+        .freelancer-details-page .details-skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .freelancer-details-page .details-skill-tag {
+            padding: 8px 11px;
+            border: 1px solid #ECEAE3;
+            border-radius: 8px;
+            background: #F8F7F2;
+            color: #55574F;
+            font-size: 0.83rem;
+            overflow-wrap: anywhere;
+        }
+
+        .freelancer-details-page .details-meta {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .freelancer-details-page .details-meta-item {
+            display: grid;
+            align-content: start;
+            gap: 9px;
+            padding: 18px;
+            border: 1px solid #EEECE5;
+            border-radius: 11px;
+            background: #FCFBF8;
+            min-width: 0;
+        }
+
+        .freelancer-details-page .details-meta-item span {
+            color: #77796F;
+            font-size: 0.83rem;
+        }
+
+        .freelancer-details-page .details-meta-item strong {
+            color: #24271F;
+            font-size: 1rem;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .freelancer-details-page .proposal-coming-soon {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #E1DCF9;
+            border-radius: 12px;
+            background: #F4F1FF;
+        }
+
+        .freelancer-details-page .proposal-coming-soon h2 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+        }
+
+        .freelancer-details-page .proposal-coming-soon p {
+            margin: 0;
+            color: #666177;
+            line-height: 1.65;
+        }
+
+        .freelancer-details-page .details-message {
+            padding: 22px;
+            border: 1px solid #E8E5DC;
+            border-radius: 13px;
+            background: #FFFFFF;
+            color: #62645C;
+            line-height: 1.65;
+        }
+
+        .freelancer-details-page .details-message--error {
+            border-color: #F2C6C2;
+            background: #FFF0EF;
+            color: #A52820;
+        }
+
+        .freelancer-details-page [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .freelancer-details-page {
+                width: calc(100% - 32px);
+                padding-top: 28px;
+            }
+
+            .freelancer-details-page .details-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+/* Proposal form — WorkNest styling */
+.freelancer-details-page .proposal-section {
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid #E8E5DC;
+}
+
+.freelancer-details-page .proposal-section h2 {
+    margin: 0 0 10px;
+    color: #24271F;
+    font-size: 1.35rem;
+    font-weight: 600;
+}
+
+.freelancer-details-page #proposal-amount-help {
+    margin: 0 0 22px;
+    color: #6B6D66;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.freelancer-details-page #proposal-form {
+    display: grid;
+    gap: 20px;
+}
+
+.freelancer-details-page #proposal-form .form-group {
+    display: grid;
+    gap: 9px;
+    min-width: 0;
+}
+
+.freelancer-details-page #proposal-form label {
+    color: #35372F;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.freelancer-details-page #proposal-form input[type="number"],
+.freelancer-details-page #proposal-form textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 14px;
+    border: 1px solid #DCD9D0;
+    border-radius: 9px;
+    background: #FFFFFF;
+    color: #24271F;
+    font: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.freelancer-details-page #proposal-form input[type="number"] {
+    min-height: 48px;
+}
+
+.freelancer-details-page #proposal-form textarea {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.65;
+}
+
+.freelancer-details-page #proposal-form input:focus,
+.freelancer-details-page #proposal-form textarea:focus {
+    outline: none;
+    border-color: #5040D8;
+    box-shadow: 0 0 0 3px rgba(80, 64, 216, 0.12);
+}
+
+.freelancer-details-page #submit-proposal-button {
+    justify-self: start;
+    min-height: 46px;
+    padding: 0 22px;
+    border: 1px solid #24271F;
+    border-radius: 9px;
+    background: #24271F;
+    color: #FFFFFF;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.freelancer-details-page #submit-proposal-button:hover:not(:disabled) {
+    background: #5040D8;
+    border-color: #5040D8;
+}
+
+.freelancer-details-page #submit-proposal-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.freelancer-details-page #proposal-message {
+    margin: 0;
+    color: #267444;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.freelancer-details-page #proposal-form [hidden] {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    .freelancer-details-page #submit-proposal-button {
+        width: 100%;
+        justify-self: stretch;
+    }
+}
+        
+    
+/* ===== Shared freelancer header: identical on every freelancer page ===== */
+html body.dashboard-body header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 247, 242, .94);
+    border-bottom: 1px solid #E8E5DC;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+html body.dashboard-body header.site-header .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 88px;
+}
+html body.dashboard-body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: #24271F;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-decoration: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B6D66;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background: #F0EEFF;
+    color: #5040D8;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header .wordmark:focus-visible,
+html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+html body.dashboard-body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 16px;
+}
+html body.dashboard-body header.site-header .dashboard-role {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #6B6D66;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+html body.dashboard-body header.site-header .site-header__actions .button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: none;
+}
+@media (max-width: 900px) {
+    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
+    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
+}
+@media (max-width: 650px) {
+    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
+    html body.dashboard-body header.site-header .dashboard-role { display: none; }
+}
+    </style>
+    <link rel="stylesheet" href="../../css/client-ui.css">
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+
+<body class="dashboard-body freelancer-dashboard">
+
+    <header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link">Overview</a>
+            <a href="my-projects.html" class="site-nav__link">My projects</a>
+            <a href="find-work.html" class="site-nav__link" aria-current="page">Find work</a>
+            <a href="my-proposals.html" class="site-nav__link">My proposals</a>
+            <a href="profile.html" class="site-nav__link">My profile</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <span class="dashboard-role">Freelancer</span>
+            <form action="../../logout" method="post">
+                <button class="button button--dark" type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+    <main class="freelancer-details-page">
+        <a href="find-work.html" class="back-link">
+            ← Back to available projects
+        </a>
+
+        <p class="details-eyebrow">PROJECT DETAILS</p>
+
+        <h1 id="project-title" class="details-heading">
+            Loading project...
+        </h1>
+
+        <p class="details-intro">
+            Review the requirements, skills, budget, and deadline.
+        </p>
+
+        <div id="details-message"
+             class="details-message"
+             role="status"
+             aria-live="polite">
+            Loading project details...
+        </div>
+
+        <article id="project-details-card"
+                 class="details-card"
+                 hidden>
+
+            <div class="details-top">
+                <span id="project-type" class="details-type"></span>
+                <span id="project-status" class="details-status">Open</span>
+            </div>
+
+            <section class="details-section">
+                <h2>Project description</h2>
+                <p id="project-description" class="details-description"></p>
+            </section>
+
+            <section class="details-section">
+                <h2>Required skills</h2>
+                <div id="project-skills" class="details-skill-tags"></div>
+            </section>
+
+            <section class="details-section">
+                <h2>Budget and deadline</h2>
+
+                <div class="details-meta">
+                    <div class="details-meta-item">
+                        <span>Budget range</span>
+                        <strong id="project-budget"></strong>
+                    </div>
+
+                    <div class="details-meta-item">
+                        <span>Project deadline</span>
+                        <strong id="project-deadline"></strong>
+                    </div>
+                </div>
+            </section>
+
+            
+<section class="proposal-section">
+    <h2>Apply for This Project</h2>
+    <p id="proposal-amount-help">
+        Submit your proposed price and explain why you are suitable.
+    </p>
+
+    <form id="proposal-form">
+        <input type="hidden" id="proposal-project-id" name="projectId">
+
+        <div class="form-group">
+            <label for="proposed-amount" id="proposed-amount-label">
+                Proposed Amount (₹)
+            </label>
+            <input
+                type="number"
+                id="proposed-amount"
+                name="proposedAmount"
+                min="0.01"
+                step="0.01"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="cover-letter">Cover Letter</label>
+            <textarea
+                id="cover-letter"
+                name="coverLetter"
+                rows="6"
+                maxlength="5000"
+                placeholder="Explain your relevant skills and how you would approach this project."
+                required
+            ></textarea>
+        </div>
+
+        <button type="submit" id="submit-proposal-button">
+            Submit Proposal
+        </button>
+
+        <p id="proposal-message" role="status" aria-live="polite"></p>
+    </form>
+</section>
+
+
+        </article>
+    </main>
+
+    <script>
+
+    "use strict";
+
+    const contextPath = "/WorkNest";
+
+    const detailsMessage = document.getElementById("details-message");
+    const detailsCard = document.getElementById("project-details-card");
+
+    const proposalForm = document.getElementById("proposal-form");
+    const proposalProjectId = document.getElementById("proposal-project-id");
+    const amountLabel = document.getElementById("proposed-amount-label");
+    const amountHelp = document.getElementById("proposal-amount-help");
+    const amountInput = document.getElementById("proposed-amount");
+    const coverLetterInput = document.getElementById("cover-letter");
+    const proposalMessage = document.getElementById("proposal-message");
+    const submitProposalButton = document.getElementById("submit-proposal-button");
+
+    let currentProjectId = null;
+    let proposalSubmitted = false;
+
+    function formatCurrency(value) {
+        const amount = Number(value);
+
+        if (!Number.isFinite(amount)) {
+            return "Not specified";
+        }
+
+        return amount.toLocaleString("en-IN", {
+            style: "currency",
+            currency: "INR",
+            maximumFractionDigits: 2
+        });
+    }
+
+    function formatDeadline(value) {
+        if (!value) {
+            return "Not specified";
+        }
+
+        const parts = String(value).split("-");
+
+        if (parts.length !== 3) {
+            return String(value);
+        }
+
+        const date = new Date(
+            Number(parts[0]),
+            Number(parts[1]) - 1,
+            Number(parts[2])
+        );
+
+        if (Number.isNaN(date.getTime())) {
+            return String(value);
+        }
+
+        return date.toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+    function showError(message) {
+        detailsCard.hidden = true;
+        detailsMessage.hidden = false;
+        detailsMessage.classList.add("details-message--error");
+        detailsMessage.textContent = message;
+    }
+
+    function setupProposalForm(project, projectId) {
+        currentProjectId = projectId;
+        proposalProjectId.value = projectId;
+
+        proposalForm.reset();
+        proposalProjectId.value = projectId;
+
+        proposalMessage.textContent = "";
+        proposalSubmitted = false;
+        submitProposalButton.disabled = false;
+
+        if (project.status !== "OPEN") {
+            proposalForm.hidden = true;
+            return;
+        }
+
+        proposalForm.hidden = false;
+
+        if (project.projectType === "HOURLY") {
+            amountLabel.textContent = "Proposed Hourly Rate (₹)";
+            amountHelp.textContent =
+                "Enter the amount you charge per hour.";
+            amountInput.setAttribute(
+                "aria-label",
+                "Proposed hourly rate in Indian rupees"
+            );
+        } else {
+            amountLabel.textContent = "Proposed Total Price (₹)";
+            amountHelp.textContent =
+                "Enter the total price for completing this project.";
+            amountInput.setAttribute(
+                "aria-label",
+                "Proposed total price in Indian rupees"
+            );
+        }
+    }
+
+    function renderProject(project) {
+        document.getElementById("project-title").textContent =
+            project.title || "Untitled project";
+
+        document.getElementById("project-type").textContent =
+            project.projectType === "HOURLY"
+                ? "Hourly"
+                : "Fixed price";
+
+        document.getElementById("project-status").textContent =
+            project.status || "Unknown";
+
+        document.getElementById("project-description").textContent =
+            project.description || "No description provided.";
+
+        const budgetMin = Number(project.budgetMin);
+        const budgetMax = Number(project.budgetMax);
+
+        const budgetText =
+            project.budgetMin !== null &&
+            project.budgetMin !== undefined &&
+            project.budgetMax !== null &&
+            project.budgetMax !== undefined &&
+            Number.isFinite(budgetMin) &&
+            Number.isFinite(budgetMax)
+                ? `${formatCurrency(budgetMin)} – ${formatCurrency(budgetMax)}`
+                : "Not specified";
+
+        document.getElementById("project-budget").textContent = budgetText;
+
+        document.getElementById("project-deadline").textContent =
+            formatDeadline(project.deadline);
+
+        const skillsContainer = document.getElementById("project-skills");
+
+        skillsContainer.replaceChildren();
+
+        const skills = String(project.requiredSkills || "")
+            .split(",")
+            .map(skill => skill.trim())
+            .filter(Boolean);
+
+        if (skills.length === 0) {
+            const tag = document.createElement("span");
+            tag.className = "details-skill-tag";
+            tag.textContent = "Not specified";
+            skillsContainer.appendChild(tag);
+        } else {
+            skills.forEach(skill => {
+                const tag = document.createElement("span");
+                tag.className = "details-skill-tag";
+                tag.textContent = skill;
+                skillsContainer.appendChild(tag);
+            });
+        }
+
+        detailsMessage.hidden = true;
+        detailsCard.hidden = false;
+    }
+
+    async function loadProjectDetails() {
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get("id");
+
+        if (!projectId || !/^[1-9][0-9]*$/.test(projectId)) {
+            showError("The project ID is missing or invalid.");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${contextPath}/freelancer-project-details?id=${encodeURIComponent(projectId)}`,
+                {
+                    method: "GET",
+                    credentials: "same-origin",
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                    cache: "no-store"
+                }
+            );
+
+            if (response.status === 401) {
+                window.location.replace("../../login.html");
+                return;
+            }
+
+            const contentType = response.headers.get("content-type") || "";
+
+            if (!contentType.includes("application/json")) {
+                throw new Error(
+                    "The project details service is unavailable. Check the servlet mapping."
+                );
+            }
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    `Unable to load project (HTTP ${response.status}).`
+                );
+            }
+
+            renderProject(data);
+            setupProposalForm(data, projectId);
+
+        } catch (error) {
+            console.error("Project details loading failed:", error);
+
+            showError(
+                error.message ||
+                "Unable to load project details. Please try again."
+            );
+        }
+    }
+
+    proposalForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (proposalSubmitted || !currentProjectId) {
+            return;
+        }
+
+        proposalMessage.textContent = "";
+
+        if (!proposalForm.reportValidity()) {
+            return;
+        }
+
+        const amount = amountInput.value.trim();
+        const coverLetter = coverLetterInput.value.trim();
+
+        if (!amount || !coverLetter) {
+            proposalMessage.textContent =
+                "Please enter the proposed amount and cover letter.";
+            return;
+        }
+
+        if (!Number.isFinite(Number(amount)) || Number(amount) <= 0) {
+            proposalMessage.textContent =
+                "The proposed amount must be greater than zero.";
+            return;
+        }
+
+        if (coverLetter.length > 5000) {
+            proposalMessage.textContent =
+                "Your cover letter cannot exceed 5000 characters.";
+            return;
+        }
+
+        submitProposalButton.disabled = true;
+        submitProposalButton.textContent = "Submitting...";
+
+        try {
+            const response = await fetch(`${contextPath}/submit-proposal`, {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                },
+                body: new URLSearchParams({
+                    projectId: currentProjectId,
+                    proposedAmount: amount,
+                    coverLetter: coverLetter
+                }),
+                cache: "no-store"
+            });
+
+            if (response.status === 401) {
+                window.location.replace("../../login.html");
+                return;
+            }
+
+            const contentType = response.headers.get("content-type") || "";
+
+            if (!contentType.includes("application/json")) {
+                throw new Error(
+                    "The proposal service did not return JSON. Check the servlet mapping."
+                );
+            }
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                proposalMessage.textContent =
+                    data.error ||
+                    data.message ||
+                    `Unable to submit proposal (HTTP ${response.status}).`;
+
+                return;
+            }
+
+            proposalSubmitted = true;
+            proposalMessage.textContent =
+                data.message || "Proposal submitted successfully.";
+
+            amountInput.disabled = true;
+            coverLetterInput.disabled = true;
+            submitProposalButton.textContent = "Proposal Submitted";
+
+        } catch (error) {
+            console.error("Proposal submission failed:", error);
+
+            proposalMessage.textContent =
+                error.message ||
+                "A network error occurred. Please try again.";
+
+        } finally {
+            if (!proposalSubmitted) {
+                submitProposalButton.disabled = false;
+                submitProposalButton.textContent = "Submit Proposal";
+            }
+        }
+    });
+
+    loadProjectDetails();
+
+    </script>
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>

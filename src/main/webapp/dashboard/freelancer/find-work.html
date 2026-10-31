@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find freelance projects that match your skills on WorkNest.">
+    <title>Find Work | WorkNest</title>
+
+    <!-- Existing WorkNest styles -->
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/freelancer-dashboard.css">
+
+    <style>
+        .find-work-page,
+        .find-work-page *,
+        .find-work-page *::before,
+        .find-work-page *::after {
+            box-sizing: border-box;
+        }
+
+        body.dashboard-body {
+            background: #F8F7F2;
+            color: #24271F;
+        }
+
+        /* Shared Freelancer Dashboard header: keep navigation identical on every freelancer page. */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(248, 247, 242, .94);
+            border-bottom: 1px solid var(--wn-border);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .site-header__inner {
+            min-height: 72px;
+            gap: 22px;
+        }
+
+        .wordmark {
+            flex: 0 0 auto;
+            font-weight: 800;
+            letter-spacing: -.055em;
+        }
+
+        .dashboard-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .dashboard-nav .site-nav__link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 9px 12px;
+            border-radius: 9px;
+            color: var(--wn-muted);
+            font-size: .9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color .18s ease, background-color .18s ease, box-shadow .18s ease;
+        }.dashboard-nav .site-nav__link:focus-visible {
+            outline: 3px solid rgba(80, 64, 216, .28);
+            outline-offset: 2px;
+        }
+
+        .dashboard-nav .site-nav__link:focus-visible,
+        .dashboard-mobile-nav a:focus-visible,
+        .freelancer-active-project a:focus-visible,
+        .freelancer-active-project--clickable:focus-visible {
+            outline: 3px solid rgba(80, 64, 216, .35);
+            outline-offset: 3px;
+        }
+
+        .site-header__actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 0 0 auto;
+        }
+
+        .dashboard-role {
+            display: inline-flex;
+            align-items: center;
+            min-height: 32px;
+            padding: 0 11px;
+            border: 1px solid var(--wn-border);
+            border-radius: 999px;
+            background: var(--wn-white);
+            color: var(--wn-muted);
+            font-size: .78rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 900px) {
+            .site-header__inner { flex-wrap: wrap; padding-block: 12px; }
+            .dashboard-nav { order: 3; width: 100%; justify-content: flex-start; }
+        }
+
+        @media (max-width: 650px) {
+            .site-header__inner { gap: 10px; }
+            .dashboard-nav {
+                gap: 3px;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding: 3px 0 5px;
+                scrollbar-width: thin;
+            }
+            .dashboard-nav .site-nav__link {
+                flex: 0 0 auto;
+                padding: 8px 10px;
+                font-size: .82rem;
+            }
+            .site-header__actions { margin-left: auto; gap: 8px; }
+            .dashboard-role { display: none; }
+        }
+
+
+        .find-work-page {
+            width: min(1120px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 42px 0 68px;
+            color: #24271F;
+            min-height: 62vh;
+        }
+
+        .find-work-page .find-work-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .find-work-page .eyebrow {
+            margin: 0 0 10px;
+            color: #77796F;
+            font-size: .76rem;
+            font-weight: 750;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .find-work-page h1 {
+            margin: 0;
+            color: #24271F;
+            font-family: inherit;
+            font-size: clamp(2rem, 4vw, 2.7rem);
+            font-weight: 750;
+            letter-spacing: -.045em;
+            line-height: 1.12;
+        }
+
+        .find-work-page .find-work-intro {
+            max-width: 680px;
+            margin: 14px 0 0;
+            color: #6B6D66;
+            font-size: .96rem;
+            line-height: 1.75;
+        }
+
+        .find-work-page .back-dashboard-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            color: #5040D8;
+            font-size: .9rem;
+            font-weight: 650;
+            text-decoration: none;
+        }
+
+        .find-work-page .back-dashboard-link:hover {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .find-work-page .find-work-toolbar {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 220px auto;
+            align-items: end;
+            gap: 15px;
+            padding: 21px;
+            margin-bottom: 30px;
+            border: 1px solid #E8E5DC;
+            border-radius: 17px;
+            background: #FFFFFF;
+            box-shadow: 0 7px 24px rgb(36 39 31 / 3%);
+        }
+
+        .find-work-page .field-group {
+            display: grid;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .find-work-page .field-group label {
+            color: #34362F;
+            font-size: .84rem;
+            font-weight: 700;
+        }
+
+        .find-work-page .search-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 46px;
+            padding: 0 13px;
+            border: 1px solid #DDDAD0;
+            border-radius: 10px;
+            background: #FFFFFF;
+            transition: border-color .15s ease, box-shadow .15s ease;
+        }
+
+        .find-work-page .search-symbol {
+            color: #77796F;
+            font-size: 21px;
+        }
+
+        .find-work-page #project-search {
+            width: 100%;
+            min-width: 0;
+            min-height: 42px;
+            padding: 0;
+            border: 0;
+            outline: none;
+            background: transparent;
+            color: #24271F;
+            font: inherit;
+            font-size: .9rem;
+        }
+
+        .find-work-page #project-type-filter {
+            width: 100%;
+            min-height: 46px;
+            padding: 0 12px;
+            border: 1px solid #DDDAD0;
+            border-radius: 10px;
+            background: #FFFFFF;
+            color: #24271F;
+            font: inherit;
+            font-size: .9rem;
+        }
+
+        .find-work-page .search-input-wrap:focus-within,
+        .find-work-page #project-type-filter:focus-visible {
+            outline: none;
+            border-color: #5040D8;
+            box-shadow: 0 0 0 3px rgb(80 64 216 / 13%);
+        }
+
+        .find-work-page .clear-filters-button {
+            min-height: 46px;
+            padding: 0 16px;
+            border: 1px solid #E8E5DC;
+            border-radius: 10px;
+            background: #FFFFFF;
+            color: #34362F;
+            font: inherit;
+            font-size: .86rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .15s ease, border-color .15s ease;
+        }
+
+        .find-work-page .clear-filters-button:hover {
+            border-color: #D8D2F7;
+            background: #F8F7FF;
+        }
+
+        .find-work-page .results-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .find-work-page .results-heading h2 {
+            margin: 0;
+            color: #24271F;
+            font-family: inherit;
+            font-size: 1.45rem;
+            font-weight: 750;
+            letter-spacing: -.025em;
+        }
+
+        .find-work-page .results-count {
+            flex-shrink: 0;
+            padding: 7px 12px;
+            border: 1px solid #E8E5DC;
+            border-radius: 999px;
+            background: #FFFFFF;
+            color: #55574F;
+            font-size: .8rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .find-work-page .find-work-project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: stretch;
+            gap: 19px;
+        }
+
+        .find-work-page .work-project-card {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            padding: 24px;
+            border: 1px solid #E8E5DC;
+            border-radius: 18px;
+            background: #FFFFFF;
+            box-shadow: 0 7px 24px rgb(36 39 31 / 3%);
+            transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+        }
+
+        .find-work-page .work-project-card:hover {
+            transform: translateY(-2px);
+            border-color: #D8D2F7;
+            box-shadow: 0 12px 30px rgb(36 39 31 / 7%);
+        }
+
+        .find-work-page .work-project-card__top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .find-work-page .project-type-badge,
+        .find-work-page .project-open-badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-size: .74rem;
+            font-weight: 750;
+        }
+
+        .find-work-page .project-type-badge {
+            border: 1px solid #EAE8E0;
+            background: #F8F7F2;
+            color: #55574F;
+        }
+
+        .find-work-page .project-open-badge {
+            gap: 7px;
+            background: #EAF5ED;
+            color: #267444;
+        }
+
+        .find-work-page .project-open-badge::before {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            content: "";
+        }
+
+        .find-work-page .work-project-card h3 {
+            margin: 0 0 10px;
+            color: #24271F;
+            font-size: 1.18rem;
+            font-weight: 750;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+
+        .find-work-page .project-description {
+            display: -webkit-box;
+            margin: 0 0 20px;
+            overflow: hidden;
+            color: #6B6D66;
+            font-size: .9rem;
+            line-height: 1.7;
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+        }
+
+        .find-work-page .project-skills {
+            margin-bottom: 20px;
+        }
+
+        .find-work-page .project-skills-label {
+            display: block;
+            margin-bottom: 9px;
+            color: #55574F;
+            font-size: .8rem;
+            font-weight: 700;
+        }
+
+        .find-work-page .project-skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .find-work-page .project-skill-tag {
+            max-width: 100%;
+            padding: 6px 9px;
+            border: 1px solid #ECEAE3;
+            border-radius: 8px;
+            background: #FAF9F6;
+            color: #55574F;
+            font-size: .76rem;
+            overflow-wrap: anywhere;
+        }
+
+        .find-work-page .project-card-divider {
+            height: 1px;
+            margin-top: auto;
+            margin-bottom: 17px;
+            background: #EEECE5;
+        }
+
+        .find-work-page .project-meta {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 13px;
+            margin-bottom: 18px;
+        }
+
+        .find-work-page .project-meta-item {
+            display: grid;
+            align-content: start;
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .find-work-page .project-meta-item span {
+            color: #77796F;
+            font-size: .77rem;
+        }
+
+        .find-work-page .project-meta-item strong {
+            color: #24271F;
+            font-size: .88rem;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .find-work-page .project-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 15px;
+            border-top: 1px solid #EEECE5;
+        }
+
+        .find-work-page .project-card-footer > span {
+            color: #267444;
+            font-size: .78rem;
+            font-weight: 700;
+        }
+
+        .find-work-page .view-details-button {
+            display: inline-flex;
+            min-height: 40px;
+            align-items: center;
+            justify-content: center;
+            padding: 0 14px;
+            border-radius: 9px;
+            background: #24271F;
+            color: #FFFFFF;
+            font-size: .82rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background .15s ease;
+        }
+
+        .find-work-page .view-details-button:hover {
+            background: #3A3D34;
+        }
+
+        .find-work-page .find-work-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 240px;
+            padding: 30px 22px;
+            border: 1px dashed #D9D6CB;
+            border-radius: 17px;
+            background: rgb(255 255 255 / 68%);
+            text-align: center;
+        }
+
+        .find-work-page .find-work-state h3 {
+            margin: 0;
+            color: #34362F;
+            font-size: 1.12rem;
+        }
+
+        .find-work-page .find-work-state p {
+            max-width: 520px;
+            margin: 0;
+            color: #6B6D66;
+            line-height: 1.7;
+        }
+
+        .find-work-page .loading-spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #E6E2FC;
+            border-top-color: #5040D8;
+            border-radius: 50%;
+            animation: worknest-spin .8s linear infinite;
+        }
+
+        @keyframes worknest-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .find-work-page .retry-button {
+            min-height: 42px;
+            padding: 0 16px;
+            border: 0;
+            border-radius: 9px;
+            background: #24271F;
+            color: #FFFFFF;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .find-work-page .retry-button:hover {
+            background: #3A3D34;
+        }
+
+        .find-work-page .find-work-notice {
+            margin-bottom: 18px;
+            padding: 13px 16px;
+            border: 1px solid #F2C6C2;
+            border-radius: 10px;
+            background: #FFF0EF;
+            color: #A52820;
+            line-height: 1.6;
+        }
+
+        .find-work-page [hidden] {
+            display: none !important;
+        }
+
+        .find-work-page-footer {
+            padding: 24px;
+            border-top: 1px solid #E0DDD4;
+            color: #77796F;
+            font-size: .82rem;
+        }
+
+        .find-work-page-footer p {
+            width: min(1120px, calc(100% - 24px));
+            margin: 0 auto;
+        }
+
+        .find-work-page .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 12px;
+            z-index: 1000;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #FFFFFF;
+            color: #24271F;
+        }
+
+        .find-work-page .skip-link:focus {
+            top: 12px;
+        }
+
+        .find-work-page a:focus-visible,
+        .find-work-page button:focus-visible,
+        .find-work-page input:focus-visible,
+        .find-work-page select:focus-visible {
+            outline: 3px solid rgb(80 64 216 / 32%);
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 900px) {
+            .find-work-page .find-work-toolbar {
+                grid-template-columns: minmax(0, 1fr) 200px;
+            }
+
+            .find-work-page .clear-filters-button {
+                grid-column: 1 / -1;
+                justify-self: start;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .find-work-page {
+                width: calc(100% - 32px);
+                padding-top: 28px;
+            }
+
+            .find-work-page .find-work-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 17px;
+            }
+
+            .find-work-page .find-work-toolbar {
+                grid-template-columns: 1fr;
+                padding: 16px;
+            }
+
+            .find-work-page .clear-filters-button {
+                grid-column: auto;
+                justify-self: stretch;
+            }
+
+            .find-work-page .find-work-project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .find-work-page .results-heading {
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .find-work-page .work-project-card {
+                padding: 19px;
+            }
+
+            .find-work-page .project-card-footer {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .find-work-page .view-details-button {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .find-work-page .loading-spinner {
+                animation: none;
+            }
+
+            .find-work-page .work-project-card,
+            .find-work-page .view-details-button {
+                transition: none;
+            }
+        }
+/* ===== Shared freelancer header: identical on every freelancer page ===== */
+html body.dashboard-body header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 247, 242, .94);
+    border-bottom: 1px solid #E8E5DC;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+html body.dashboard-body header.site-header .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 88px;
+}
+html body.dashboard-body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: #24271F;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-decoration: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B6D66;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background: #F0EEFF;
+    color: #5040D8;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header .wordmark:focus-visible,
+html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+html body.dashboard-body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 16px;
+}
+html body.dashboard-body header.site-header .dashboard-role {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #6B6D66;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+html body.dashboard-body header.site-header .site-header__actions .button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: none;
+}
+@media (max-width: 900px) {
+    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
+    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
+}
+@media (max-width: 650px) {
+    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
+    html body.dashboard-body header.site-header .dashboard-role { display: none; }
+}
+    </style>
+    <link rel="stylesheet" href="../../css/client-ui.css">
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+
+<body class="dashboard-body freelancer-dashboard">
+
+    <!-- WorkNest header -->
+<header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link">Overview</a>
+            <a href="my-projects.html" class="site-nav__link">My projects</a>
+            <a href="find-work.html" class="site-nav__link" aria-current="page">Find work</a>
+            <a href="my-proposals.html" class="site-nav__link">My proposals</a>
+            <a href="profile.html" class="site-nav__link">My profile</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <span class="dashboard-role">Freelancer</span>
+            <form action="../../logout" method="post">
+                <button class="button button--dark" type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+    <main id="main-content" class="find-work-page">
+        <a class="skip-link" href="#results-title">Skip to project results</a>
+
+        <!-- Page introduction -->
+        <section class="find-work-heading">
+            <div>
+                <p class="eyebrow">GROW YOUR CAREER</p>
+                <h1>Find your next opportunity</h1>
+                <p class="find-work-intro">
+                    Discover projects that match your skills, explore new
+                    challenges, and find work that fits your expertise.
+                </p>
+            </div>
+
+            <a href="index.html" class="back-dashboard-link">
+                <span aria-hidden="true">←</span>
+                Back to dashboard
+            </a>
+        </section>
+
+        <!-- Search and filters -->
+        <section class="find-work-toolbar"
+                 aria-label="Search and filter projects">
+
+            <div class="field-group">
+                <label for="project-search">Search projects</label>
+
+                <div class="search-input-wrap">
+                    <span class="search-symbol" aria-hidden="true">⌕</span>
+                    <input
+                        id="project-search"
+                        type="search"
+                        placeholder="Search titles, descriptions, skills..."
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label for="project-type-filter">Project type</label>
+
+                <select id="project-type-filter">
+                    <option value="ALL">All project types</option>
+                    <option value="FIXED">Fixed price</option>
+                    <option value="HOURLY">Hourly</option>
+                </select>
+            </div>
+
+            <button type="button"
+                    id="clear-filters-button"
+                    class="clear-filters-button">
+                Clear filters
+            </button>
+
+        </section>
+
+        <!-- Project results -->
+        <section aria-labelledby="results-title">
+
+            <div class="results-heading">
+                <h2 id="results-title">Available projects</h2>
+
+                <span id="results-count" class="results-count">
+                    Loading...
+                </span>
+            </div>
+
+            <div id="find-work-notice"
+                 class="find-work-notice"
+                 role="alert"
+                 hidden></div>
+
+            <div id="project-results"
+                 aria-label="Project search results"
+                 aria-live="polite"
+                 aria-busy="true">
+
+                <div class="find-work-state">
+                    <span class="loading-spinner" aria-hidden="true"></span>
+                    <p>Finding projects for you...</p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="find-work-page-footer">
+        <p>© WorkNest. Built for better collaboration.</p>
+    </footer>
+
+    <script>
+        "use strict";
+
+        const contextPath = "/WorkNest";
+
+        const searchInput = document.getElementById("project-search");
+        const typeFilter = document.getElementById("project-type-filter");
+        const clearFiltersButton = document.getElementById("clear-filters-button");
+        const projectResults = document.getElementById("project-results");
+        const resultsCount = document.getElementById("results-count");
+        const notice = document.getElementById("find-work-notice");
+
+        let allProjects = [];
+        let activeRequestController = null;
+
+        function formatCurrency(value) {
+            const amount = Number(value);
+
+            if (value === null || value === undefined || value === "" ||
+                !Number.isFinite(amount)) {
+                return "Not specified";
+            }
+
+            return amount.toLocaleString("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 2
+            });
+        }
+
+        // Format SQL DATE values without timezone shifting.
+        function formatDeadline(value) {
+            if (!value) return "Not specified";
+
+            const parts = String(value).slice(0, 10).split("-");
+            if (parts.length !== 3 || parts.some(part => !/^\d+$/.test(part))) {
+                return String(value);
+            }
+
+            const [year, month, day] = parts.map(Number);
+            const date = new Date(year, month - 1, day);
+
+            if (
+                Number.isNaN(date.getTime()) ||
+                date.getFullYear() !== year ||
+                date.getMonth() !== month - 1 ||
+                date.getDate() !== day
+            ) {
+                return String(value);
+            }
+
+            return date.toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            });
+        }
+
+        function showState(titleText, messageText, isError = false) {
+            projectResults.replaceChildren();
+
+            const state = document.createElement("div");
+            state.className = "find-work-state";
+
+            const heading = document.createElement("h3");
+            heading.textContent = titleText;
+
+            const message = document.createElement("p");
+            message.textContent = messageText;
+
+            state.append(heading, message);
+
+            if (isError) {
+                const retry = document.createElement("button");
+                retry.type = "button";
+                retry.className = "retry-button";
+                retry.textContent = "Try again";
+                retry.addEventListener("click", loadProjects);
+                state.appendChild(retry);
+            }
+
+            projectResults.appendChild(state);
+        }
+
+        function normalizeProjectType(value) {
+            return String(value || "").trim().toUpperCase();
+        }
+
+        function matchesSelectedType(projectType, selectedType) {
+            if (selectedType === "ALL") return true;
+
+            const normalized = normalizeProjectType(projectType);
+            if (selectedType === "FIXED") {
+                return normalized === "FIXED" ||
+                    normalized === "FIXED_PRICE" ||
+                    normalized === "FIXED PRICE";
+            }
+
+            return normalized === selectedType;
+        }
+
+        function createProjectCard(project) {
+            const card = document.createElement("article");
+            card.className = "work-project-card";
+
+            const top = document.createElement("div");
+            top.className = "work-project-card__top";
+
+            const normalizedType = normalizeProjectType(project.projectType);
+            const typeBadge = document.createElement("span");
+            typeBadge.className = "project-type-badge";
+            typeBadge.textContent = normalizedType === "HOURLY" ? "Hourly" : "Fixed price";
+
+            const openBadge = document.createElement("span");
+            openBadge.className = "project-open-badge";
+            openBadge.textContent = "Open";
+            top.append(typeBadge, openBadge);
+
+            const title = document.createElement("h3");
+            title.textContent = project.title || "Untitled project";
+
+            const description = document.createElement("p");
+            description.className = "project-description";
+            description.textContent = project.description || "No description provided.";
+
+            const skillsContainer = document.createElement("div");
+            skillsContainer.className = "project-skills";
+
+            const skillsLabel = document.createElement("span");
+            skillsLabel.className = "project-skills-label";
+            skillsLabel.textContent = "Required skills";
+
+            const skillsTags = document.createElement("div");
+            skillsTags.className = "project-skill-tags";
+
+            const skills = String(project.requiredSkills || "")
+                .split(",")
+                .map(skill => skill.trim())
+                .filter(Boolean);
+
+            if (skills.length === 0) {
+                const tag = document.createElement("span");
+                tag.className = "project-skill-tag";
+                tag.textContent = "Not specified";
+                skillsTags.appendChild(tag);
+            } else {
+                skills.slice(0, 8).forEach(skill => {
+                    const tag = document.createElement("span");
+                    tag.className = "project-skill-tag";
+                    tag.textContent = skill;
+                    skillsTags.appendChild(tag);
+                });
+
+                if (skills.length > 8) {
+                    const more = document.createElement("span");
+                    more.className = "project-skill-tag";
+                    more.textContent = `+${skills.length - 8} more`;
+                    skillsTags.appendChild(more);
+                }
+            }
+
+            skillsContainer.append(skillsLabel, skillsTags);
+
+            const divider = document.createElement("div");
+            divider.className = "project-card-divider";
+
+            const meta = document.createElement("div");
+            meta.className = "project-meta";
+
+            const budgetItem = document.createElement("div");
+            budgetItem.className = "project-meta-item";
+
+            const budgetLabel = document.createElement("span");
+            budgetLabel.textContent = "Budget";
+
+            const budgetValue = document.createElement("strong");
+            const hasMin = project.budgetMin !== null &&
+                project.budgetMin !== undefined && project.budgetMin !== "";
+            const hasMax = project.budgetMax !== null &&
+                project.budgetMax !== undefined && project.budgetMax !== "";
+            const min = Number(project.budgetMin);
+            const max = Number(project.budgetMax);
+
+            if (hasMin && hasMax && Number.isFinite(min) && Number.isFinite(max)) {
+                budgetValue.textContent = `${formatCurrency(min)} – ${formatCurrency(max)}`;
+            } else if (hasMin && Number.isFinite(min)) {
+                budgetValue.textContent = `From ${formatCurrency(min)}`;
+            } else if (hasMax && Number.isFinite(max)) {
+                budgetValue.textContent = `Up to ${formatCurrency(max)}`;
+            } else {
+                budgetValue.textContent = "Not specified";
+            }
+
+            budgetItem.append(budgetLabel, budgetValue);
+
+            const deadlineItem = document.createElement("div");
+            deadlineItem.className = "project-meta-item";
+
+            const deadlineLabel = document.createElement("span");
+            deadlineLabel.textContent = "Deadline";
+
+            const deadlineValue = document.createElement("strong");
+            deadlineValue.textContent = formatDeadline(project.deadline);
+
+            deadlineItem.append(deadlineLabel, deadlineValue);
+            meta.append(budgetItem, deadlineItem);
+
+            const footer = document.createElement("div");
+            footer.className = "project-card-footer";
+
+            const footerText = document.createElement("span");
+            footerText.textContent = "Open for opportunities";
+
+            const detailsLink = document.createElement("a");
+            detailsLink.className = "view-details-button";
+            detailsLink.textContent = "View Details";
+            detailsLink.href =
+                `project-details.html?id=${encodeURIComponent(String(project.projectId))}`;
+            detailsLink.setAttribute(
+                "aria-label",
+                `View details for ${project.title || "this project"}`
+            );
+
+            footer.append(footerText, detailsLink);
+
+            card.append(top, title, description, skillsContainer, divider, meta, footer);
+            return card;
+        }
+
+        function renderProjects() {
+            const term = searchInput.value.trim().toLocaleLowerCase();
+            const selectedType = typeFilter.value;
+
+            const filteredProjects = allProjects.filter(project => {
+                const searchableText = [
+                    project.title,
+                    project.description,
+                    project.requiredSkills
+                ].map(value => String(value || "")).join(" ").toLocaleLowerCase();
+
+                return searchableText.includes(term) &&
+                    matchesSelectedType(project.projectType, selectedType);
+            });
+
+            projectResults.replaceChildren();
+            resultsCount.textContent =
+                `${filteredProjects.length} ${
+                    filteredProjects.length === 1 ? "project" : "projects"
+                }`;
+
+            if (filteredProjects.length === 0) {
+                showState(
+                    allProjects.length === 0 ? "No open projects yet" : "No matching projects",
+                    allProjects.length === 0
+                        ? "There are no open projects available right now. Please check back later."
+                        : "Try another search term or clear your filters."
+                );
+                return;
+            }
+
+            const grid = document.createElement("div");
+            grid.className = "find-work-project-grid";
+
+            filteredProjects.forEach(project => {
+                grid.appendChild(createProjectCard(project));
+            });
+
+            projectResults.appendChild(grid);
+        }
+
+        async function loadProjects() {
+            if (activeRequestController) {
+                activeRequestController.abort();
+            }
+
+            const controller = new AbortController();
+            activeRequestController = controller;
+
+            notice.hidden = true;
+            notice.textContent = "";
+            projectResults.setAttribute("aria-busy", "true");
+            resultsCount.textContent = "Loading...";
+            showState("Loading projects", "Finding available projects for you...");
+
+            try {
+                const response = await fetch(`${contextPath}/open-projects`, {
+                    method: "GET",
+                    credentials: "same-origin",
+                    headers: { "Accept": "application/json" },
+                    cache: "no-store",
+                    signal: controller.signal
+                });
+
+                if (response.status === 401) {
+                    window.location.replace("../../login.html");
+                    return;
+                }
+
+                const contentType = response.headers.get("content-type") || "";
+                if (!contentType.toLowerCase().includes("application/json")) {
+                    throw new Error(
+                        "The server did not return JSON. Check the open-projects servlet mapping and server logs."
+                    );
+                }
+
+                const data = await response.json();
+
+                if (!response.ok || data.success === false) {
+                    throw new Error(
+                        data.error ||
+                        data.message ||
+                        `Unable to load projects (HTTP ${response.status}).`
+                    );
+                }
+
+                if (!Array.isArray(data.projects)) {
+                    throw new Error("The server returned an unexpected project response.");
+                }
+
+                // The endpoint is expected to return projects visible to this freelancer.
+                // Keep the OPEN check as a UI safeguard; authorization must also be enforced server-side.
+                allProjects = data.projects.filter(project =>
+                    project &&
+                    String(project.status || "").toUpperCase() === "OPEN"
+                );
+
+                renderProjects();
+            } catch (error) {
+                if (error.name === "AbortError") return;
+
+                console.error("Find Work loading failed:", error);
+                allProjects = [];
+                resultsCount.textContent = "Unavailable";
+                showState(
+                    "We couldn't load projects",
+                    error.message || "Please try again.",
+                    true
+                );
+            } finally {
+                if (activeRequestController === controller) {
+                    activeRequestController = null;
+                    projectResults.setAttribute("aria-busy", "false");
+                }
+            }
+        }
+
+        searchInput.addEventListener("input", renderProjects);
+        typeFilter.addEventListener("change", renderProjects);
+
+        clearFiltersButton.addEventListener("click", () => {
+            searchInput.value = "";
+            typeFilter.value = "ALL";
+            renderProjects();
+            searchInput.focus();
+        });
+
+        loadProjects();
+    </script>
+
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>

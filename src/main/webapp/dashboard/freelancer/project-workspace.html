@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Project Workspace | WorkNest</title>
+
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/freelancer-dashboard.css">
+
+<style>
+    .workspace-page {
+        width: min(calc(100% - 48px), 1100px);
+        margin: 42px auto 56px;
+    }
+
+    .workspace-card {
+        background: #FFFFFF;
+        border: 1px solid #E8E5DC;
+        border-radius: 16px;
+        padding: 28px;
+        margin-top: 28px;
+    }
+
+    .workspace-page > .dashboard-description {
+        max-width: 720px;
+        margin-bottom: 6px;
+    }
+
+    .workspace-card__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .workspace-card h2 {
+        margin: 0 0 10px;
+        font-size: 1.35rem;
+    }
+
+    .workspace-muted {
+        color: #6B6D66;
+        line-height: 1.7;
+    }
+
+    .workspace-status {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 7px 12px;
+        background: #FFF0D5;
+        color: #8A5700;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .workspace-status--completed {
+        background: #E5EDFF;
+        color: #254EA8;
+    }
+
+    .workspace-details {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 22px;
+    }
+
+    .workspace-detail {
+        padding: 15px;
+        border-radius: 10px;
+        background: #F8F7F2;
+        overflow-wrap: anywhere;
+    }
+
+    .workspace-detail__label {
+        display: block;
+        color: #6B6D66;
+        font-size: 0.85rem;
+        margin-bottom: 7px;
+    }
+
+    .workspace-detail__value {
+        font-weight: 650;
+    }
+
+    .workspace-description {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        line-height: 1.7;
+        margin-top: 22px;
+    }
+
+    .workspace-section-label {
+        font-size: 0.85rem;
+        color: #6B6D66;
+        margin: 20px 0 6px;
+    }
+
+    @media (max-width: 600px) {
+        .workspace-page {
+            width: min(calc(100% - 28px), 1100px);
+            margin: 28px auto 40px;
+        }
+
+        .workspace-card {
+            padding: 19px;
+            margin-top: 20px;
+        }
+
+        .workspace-details {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+.workspace-delivery-form {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+    padding: 20px;
+    background: #F8F7F2;
+    border: 1px solid #E8E5DC;
+    border-radius: 12px;
+}
+
+.workspace-delivery-form label {
+    display: grid;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.workspace-delivery-form textarea,
+.workspace-delivery-form input[type="url"] {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 10px;
+    font: inherit;
+    box-sizing: border-box;
+    background: #FFFFFF;
+}
+
+.workspace-delivery-form textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.workspace-delivery-form button {
+    justify-self: start;
+}
+
+.workspace-delivery-item {
+    margin-top: 18px;
+    padding: 18px;
+    border: 1px solid #E8E5DC;
+    border-radius: 12px;
+    background: #FFFFFF;
+    overflow-wrap: anywhere;
+}
+
+.workspace-delivery-item p {
+    white-space: pre-wrap;
+    line-height: 1.7;
+}
+
+.workspace-delivery-status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #EDE9FE;
+    color: #5040D8;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.workspace-delivery-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #5040D8;
+    overflow-wrap: anywhere;
+}
+
+.workspace-delivery-feedback {
+    margin-top: 14px;
+    padding: 14px;
+    border-left: 3px solid #5040D8;
+    border-radius: 6px;
+    background: #F8F7F2;
+}
+
+.workspace-delivery-feedback p {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.workspace-delivery-message {
+    margin-top: 12px;
+    line-height: 1.6;
+    color: #6B6D66;
+}
+
+.workspace-update-form {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+    padding: 20px;
+    background: #F8F7F2;
+    border: 1px solid #E8E5DC;
+    border-radius: 12px;
+}
+
+.workspace-update-form label {
+    display: grid;
+    gap: 9px;
+    font-weight: 600;
+}
+
+.workspace-update-form textarea {
+    width: 100%;
+    min-height: 110px;
+    padding: 14px;
+    border: 1px solid #E8E5DC;
+    border-radius: 10px;
+    font: inherit;
+    box-sizing: border-box;
+    resize: vertical;
+    background: #FFFFFF;
+}
+
+.workspace-update-form textarea:focus {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+
+.workspace-update-form button {
+    justify-self: start;
+}
+
+.workspace-update-history {
+    display: grid;
+    gap: 0;
+    margin-top: 24px;
+}
+
+.workspace-update-item {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 14px;
+    padding-bottom: 22px;
+}
+
+.workspace-update-marker {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.workspace-update-marker::before {
+    content: "";
+    width: 11px;
+    height: 11px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: #5040D8;
+    box-shadow: 0 0 0 4px #EDEBFC;
+}
+
+.workspace-update-item:not(:last-child)
+.workspace-update-marker::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    bottom: 0;
+    width: 2px;
+    background: #E3DFF5;
+}
+
+.workspace-update-content {
+    padding: 17px;
+    border: 1px solid #E8E5DC;
+    border-radius: 12px;
+    background: #FFFFFF;
+    min-width: 0;
+}
+
+.workspace-update-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.workspace-update-author {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #24271F;
+}
+
+.workspace-update-date {
+    color: #77786F;
+    font-size: 0.78rem;
+}
+
+.workspace-update-tag {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #EDE9FE;
+    color: #5040D8;
+    font-size: 0.73rem;
+    font-weight: 700;
+}
+
+.workspace-update-note {
+    margin: 12px 0 0;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.workspace-update-message {
+    margin-top: 12px;
+    color: #6B6D66;
+}
+
+.workspace-update-message--error {
+    color: #A52828;
+}
+
+@media (max-width: 600px) {
+    .workspace-update-content {
+        padding: 13px;
+    }
+
+    .workspace-update-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+.workspace-delivery-message {
+    margin: 14px 0 0;
+    line-height: 1.6;
+    color: #6B6D66;
+}
+
+.workspace-delivery-success {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin: 18px 0;
+    padding: 20px;
+    border: 1px solid #CDE8D5;
+    border-radius: 14px;
+    background: #F1FAF3;
+}
+
+.workspace-delivery-success__icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #DDF3E3;
+    color: #18743A;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.workspace-delivery-success h3 {
+    margin: 0 0 6px;
+    color: #195C32;
+    font-size: 1.12rem;
+}
+
+.workspace-delivery-success p {
+    margin: 0;
+    color: #477354;
+    line-height: 1.6;
+}
+
+.workspace-delivery-item {
+    margin-top: 18px;
+    padding: 22px;
+    border: 1px solid #E8E5DC;
+    border-radius: 14px;
+    background: #FFFFFF;
+    overflow-wrap: anywhere;
+}
+
+.workspace-delivery-item__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.workspace-delivery-item__heading {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.workspace-delivery-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: #EDE9FE;
+    color: #5040D8;
+    font-size: 0.75rem;
+    font-weight: 750;
+    letter-spacing: 0.03em;
+}
+
+.workspace-delivery-status--approved {
+    background: #E3F5E8;
+    color: #18743A;
+}
+
+.workspace-delivery-status--submitted {
+    background: #FFF3D9;
+    color: #8A5700;
+}
+
+.workspace-delivery-status--revision {
+    background: #FFF0E8;
+    color: #A44719;
+}
+
+.workspace-delivery-summary {
+    margin: 0;
+    padding: 16px;
+    border-radius: 10px;
+    background: #F8F7F2;
+    line-height: 1.75;
+    white-space: pre-wrap;
+}
+
+.workspace-delivery-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    margin-top: 17px;
+    color: #77786F;
+    font-size: 0.82rem;
+}
+
+.workspace-delivery-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.workspace-delivery-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    color: #5040D8;
+    font-weight: 650;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.workspace-delivery-link:hover {
+    text-decoration: underline;
+}
+
+.workspace-delivery-feedback {
+    margin-top: 18px;
+    padding: 15px 16px;
+    border-left: 3px solid #D18A32;
+    border-radius: 8px;
+    background: #FFF8EB;
+}
+
+.workspace-delivery-feedback strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #80520D;
+}
+
+.workspace-delivery-feedback p {
+    margin: 0;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .workspace-delivery-item {
+        padding: 16px;
+    }
+
+    .workspace-delivery-success {
+        padding: 16px;
+    }
+
+    .workspace-delivery-meta {
+        flex-direction: column;
+        gap: 9px;
+    }
+}
+
+
+.activity-timeline {
+    position: relative;
+    display: grid;
+    gap: 0;
+    margin-top: 24px;
+}
+
+.activity-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 16px;
+    padding-bottom: 28px;
+}
+
+.activity-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 18px;
+    bottom: 0;
+    width: 2px;
+    background: #E8E5DC;
+}
+
+.activity-item__marker {
+    position: relative;
+    z-index: 1;
+    width: 16px;
+    height: 16px;
+    margin-top: 3px;
+    border: 4px solid #EDE9FE;
+    border-radius: 50%;
+    background: #5040D8;
+}
+
+.activity-item__content {
+    min-width: 0;
+    padding: 17px 19px;
+    border: 1px solid #E8E5DC;
+    border-radius: 12px;
+    background: #FFFFFF;
+}
+
+.activity-item__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+}
+
+.activity-item__header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 650;
+}
+
+.activity-item__date,
+.activity-item__actor {
+    color: #85857C;
+    font-size: .78rem;
+}
+
+.activity-item__description {
+    margin: 12px 0;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.activity-item__actor {
+    display: block;
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .activity-item__content {
+        padding: 14px;
+    }
+}
+
+
+
+    /* Project Progress section refinement */
+    #progress-section > h2 {
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+    }
+
+    #progress-section > .workspace-muted {
+        max-width: 680px;
+        margin: 0;
+    }
+
+    .workspace-update-form {
+        gap: 16px;
+        margin-top: 24px;
+        padding: 22px;
+        border-color: #E5E1F5;
+        background: #FAF9FF;
+    }
+
+    .workspace-update-form label {
+        gap: 10px;
+        color: #24271F;
+        font-size: 0.94rem;
+    }
+
+    .workspace-update-form textarea {
+        min-height: 125px;
+        padding: 15px 16px;
+        border-color: #DDD9EA;
+        border-radius: 11px;
+        line-height: 1.6;
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .workspace-update-form textarea::placeholder {
+        color: #929187;
+    }
+
+    .workspace-update-form textarea:focus {
+        border-color: #5040D8;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(80, 64, 216, 0.12);
+    }
+
+    .workspace-update-form button {
+        min-height: 42px;
+        padding: 10px 20px;
+        border-radius: 9px;
+        transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .workspace-update-form button:not(:disabled):hover {
+        transform: translateY(-1px);
+    }
+
+    .workspace-update-form button:disabled {
+        cursor: wait;
+        opacity: 0.65;
+    }
+
+    .workspace-update-message {
+        margin-top: 14px;
+        line-height: 1.55;
+        font-size: 0.9rem;
+    }
+
+    .workspace-update-history {
+        gap: 2px;
+        margin-top: 26px;
+    }
+
+    .workspace-update-item {
+        grid-template-columns: 20px minmax(0, 1fr);
+        gap: 15px;
+        padding-bottom: 20px;
+    }
+
+    .workspace-update-marker::before {
+        width: 12px;
+        height: 12px;
+        margin-top: 7px;
+        background: #5040D8;
+        box-shadow: 0 0 0 4px #F0EEFF;
+    }
+
+    .workspace-update-item:not(:last-child)
+    .workspace-update-marker::after {
+        top: 25px;
+        bottom: -1px;
+        width: 2px;
+        background: #E5E1F5;
+    }
+
+    .workspace-update-content {
+        padding: 18px 19px;
+        border-color: #EAE7DF;
+        border-radius: 13px;
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .workspace-update-content:hover {
+        border-color: #DCD6F4;
+        box-shadow: 0 3px 12px rgba(36, 39, 31, 0.045);
+    }
+
+    .workspace-update-author {
+        font-size: 0.94rem;
+    }
+
+    .workspace-update-date {
+        font-size: 0.78rem;
+        line-height: 1.5;
+    }
+
+    .workspace-update-tag {
+        margin-top: 11px;
+        padding: 5px 10px;
+        letter-spacing: 0.025em;
+    }
+
+    .workspace-update-note {
+        margin-top: 13px;
+        color: #42443D;
+        line-height: 1.75;
+    }
+
+    @media (max-width: 600px) {
+        .workspace-update-form {
+            padding: 16px;
+        }
+
+        .workspace-update-form button {
+            width: 100%;
+            justify-self: stretch;
+        }
+
+        .workspace-update-item {
+            grid-template-columns: 16px minmax(0, 1fr);
+            gap: 11px;
+        }
+
+        .workspace-update-content {
+            padding: 14px;
+        }
+    }
+
+
+
+/* ===== WorkNest workspace: complete visual refinement ===== */
+.workspace-page {
+    color: #24271F;
+}
+
+.workspace-page > h1 {
+    max-width: 900px;
+    margin: 8px 0 10px;
+    font-size: clamp(2rem, 4vw, 2.65rem);
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+    overflow-wrap: anywhere;
+}
+
+.workspace-page > .dashboard-description {
+    color: #707168;
+    line-height: 1.7;
+}
+
+.workspace-card {
+    box-shadow: 0 5px 22px rgba(36, 39, 31, 0.035);
+    scroll-margin-top: 24px;
+}
+
+.workspace-card > h2,
+.workspace-section-heading h2 {
+    color: #24271F;
+    font-size: 1.3rem;
+    letter-spacing: -0.025em;
+}
+
+.workspace-card__header {
+    align-items: center;
+}
+
+.workspace-status {
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+.workspace-detail {
+    min-height: 76px;
+    border: 1px solid #EFEEE8;
+}
+
+.workspace-detail__label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+}
+
+.workspace-detail__value {
+    display: block;
+    color: #292B25;
+    line-height: 1.5;
+}
+
+.workspace-description {
+    color: #45473F;
+}
+
+.workspace-section-label {
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.workspace-section-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+}
+
+.workspace-section-heading h2 {
+    margin: 0 0 8px;
+}
+
+.workspace-section-heading p {
+    margin: 0;
+}
+
+/* Project Activity timeline */
+#activity-section {
+    overflow: hidden;
+}
+
+#activity-section .workspace-section-heading {
+    margin-bottom: 4px;
+}
+
+.activity-timeline {
+    margin-top: 28px;
+}
+
+.activity-item {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 13px;
+    padding-bottom: 22px;
+}
+
+.activity-item:not(:last-child)::before {
+    left: 11px;
+    top: 25px;
+    bottom: -1px;
+    background: #E7E4DC;
+}
+
+.activity-item__marker {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    margin-top: 0;
+    border: 1px solid #E5E0FA;
+    background: #F0EDFF;
+    color: #5040D8;
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.activity-item__content {
+    padding: 18px 20px;
+    border-color: #EAE8E1;
+    border-radius: 13px;
+    box-shadow: 0 2px 8px rgba(36, 39, 31, 0.025);
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.activity-item__content:hover {
+    border-color: #DCD6F4;
+    box-shadow: 0 5px 16px rgba(36, 39, 31, 0.055);
+    transform: translateY(-1px);
+}
+
+.activity-item__header {
+    align-items: center;
+}
+
+.activity-item__header h3 {
+    color: #292B25;
+    font-size: 0.98rem;
+    line-height: 1.45;
+}
+
+.activity-item__date {
+    flex: 0 0 auto;
+    color: #77786F;
+    font-size: 0.77rem;
+    line-height: 1.5;
+}
+
+.activity-item__description {
+    margin: 10px 0 0;
+    color: #55574F;
+    font-size: 0.92rem;
+}
+
+.activity-item__actor {
+    margin-top: 13px;
+    color: #77786F;
+    font-size: 0.78rem;
+}
+
+.activity-item__type {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 12px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #F2F0FC;
+    color: #5546B6;
+    font-size: 0.69rem;
+    font-weight: 750;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+}
+
+.activity-item--started .activity-item__marker {
+    border-color: #D5E5FF;
+    background: #EAF2FF;
+    color: #285AA8;
+}
+
+.activity-item--progress .activity-item__marker {
+    border-color: #E5E0FA;
+    background: #F0EDFF;
+    color: #5040D8;
+}
+
+.activity-item--submitted .activity-item__marker {
+    border-color: #F5E2B9;
+    background: #FFF5DF;
+    color: #94610B;
+}
+
+.activity-item--revision .activity-item__marker {
+    border-color: #F4D9C9;
+    background: #FFF0E8;
+    color: #A44719;
+}
+
+.activity-item--approved .activity-item__marker {
+    border-color: #CDE8D5;
+    background: #EAF7ED;
+    color: #18743A;
+}
+
+.activity-empty,
+.activity-error {
+    margin: 22px 0 0;
+    padding: 18px;
+    border: 1px dashed #E2DFD6;
+    border-radius: 12px;
+    background: #FBFAF7;
+    color: #73746B;
+    line-height: 1.6;
+}
+
+.activity-error {
+    border-color: #F0D5D5;
+    background: #FFF8F8;
+    color: #A52828;
+}
+
+/* Delivery section */
+#delivery-section > .workspace-muted {
+    max-width: 680px;
+    line-height: 1.65;
+}
+
+.workspace-delivery-form {
+    border-color: #E5E1F5;
+    background: #FAF9FF;
+}
+
+.workspace-delivery-form label {
+    color: #292B25;
+    font-size: 0.93rem;
+}
+
+.workspace-delivery-form textarea:focus,
+.workspace-delivery-form input[type="url"]:focus {
+    outline: none;
+    border-color: #5040D8;
+    box-shadow: 0 0 0 3px rgba(80, 64, 216, 0.11);
+}
+
+.workspace-delivery-form button {
+    min-height: 42px;
+    padding: 10px 20px;
+    border-radius: 9px;
+}
+
+.workspace-delivery-form button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.workspace-delivery-message {
+    line-height: 1.65;
+}
+
+.workspace-delivery-history:empty {
+    display: none;
+}
+
+.workspace-delivery-item__heading {
+    color: #292B25;
+}
+
+.workspace-delivery-summary {
+    color: #45473F;
+}
+
+.workspace-delivery-link:focus-visible,
+.text-link:focus-visible,
+.site-nav__link:focus-visible,
+button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+    .workspace-page {
+        width: min(calc(100% - 28px), 1100px);
+        margin-top: 25px;
+    }
+
+    .workspace-page > h1 {
+        font-size: clamp(1.75rem, 8vw, 2.2rem);
+    }
+
+    .workspace-card {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .workspace-card__header {
+        align-items: flex-start;
+    }
+
+    .activity-timeline {
+        margin-top: 22px;
+    }
+
+    .activity-item {
+        grid-template-columns: 24px minmax(0, 1fr);
+        gap: 10px;
+        padding-bottom: 18px;
+    }
+
+    .activity-item:not(:last-child)::before {
+        left: 10px;
+        top: 23px;
+    }
+
+    .activity-item__marker {
+        width: 23px;
+        height: 23px;
+        font-size: 0.7rem;
+    }
+
+    .activity-item__content {
+        padding: 14px;
+    }
+
+    .activity-item__header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .activity-item__date {
+        font-size: 0.74rem;
+    }
+
+    .workspace-delivery-form {
+        padding: 16px;
+    }
+
+    .workspace-delivery-form button {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .activity-item__content,
+    .workspace-update-content,
+    .workspace-update-form button {
+        transition: none;
+    }
+}
+
+
+
+/* ===== Final Project Delivery: focused refinement ===== */
+#delivery-section {
+    position: relative;
+}
+
+#delivery-section > h2 {
+    margin-bottom: 8px;
+    letter-spacing: -0.025em;
+}
+
+#delivery-section > .workspace-muted {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+.workspace-delivery-history {
+    display: grid;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.workspace-delivery-item {
+    margin-top: 0;
+    padding: 22px;
+    border-color: #EAE8E1;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(36, 39, 31, 0.035);
+}
+
+.workspace-delivery-item__header {
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #F0EEE8;
+}
+
+.workspace-delivery-item__heading {
+    font-size: 1.02rem;
+    font-weight: 750;
+    letter-spacing: -0.01em;
+}
+
+.workspace-delivery-status {
+    min-height: 28px;
+    letter-spacing: 0.035em;
+}
+
+.workspace-delivery-summary {
+    border: 1px solid #EFEEE8;
+    font-size: 0.94rem;
+}
+
+.workspace-delivery-meta {
+    padding-top: 2px;
+}
+
+.workspace-delivery-success {
+    align-items: center;
+    margin: 0 0 2px;
+    border-radius: 13px;
+}
+
+.workspace-delivery-success__icon {
+    flex: 0 0 42px;
+}
+
+.workspace-delivery-success h3 {
+    letter-spacing: -0.015em;
+}
+
+.workspace-delivery-feedback {
+    border: 1px solid #F3E5C9;
+    border-left: 3px solid #D18A32;
+}
+
+.workspace-delivery-form {
+    gap: 17px;
+    margin-top: 22px;
+    padding: 22px;
+    border-radius: 13px;
+}
+
+.workspace-delivery-form label {
+    gap: 9px;
+    line-height: 1.45;
+}
+
+.workspace-delivery-form textarea,
+.workspace-delivery-form input[type="url"] {
+    min-height: 46px;
+    padding: 13px 14px;
+    border-color: #E2DEEF;
+    border-radius: 10px;
+    color: #292B25;
+    line-height: 1.6;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.workspace-delivery-form textarea {
+    min-height: 135px;
+    resize: vertical;
+}
+
+.workspace-delivery-form textarea::placeholder,
+.workspace-delivery-form input::placeholder {
+    color: #929187;
+}
+
+.workspace-delivery-form textarea:focus,
+.workspace-delivery-form input[type="url"]:focus {
+    outline: none;
+    border-color: #5040D8;
+    box-shadow: 0 0 0 3px rgba(80, 64, 216, 0.11);
+}
+
+.workspace-delivery-form button {
+    justify-self: start;
+    min-height: 43px;
+    padding: 10px 21px;
+    font-weight: 650;
+    transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.workspace-delivery-form button:not(:disabled):hover {
+    transform: translateY(-1px);
+}
+
+.workspace-delivery-form button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.workspace-delivery-message[role="status"] {
+    padding: 10px 0 0;
+    color: #686A61;
+    font-size: 0.9rem;
+}
+
+.workspace-delivery-message:empty {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .workspace-delivery-item {
+        padding: 16px;
+    }
+
+    .workspace-delivery-item__header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .workspace-delivery-form {
+        padding: 16px;
+    }
+
+    .workspace-delivery-form button {
+        width: 100%;
+        justify-self: stretch;
+    }
+
+    .workspace-delivery-success {
+        align-items: flex-start;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .workspace-delivery-success__icon {
+        flex-basis: 36px;
+        width: 36px;
+        height: 36px;
+    }
+}
+
+
+/* ===== Shared freelancer header: identical on every freelancer page ===== */
+html body.dashboard-body header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 247, 242, .94);
+    border-bottom: 1px solid #E8E5DC;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+html body.dashboard-body header.site-header .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 88px;
+}
+html body.dashboard-body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: #24271F;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-decoration: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B6D66;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background: #F0EEFF;
+    color: #5040D8;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header .wordmark:focus-visible,
+html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+html body.dashboard-body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 16px;
+}
+html body.dashboard-body header.site-header .dashboard-role {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #6B6D66;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+html body.dashboard-body header.site-header .site-header__actions .button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: none;
+}
+@media (max-width: 900px) {
+    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
+    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
+}
+@media (max-width: 650px) {
+    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
+    html body.dashboard-body header.site-header .dashboard-role { display: none; }
+}
+</style>
+<link rel="stylesheet" href="../../css/client-ui.css">
+    
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+
+<body class="dashboard-body freelancer-dashboard">
+
+    <!-- Header -->
+    <header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link">Overview</a>
+            <a href="my-projects.html" class="site-nav__link" aria-current="page">My projects</a>
+            <a href="find-work.html" class="site-nav__link">Find work</a>
+            <a href="my-proposals.html" class="site-nav__link">My proposals</a>
+            <a href="profile.html" class="site-nav__link">My profile</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <span class="dashboard-role">Freelancer</span>
+            <form action="../../logout" method="post">
+                <button class="button button--dark" type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+    <!-- Main Workspace -->
+    <main class="workspace-page">
+
+        <a href="my-projects.html" class="text-link">
+            ← Back to My Projects
+        </a>
+
+        <p class="eyebrow" style="margin-top: 28px;">
+            PROJECT WORKSPACE
+        </p>
+
+        <h1 id="project-title">Loading project...</h1>
+
+        <p class="dashboard-description">
+            Manage your project, communicate progress, and submit your final work.
+        </p>
+
+        <section class="workspace-card">
+
+            <div class="workspace-card__header">
+
+                <div>
+                    <h2>Project Overview</h2>
+                    <p id="project-id" class="workspace-muted"></p>
+                </div>
+
+                <span id="project-status" class="workspace-status">
+                    Loading...
+                </span>
+
+            </div>
+
+            <p id="project-description" class="workspace-description">
+                Loading project description...
+            </p>
+
+            <div id="project-details" class="workspace-details">
+
+                <div class="workspace-detail">
+                    <span class="workspace-detail__label">Client</span>
+                    <span id="client-name" class="workspace-detail__value">
+                        Loading...
+                    </span>
+                </div>
+
+                <div class="workspace-detail">
+                    <span class="workspace-detail__label">Agreed Amount</span>
+                    <span id="agreed-amount" class="workspace-detail__value">
+                        Loading...
+                    </span>
+                </div>
+
+                <div class="workspace-detail">
+                    <span class="workspace-detail__label">Deadline</span>
+                    <span id="project-deadline" class="workspace-detail__value">
+                        Loading...
+                    </span>
+                </div>
+
+                <div class="workspace-detail">
+                    <span class="workspace-detail__label">Project Type</span>
+                    <span id="project-type" class="workspace-detail__value">
+                        Loading...
+                    </span>
+                </div>
+
+            </div>
+
+            <h3 class="workspace-section-label">Required Skills</h3>
+
+            <p id="required-skills" class="workspace-muted">
+                Loading...
+            </p>
+
+        </section>
+
+        <!-- Progress Updates-->
+        <section id="progress-section" class="workspace-card">
+    <h2>Project Progress</h2>
+
+    <p class="workspace-muted">
+        Track your completed work and keep your client informed.
+    </p>
+
+    <div id="progress-content">
+        Loading progress...
+    </div>
+</section>
+
+
+<section class="workspace-card" id="activity-section">
+    <div class="workspace-section-heading">
+        <h2>Project Activity</h2>
+        <p class="workspace-muted">A complete history of your project journey.</p>
+    </div>
+    <div id="activity-timeline">
+        <p class="workspace-muted">Loading project activity...</p>
+    </div>
+</section>
+
+        <!-- Final Delivery-->
+        <section id="delivery-section" class="workspace-card">
+    <h2>Final Project Delivery</h2>
+
+    <p class="workspace-muted">
+        Submit your completed work and track the client's review.
+    </p>
+
+    <div id="delivery-content">
+        Loading delivery details...
+    </div>
+    <section class="workspace-card" aria-labelledby="freelancer-payment-heading">
+        <h2 id="freelancer-payment-heading">Payment arrangements</h2>
+        <p class="workspace-muted">Coordinate payment directly with your client after delivery approval.</p>
+    </section>
+</section>
+
+    </main>
+
+    <footer class="dashboard-footer">
+        <p>© WorkNest. Built for better collaboration.</p>
+    </footer>
+
+<script>
+"use strict";
+
+// Read project ID from URL
+const params = new URLSearchParams(window.location.search);
+const projectId = params.get("projectId");
+
+// HTML elements
+const projectTitle = document.getElementById("project-title");
+const projectIdLabel = document.getElementById("project-id");
+const projectStatus = document.getElementById("project-status");
+const projectDescription = document.getElementById("project-description");
+
+const clientName = document.getElementById("client-name");
+const agreedAmount = document.getElementById("agreed-amount");
+const projectDeadline = document.getElementById("project-deadline");
+const projectType = document.getElementById("project-type");
+const requiredSkills = document.getElementById("required-skills");
+
+// Load selected project
+async function loadProject() {
+
+    if (!projectId || !/^\d+$/.test(projectId)) {
+        projectTitle.textContent = "Invalid project";
+        return;
+    }
+
+    try {
+
+        const response = await fetch("../../freelancer-projects", {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+                "Accept": "application/json"
+            },
+            cache: "no-store"
+        });
+
+        if (response.status === 401) {
+            window.location.replace("../../login.html");
+            return;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || "Unable to load projects.");
+        }
+
+        const project = data.projects.find(
+            item => String(item.projectId) === projectId
+        );
+
+        if (!project) {
+            projectTitle.textContent = "Project not found";
+            projectDescription.textContent =
+                "This project is not available in your accepted projects.";
+            return;
+        }
+
+        // Display project information
+        projectTitle.textContent = project.title || "Untitled project";
+
+        projectIdLabel.textContent =
+            "Project #" + project.projectId;
+
+        projectStatus.textContent =
+            String(project.projectStatus || "UNKNOWN")
+                .replaceAll("_", " ");
+
+        projectDescription.textContent =
+            project.description || "No description available.";
+
+        clientName.textContent =
+            project.clientName || "Not available";
+
+        agreedAmount.textContent =
+            formatCurrency(project.agreedAmount, project.projectType);
+
+        projectDeadline.textContent =
+            formatDate(project.deadline);
+
+        projectType.textContent =
+            project.projectType === "HOURLY"
+                ? "Hourly"
+                : "Fixed price";
+
+        requiredSkills.textContent =
+            project.requiredSkills || "Not specified";
+        
+        createProgressSection(project);
+        loadDelivery(
+        	    project,
+        	    document.getElementById("delivery-content")
+        	);
+        loadProjectActivity(project.projectId);
+
+    } catch (error) {
+
+        console.error("Project loading error:", error);
+
+        projectTitle.textContent = "Unable to load project";
+        projectDescription.textContent = error.message;
+    }
+}
+
+// Formatting functions
+function formatCurrency(value, type) {
+
+    const amount = Number(value);
+
+    if (!Number.isFinite(amount)) {
+        return "Not available";
+    }
+
+    const formatted = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        minimumFractionDigits: 2
+    }).format(amount);
+
+    return type === "HOURLY"
+        ? formatted + " / hour"
+        : formatted;
+}
+
+function formatDate(value) {
+
+    if (!value) {
+        return "Not available";
+    }
+
+    const date = new Date(value + "T00:00:00");
+
+    if (Number.isNaN(date.getTime())) {
+        return value;
+    }
+
+    return new Intl.DateTimeFormat("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+    }).format(date);
+}
+
+function toDateTimeAttribute(value) {
+    if (!value) return "";
+    const normalized = String(value).trim().replace(" ", "T");
+    const parsed = new Date(normalized);
+    return Number.isNaN(parsed.getTime()) ? "" : parsed.toISOString();
+}
+
+function formatTimestamp(value) {
+    if (!value) {
+        return "Date unavailable";
+    }
+
+    const date = new Date(String(value).replace(" ", "T"));
+
+    return Number.isNaN(date.getTime())
+        ? String(value)
+        : date.toLocaleString("en-IN");
+}
+
+async function loadProjectUpdates(projectId, history) {
+    history.replaceChildren();
+
+    const loading = document.createElement("p");
+    loading.className = "workspace-muted";
+    loading.textContent = "Loading progress history...";
+    history.appendChild(loading);
+
+    try {
+        const response = await fetch(
+            "../../project-updates?projectId=" +
+            encodeURIComponent(projectId),
+            {
+                method: "GET",
+                credentials: "same-origin",
+                headers: { "Accept": "application/json" },
+                cache: "no-store"
+            }
+        );
+
+        if (response.status === 401) {
+            window.location.replace("../../login.html");
+            return;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Unable to load progress history."
+            );
+        }
+
+        history.replaceChildren();
+
+        if (!Array.isArray(data.updates) || data.updates.length === 0) {
+            const empty = document.createElement("p");
+            empty.className = "workspace-muted";
+            empty.textContent = "No progress updates yet.";
+            history.appendChild(empty);
+            return;
+        }
+
+        data.updates.forEach(update => {
+            const item = document.createElement("article");
+            item.className = "workspace-update-item";
+
+            const marker = document.createElement("div");
+            marker.className = "workspace-update-marker";
+
+            const content = document.createElement("div");
+            content.className = "workspace-update-content";
+
+            const header = document.createElement("div");
+            header.className = "workspace-update-header";
+
+            const author = document.createElement("strong");
+            author.className = "workspace-update-author";
+            author.textContent = update.freelancerName || "Freelancer";
+
+            const date = document.createElement("span");
+            date.className = "workspace-update-date";
+            date.textContent = formatTimestamp(update.createdAt);
+
+            header.append(author, date);
+
+            const tag = document.createElement("span");
+            tag.className = "workspace-update-tag";
+            tag.textContent = "PROGRESS UPDATE";
+
+            const note = document.createElement("p");
+            note.className = "workspace-update-note";
+            note.textContent = update.updateNote || "";
+
+            content.append(header, tag, note);
+            item.append(marker, content);
+
+            history.appendChild(item);
+        });
+
+    } catch (error) {
+        console.error("Unable to load progress updates:", error);
+
+        history.replaceChildren();
+
+        const errorMessage = document.createElement("p");
+        errorMessage.className = "workspace-update-message workspace-update-message--error";
+        errorMessage.textContent = error.message;
+
+        history.appendChild(errorMessage);
+    }
+}
+
+function createProgressSection(project) {
+    const container = document.getElementById("progress-content");
+    container.replaceChildren();
+
+    const message = document.createElement("p");
+    message.className = "workspace-update-message";
+    message.setAttribute("role", "status");
+    message.setAttribute("aria-live", "polite");
+
+    const history = document.createElement("div");
+    history.className = "workspace-update-history";
+
+    if (project.projectStatus === "IN_PROGRESS") {
+        const form = document.createElement("form");
+        form.className = "workspace-update-form";
+
+        const label = document.createElement("label");
+        label.textContent = "Share a progress update";
+
+        const textarea = document.createElement("textarea");
+        textarea.name = "updateNote";
+        textarea.required = true;
+        textarea.maxLength = 10000;
+        textarea.placeholder =
+            "Describe what you completed, what you're working on, or any blockers...";
+
+        const button = document.createElement("button");
+        button.type = "submit";
+        button.className = "button button--dark";
+        button.textContent = "Post update";
+
+        label.appendChild(textarea);
+        form.append(label, button);
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+
+            const note = textarea.value.trim();
+
+            if (!note || note.length > 10000) {
+                message.textContent =
+                    "Enter an update between 1 and 10000 characters.";
+                return;
+            }
+
+            button.disabled = true;
+            message.textContent = "Posting update...";
+
+            try {
+                const response = await fetch("../../project-updates", {
+                    method: "POST",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Accept": "application/json"
+                    },
+                    body: new URLSearchParams({
+                        projectId: String(project.projectId),
+                        updateNote: note
+                    })
+                });
+
+                if (response.status === 401) {
+                    window.location.replace("../../login.html");
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(
+                        data.message || "Unable to post the update."
+                    );
+                }
+
+                textarea.value = "";
+                message.textContent =
+                    "Progress update posted successfully.";
+
+                await loadProjectUpdates(project.projectId, history);
+                await loadProjectActivity(project.projectId);
+
+            } catch (error) {
+                console.error("Unable to post update:", error);
+                message.textContent = error.message;
+            } finally {
+                button.disabled = false;
+            }
+        });
+
+        container.appendChild(form);
+
+    } else {
+        const note = document.createElement("p");
+        note.className = "workspace-muted";
+        note.textContent =
+            "New progress updates are available only while the project is in progress.";
+
+        container.appendChild(note);
+    }
+
+    container.append(message, history);
+
+    loadProjectUpdates(project.projectId, history);
+}
+
+async function loadDelivery(project, container) {
+    container.replaceChildren();
+    const message = document.createElement("p");
+    message.className = "workspace-delivery-message";
+    message.setAttribute("role", "status");
+    message.setAttribute("aria-live", "polite");
+    const history = document.createElement("div");
+    history.className = "workspace-delivery-history";
+    container.append(message, history);
+    try {
+        const response = await fetch("../../project-submission?projectId=" + encodeURIComponent(project.projectId), {
+            method: "GET",
+            credentials: "same-origin",
+            headers: { "Accept": "application/json" },
+            cache: "no-store"
+        });
+        if (response.status === 401) {
+            window.location.replace("../../login.html");
+            return;
+        }
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to load delivery details.");
+        }
+        const submission = data.submission;
+        const submissionStatus = String(submission?.status || "").toUpperCase();
+        const projectStatus = String(project.projectStatus || "").toUpperCase();
+        if (submission) {
+            const card = document.createElement("article");
+            card.className = "workspace-delivery-item";
+            const header = document.createElement("div");
+            header.className = "workspace-delivery-item__header";
+            const heading = document.createElement("h3");
+            heading.className = "workspace-delivery-item__heading";
+            heading.textContent = "Delivery summary";
+            const status = document.createElement("span");
+            status.className = "workspace-delivery-status";
+            status.textContent = submissionStatus
+                ? submissionStatus.replaceAll("_", " ")
+                : "STATUS UNAVAILABLE";
+            if (submissionStatus === "APPROVED") status.classList.add("workspace-delivery-status--approved");
+            else if (submissionStatus === "SUBMITTED") status.classList.add("workspace-delivery-status--submitted");
+            else if (submissionStatus === "REVISION_REQUESTED") status.classList.add("workspace-delivery-status--revision");
+            header.append(heading, status);
+            const summary = document.createElement("p");
+            summary.className = "workspace-delivery-summary";
+            summary.textContent = submission.submissionNote || "No delivery summary provided.";
+            const meta = document.createElement("div");
+            meta.className = "workspace-delivery-meta";
+            const submitted = document.createElement("span");
+            submitted.textContent = "Submitted: " + formatTimestamp(submission.submittedAt);
+            meta.appendChild(submitted);
+            if (submission.reviewedAt) {
+                const reviewed = document.createElement("span");
+                reviewed.textContent = "Reviewed: " + formatTimestamp(submission.reviewedAt);
+                meta.appendChild(reviewed);
+            }
+            card.append(header, summary, meta);
+            if (submission.deliveryUrl) {
+                try {
+                    const deliveryUrl = new URL(submission.deliveryUrl, window.location.href);
+                    if (deliveryUrl.protocol === "http:" || deliveryUrl.protocol === "https:") {
+                        const link = document.createElement("a");
+                        link.className = "workspace-delivery-link";
+                        link.href = deliveryUrl.href;
+                        link.target = "_blank";
+                        link.rel = "noopener noreferrer";
+                        link.textContent = "Open submitted project";
+                        card.appendChild(link);
+                    }
+                } catch (urlError) {
+                    console.warn("The submitted delivery URL is invalid.");
+                }
+            }
+            if (submission.clientFeedback) {
+                const feedback = document.createElement("div");
+                feedback.className = "workspace-delivery-feedback";
+                const feedbackHeading = document.createElement("strong");
+                feedbackHeading.textContent = "Client feedback";
+                const feedbackText = document.createElement("p");
+                feedbackText.textContent = submission.clientFeedback;
+                feedback.append(feedbackHeading, feedbackText);
+                card.appendChild(feedback);
+            }
+            history.appendChild(card);
+            if (submissionStatus === "APPROVED") {
+                const success = document.createElement("div");
+                success.className = "workspace-delivery-success";
+                success.setAttribute("role", "status");
+                const icon = document.createElement("span");
+                icon.className = "workspace-delivery-success__icon";
+                icon.setAttribute("aria-hidden", "true");
+                icon.textContent = "✓";
+                const content = document.createElement("div");
+                const title = document.createElement("h3");
+                title.textContent = "Client approved your work!";
+                const description = document.createElement("p");
+                description.textContent = "Your final delivery has been reviewed and approved. Great work!";
+                content.append(title, description);
+                success.append(icon, content);
+                history.insertBefore(success, card);
+                return;
+            }
+            if (submissionStatus === "SUBMITTED") {
+                message.textContent = "Your final delivery has been submitted and is awaiting client review.";
+                return;
+            }
+            if (submissionStatus === "REVISION_REQUESTED") {
+                message.textContent = "The client requested changes. Review the feedback below and submit your revised delivery.";
+            }
+        }
+        if (projectStatus !== "IN_PROGRESS") {
+            if (!submission) {
+                message.textContent = projectStatus === "COMPLETED"
+                    ? "This project is completed."
+                    : "Final delivery is available only while the project is in progress.";
+            }
+            return;
+        }
+        createDeliveryForm(project, container, submission, message);
+    } catch (error) {
+        console.error("Unable to load delivery:", error);
+        message.textContent = error.message;
+    }
+}
+
+function createDeliveryForm(project, container, submission, message) {
+
+    const form = document.createElement("form");
+    form.className = "workspace-delivery-form";
+
+    const summaryLabel = document.createElement("label");
+    summaryLabel.textContent = "Final delivery summary";
+
+    const summary = document.createElement("textarea");
+    summary.name = "submissionNote";
+    summary.required = true;
+    summary.maxLength = 10000;
+    summary.placeholder =
+        "Describe the completed work and deliverables.";
+
+    const urlLabel = document.createElement("label");
+    urlLabel.textContent = "Project URL (optional)";
+
+    const url = document.createElement("input");
+    url.type = "url";
+    url.name = "deliveryUrl";
+    url.maxLength = 2048;
+    url.placeholder = "https://github.com/username/project";
+
+    const button = document.createElement("button");
+    button.type = "submit";
+    button.className = "button button--dark";
+
+    button.textContent =
+        submission && submission.status === "REVISION_REQUESTED"
+            ? "Submit revised delivery"
+            : "Submit final delivery";
+
+    summaryLabel.appendChild(summary);
+    urlLabel.appendChild(url);
+
+    form.append(summaryLabel, urlLabel, button);
+    container.appendChild(form);
+
+    form.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        const submissionNote = summary.value.trim();
+        const deliveryUrl = url.value.trim();
+
+        if (!submissionNote || submissionNote.length > 10000) {
+            message.textContent =
+                "Enter a delivery summary between 1 and 10000 characters.";
+            return;
+        }
+
+        if (deliveryUrl) {
+            if (!url.checkValidity()) {
+                message.textContent = "Enter a valid project URL.";
+                return;
+            }
+
+            try {
+                const parsedUrl = new URL(deliveryUrl);
+                if (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:") {
+                    message.textContent = "Project URLs must start with http:// or https://.";
+                    return;
+                }
+            } catch (urlError) {
+                message.textContent = "Enter a valid project URL.";
+                return;
+            }
+        }
+
+        button.disabled = true;
+        message.textContent = "Submitting final delivery...";
+
+        try {
+
+            const response = await fetch("../../project-submission", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "application/json"
+                },
+                body: new URLSearchParams({
+                    projectId: String(project.projectId),
+                    submissionNote,
+                    deliveryUrl
+                })
+            });
+
+            if (response.status === 401) {
+                window.location.replace("../../login.html");
+                return;
+            }
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Unable to submit final delivery."
+                );
+            }
+
+            await loadDelivery(project, container);
+            await loadProjectActivity(project.projectId);
+
+            const refreshedMessage =
+                container.querySelector(".workspace-delivery-message");
+
+            if (refreshedMessage) {
+                refreshedMessage.textContent =
+                    "Final delivery submitted successfully. Awaiting client review.";
+            }
+
+        } catch (error) {
+            console.error("Unable to submit delivery:", error);
+            message.textContent = error.message;
+            button.disabled = false;
+        }
+    });
+}
+
+
+
+function getActivityMeta(type) {
+    const eventTypes = {
+        PROJECT_STARTED: {
+            className: "activity-item--started",
+            icon: "↗",
+            label: "Project started"
+        },
+        PROGRESS_UPDATE: {
+            className: "activity-item--progress",
+            icon: "↻",
+            label: "Progress update"
+        },
+        DELIVERY_SUBMITTED: {
+            className: "activity-item--submitted",
+            icon: "↑",
+            label: "Delivery submitted"
+        },
+        REVISION_REQUESTED: {
+            className: "activity-item--revision",
+            icon: "!",
+            label: "Revision requested"
+        },
+        DELIVERY_APPROVED: {
+            className: "activity-item--approved",
+            icon: "✓",
+            label: "Delivery approved"
+        }
+    };
+
+    return eventTypes[type] || {
+        className: "activity-item--progress",
+        icon: "•",
+        label: type ? type.replaceAll("_", " ").toLowerCase() : "Project activity"
+    };
+}
+
+async function loadProjectActivity(projectId) {
+    const container = document.getElementById("activity-timeline");
+    container.replaceChildren();
+
+    try {
+        const response = await fetch(
+            "../../project-activity?projectId=" + encodeURIComponent(projectId),
+            {
+                method: "GET",
+                credentials: "same-origin",
+                headers: { "Accept": "application/json" },
+                cache: "no-store"
+            }
+        );
+
+        if (response.status === 401) {
+            window.location.replace("../../login.html");
+            return;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to load project activity.");
+        }
+
+        if (!data.activities || data.activities.length === 0) {
+            const empty = document.createElement("p");
+            empty.className = "activity-empty";
+            empty.textContent = "No project activity has been recorded yet.";
+            container.appendChild(empty);
+            return;
+        }
+
+        const timeline = document.createElement("div");
+        timeline.className = "activity-timeline";
+
+        data.activities.forEach(activity => {
+            const item = document.createElement("article");
+            item.className = "activity-item";
+
+            const activityType = String(activity.type || "").toUpperCase();
+            const activityMeta = getActivityMeta(activityType);
+
+            item.classList.add(activityMeta.className);
+
+            const marker = document.createElement("span");
+            marker.className = "activity-item__marker";
+            marker.setAttribute("aria-hidden", "true");
+            marker.textContent = activityMeta.icon;
+
+            const content = document.createElement("div");
+            content.className = "activity-item__content";
+
+            const header = document.createElement("div");
+            header.className = "activity-item__header";
+
+            const title = document.createElement("h3");
+            title.textContent = activity.title;
+
+            const date = document.createElement("time");
+            date.className = "activity-item__date";
+            date.textContent = formatTimestamp(activity.createdAt);
+            date.dateTime = toDateTimeAttribute(activity.createdAt);
+
+            header.append(title, date);
+
+            const typeLabel = document.createElement("span");
+            typeLabel.className = "activity-item__type";
+            typeLabel.textContent = activityMeta.label;
+
+            const description = document.createElement("p");
+            description.className = "activity-item__description";
+            description.textContent = activity.description;
+
+            const actor = document.createElement("span");
+            actor.className = "activity-item__actor";
+            actor.textContent = "By " + activity.actor;
+
+            content.append(header, typeLabel);
+
+            if (activity.description) {
+                content.appendChild(description);
+            }
+
+            content.appendChild(actor);
+            item.append(marker, content);
+            timeline.appendChild(item);
+        });
+
+        container.appendChild(timeline);
+
+    } catch (error) {
+        console.error("Unable to load project activity:", error);
+
+        const errorMessage = document.createElement("p");
+        errorMessage.className = "activity-error";
+        errorMessage.textContent = error.message;
+        container.appendChild(errorMessage);
+    }
+}
+
+
+loadProject();
+
+</script>
+
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>sss

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your WorkNest freelancer profile and professional details.">
+    <title>My profile | WorkNest Freelancer</title>
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/freelancer-dashboard.css">
+    <link rel="stylesheet" href="../../css/client-ui.css">
+    <style>
+        .profile-page { width: min(calc(100% - 32px), 900px); margin: 42px auto 70px; }
+        .profile-intro { max-width: 690px; margin-bottom: 25px; }
+        .profile-eyebrow { margin: 0 0 9px; color: #5040D8; font-size: .75rem; font-weight: 750; letter-spacing: .1em; }
+        .profile-title { margin: 0; color: #24271F; font-size: clamp(1.9rem, 4vw, 2.55rem); letter-spacing: -.045em; }
+        .profile-subtitle { margin: 12px 0 0; color: #6B6D66; line-height: 1.65; }
+        .profile-progress-card, .profile-form-card, .profile-account-card { margin-top: 20px; padding: 24px; border: 1px solid #E8E5DC; border-radius: 16px; background: #fff; box-shadow: 0 8px 28px rgba(36,39,31,.04); }
+        .profile-account-card h2, .profile-group-title { margin: 0 0 16px; color: #24271F; font-size: 1.1rem; font-weight: 700; }
+        .profile-field input[readonly] { background: #F7F6F2; color: #62645D; cursor: not-allowed; }
+        .profile-section-divider { margin: 4px 0 0; padding-top: 18px; border-top: 1px solid #E8E5DC; }
+        .profile-field select { width: 100%; min-height: 46px; padding: 11px 13px; border: 1px solid #DAD8CF; border-radius: 9px; background: #fff; color: #24271F; font: inherit; }
+        .profile-field select:focus { outline: 3px solid rgba(80,64,216,.18); border-color: #5040D8; }
+        .profile-progress-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .profile-progress-head strong { color: #24271F; }
+        .profile-progress-head span { color: #5040D8; font-weight: 750; }
+        .profile-progress-track { height: 9px; margin-top: 13px; overflow: hidden; border-radius: 999px; background: #F0EEFF; }
+        .profile-progress-fill { width: 0; height: 100%; border-radius: inherit; background: #5040D8; transition: width 180ms ease; }
+        .profile-progress-hint { margin: 10px 0 0; color: #6B6D66; font-size: .85rem; }
+        .profile-form { display: grid; gap: 20px; }
+        .profile-field { display: grid; gap: 8px; min-width: 0; }
+        .profile-field label { color: #30322C; font-size: .9rem; font-weight: 700; }
+        .profile-field input, .profile-field textarea { width: 100%; min-height: 46px; padding: 11px 13px; border: 1px solid #DAD8CF; border-radius: 9px; background: #fff; color: #24271F; font: inherit; }
+        .profile-field textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
+        .profile-field input:focus, .profile-field textarea:focus { outline: 3px solid rgba(80,64,216,.18); border-color: #5040D8; }
+        .profile-field small { color: #77786F; line-height: 1.45; }
+        .profile-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+        .profile-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 3px; }
+        .profile-save { min-height: 46px; padding: 0 20px; border: 0; border-radius: 9px; background: #5040D8; color: #fff; font: inherit; font-weight: 750; cursor: pointer; }
+        .profile-save:hover { background: #4332C8; }
+        .profile-save:disabled { opacity: .6; cursor: wait; }
+        .profile-cancel { color: #55564F; font-weight: 650; text-decoration: none; }
+        .profile-cancel:hover { color: #5040D8; text-decoration: underline; }
+        .profile-message { margin: 0; padding: 12px 14px; border-radius: 9px; background: #EAF7EE; color: #176B38; line-height: 1.5; }
+        .profile-message--error { background: #FDECEC; color: #A52828; }
+        .profile-message[hidden] { display: none; }
+        .profile-form .skill-chips { min-height: 46px; }
+        .profile-form .skill-chips__entry { min-width: 180px; }
+        .profile-footer { padding: 26px 20px; border-top: 1px solid #E8E5DC; color: #77786F; text-align: center; font-size: .85rem; }
+        @media (max-width: 650px) { .profile-grid { grid-template-columns: 1fr; } .profile-page { margin-top: 28px; } .profile-form-card, .profile-progress-card, .profile-account-card { padding: 19px; } .profile-actions { align-items: stretch; flex-direction: column; } .profile-save { width: 100%; } .profile-cancel { text-align: center; padding: 8px; } }
+    /* ===== Shared freelancer header: identical on every freelancer page ===== */
+html body.dashboard-body header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 247, 242, .94);
+    border-bottom: 1px solid #E8E5DC;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+html body.dashboard-body header.site-header .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 88px;
+}
+html body.dashboard-body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: #24271F;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.055em;
+    text-decoration: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: transparent;
+    color: #6B6D66;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: none;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background: #F0EEFF;
+    color: #5040D8;
+}
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header .wordmark:focus-visible,
+html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
+    outline: 2px solid #5040D8;
+    outline-offset: 2px;
+}
+html body.dashboard-body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 16px;
+}
+html body.dashboard-body header.site-header .dashboard-role {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #E8E5DC;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #6B6D66;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+html body.dashboard-body header.site-header .site-header__actions .button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: none;
+}
+@media (max-width: 900px) {
+    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
+    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
+}
+@media (max-width: 650px) {
+    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
+    html body.dashboard-body header.site-header .dashboard-role { display: none; }
+}
+    </style>
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+<body class="dashboard-body freelancer-dashboard">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest home">worknest<span class="wordmark__period">.</span></a>
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link">Overview</a>
+            <a href="my-projects.html" class="site-nav__link">My projects</a>
+            <a href="find-work.html" class="site-nav__link">Find work</a>
+            <a href="my-proposals.html" class="site-nav__link">My proposals</a>
+            <a href="profile.html" class="site-nav__link" aria-current="page">My profile</a>
+        </nav>
+        <div class="site-header__actions">
+            <span class="dashboard-role">Freelancer</span>
+            <form action="../../logout" method="post"><button class="button button--dark" type="submit">Log out</button></form>
+        </div>
+    </div>
+</header>
+
+<main id="main-content" class="profile-page">
+    <div class="profile-intro">
+        <p class="profile-eyebrow">YOUR PROFESSIONAL PROFILE</p>
+        <h1 class="profile-title">Tell clients what you do best</h1>
+        <p class="profile-subtitle">Give clients a clear picture of your experience, skills, working style, and the work you can deliver.</p>
+    </div>
+
+    <section class="profile-account-card" aria-labelledby="account-details-title">
+        <h2 id="account-details-title">Account details</h2>
+        <div class="profile-grid">
+            <div class="profile-field">
+                <label for="account-name">Full name</label>
+                <input id="account-name" type="text" readonly aria-readonly="true" autocomplete="name" value="Loading…">
+                <small>Your account name is managed by WorkNest and cannot be edited here.</small>
+            </div>
+            <div class="profile-field">
+                <label for="account-email">Email address</label>
+                <input id="account-email" type="email" readonly aria-readonly="true" autocomplete="email" value="Loading…">
+                <small>Your account email is private and cannot be edited here.</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="profile-progress-card" aria-labelledby="profile-progress-title">
+        <div class="profile-progress-head">
+            <strong id="profile-progress-title">Profile completeness</strong>
+            <span id="profile-completeness">0%</span>
+        </div>
+        <div class="profile-progress-track" role="progressbar" aria-label="Profile completeness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="profile-progress-bar">
+            <div class="profile-progress-fill" id="profile-progress-fill"></div>
+        </div>
+        <p class="profile-progress-hint" id="profile-progress-hint">Add a headline, overview, skills, location, and rate to help clients understand your profile.</p>
+    </section>
+
+    <section class="profile-form-card" aria-label="Freelancer profile details">
+        <form id="profile-form" class="profile-form" novalidate>
+            <div class="profile-field">
+                <label for="profile-headline">Professional headline</label>
+                <input id="profile-headline" name="headline" type="text" maxlength="120" autocomplete="organization-title" placeholder="For example, Java developer building reliable web applications">
+                <small>Keep it clear and specific. Maximum 120 characters.</small>
+            </div>
+
+            <div class="profile-field">
+                <label for="profile-overview">About you</label>
+                <textarea id="profile-overview" name="overview" maxlength="3000" placeholder="Describe your experience, the work you enjoy, and what clients can expect when working with you."></textarea>
+                <small id="overview-count">0 / 3000</small>
+            </div>
+
+            <div class="profile-field">
+                <label for="profile-skills">Skills</label>
+                <input id="profile-skills" name="skills" type="text" maxlength="1000" data-placeholder="Type a skill, then press Enter" aria-describedby="skills-help">
+                <small id="skills-help">Press Enter after each skill. Multi-word skills are supported.</small>
+            </div>
+
+            <div class="profile-field">
+                <label for="profile-experience-years">Years of experience</label>
+                <input id="profile-experience-years" name="experienceYears" type="number" min="0" max="60" step="1" inputmode="numeric" placeholder="For example, 3">
+                <small>Enter 0 if you are starting your professional journey.</small>
+            </div>
+
+            <div class="profile-field">
+                <label for="profile-experience">Relevant experience</label>
+                <textarea id="profile-experience" name="experience" maxlength="2500" placeholder="Describe relevant roles, projects, responsibilities, or results. You can include dates and tools you used."></textarea>
+                <small id="experience-count">0 / 2500</small>
+            </div>
+
+            <div class="profile-field">
+                <label for="profile-education">Education</label>
+                <textarea id="profile-education" name="education" maxlength="1500" placeholder="Degree or course, institution, and graduation year (optional)."></textarea>
+                <small id="education-count">0 / 1500</small>
+            </div>
+
+            <div class="profile-field">
+                <label for="profile-certifications">Certifications and courses</label>
+                <textarea id="profile-certifications" name="certifications" maxlength="1500" placeholder="List relevant certifications, courses, or professional training."></textarea>
+                <small id="certifications-count">0 / 1500</small>
+            </div>
+
+            <div class="profile-field">
+                <label for="profile-languages">Languages</label>
+                <input id="profile-languages" name="languages" type="text" maxlength="500" data-placeholder="Add a language, then press Enter" aria-describedby="languages-help">
+                <small id="languages-help">Press Enter after each language. Multi-word names are supported.</small>
+            </div>
+
+            <div class="profile-grid">
+                <div class="profile-field">
+                    <label for="profile-location">Location</label>
+                    <input id="profile-location" name="location" type="text" maxlength="120" autocomplete="address-level2" placeholder="City, country or Remote">
+                </div>
+                <div class="profile-field">
+                    <label for="profile-availability">Availability</label>
+                    <select id="profile-availability" name="availability">
+                        <option value="">Choose your availability</option>
+                        <option value="AVAILABLE">Available for work</option>
+                        <option value="PART_TIME">Part-time</option>
+                        <option value="FULL_TIME">Full-time</option>
+                        <option value="UNAVAILABLE">Not currently available</option>
+                    </select>
+                </div>
+                <div class="profile-field">
+                    <label for="profile-phone">Contact number (optional)</label>
+                    <input id="profile-phone" name="phone" type="tel" maxlength="30" autocomplete="tel" placeholder="Include country code">
+                    <small>Only share a number you are comfortable sharing with clients.</small>
+                </div>
+                <div class="profile-field">
+                    <label for="profile-rate">Hourly rate (₹)</label>
+                    <input id="profile-rate" name="hourlyRate" type="number" min="0" max="99999999.99" step="0.01" inputmode="decimal" placeholder="Optional">
+                    <small>Optional. Enter your preferred rate in Indian rupees.</small>
+                </div>
+            </div>
+
+            <div class="profile-field">
+                <label for="profile-portfolio">Portfolio or work sample URL</label>
+                <input id="profile-portfolio" name="portfolioUrl" type="url" maxlength="2048" inputmode="url" placeholder="https://example.com/your-work">
+                <small>Use a complete link starting with http:// or https://.</small>
+            </div>
+
+            <div class="profile-grid">
+                <div class="profile-field">
+                    <label for="profile-linkedin">LinkedIn URL (optional)</label>
+                    <input id="profile-linkedin" name="linkedinUrl" type="url" maxlength="2048" inputmode="url" placeholder="https://www.linkedin.com/in/your-name">
+                </div>
+                <div class="profile-field">
+                    <label for="profile-github">GitHub or code profile URL (optional)</label>
+                    <input id="profile-github" name="githubUrl" type="url" maxlength="2048" inputmode="url" placeholder="https://github.com/your-name">
+                </div>
+            </div>
+
+            <p id="profile-message" class="profile-message" role="status" aria-live="polite" hidden></p>
+            <div class="profile-actions">
+                <button id="profile-save" class="profile-save" type="submit">Save profile</button>
+                <a class="profile-cancel" href="index.html">Back to dashboard</a>
+            </div>
+        </form>
+    </section>
+</main>
+
+<footer class="profile-footer"><p>© WorkNest. Built for better collaboration.</p></footer>
+<script src="../../js/skill-chips.js"></script>
+<script>
+"use strict";
+const contextPath = "/WorkNest";
+const form = document.getElementById("profile-form");
+const accountNameInput = document.getElementById("account-name");
+const accountEmailInput = document.getElementById("account-email");
+const headlineInput = document.getElementById("profile-headline");
+const overviewInput = document.getElementById("profile-overview");
+const skillsInput = document.getElementById("profile-skills");
+const experienceYearsInput = document.getElementById("profile-experience-years");
+const experienceInput = document.getElementById("profile-experience");
+const educationInput = document.getElementById("profile-education");
+const certificationsInput = document.getElementById("profile-certifications");
+const languagesInput = document.getElementById("profile-languages");
+const locationInput = document.getElementById("profile-location");
+const availabilityInput = document.getElementById("profile-availability");
+const phoneInput = document.getElementById("profile-phone");
+const rateInput = document.getElementById("profile-rate");
+const portfolioInput = document.getElementById("profile-portfolio");
+const linkedinInput = document.getElementById("profile-linkedin");
+const githubInput = document.getElementById("profile-github");
+const saveButton = document.getElementById("profile-save");
+const message = document.getElementById("profile-message");
+const overviewCount = document.getElementById("overview-count");
+const experienceCount = document.getElementById("experience-count");
+const educationCount = document.getElementById("education-count");
+const certificationsCount = document.getElementById("certifications-count");
+const percentLabel = document.getElementById("profile-completeness");
+const progressBar = document.getElementById("profile-progress-bar");
+const progressFill = document.getElementById("profile-progress-fill");
+const progressHint = document.getElementById("profile-progress-hint");
+const chips = window.initSkillChips(skillsInput, { max: 1000, maxEach: 60, onChange: updateCompleteness });
+const languageChips = window.initSkillChips(languagesInput, { max: 500, maxEach: 40 });
+
+function showMessage(text, isError) {
+    message.textContent = text;
+    message.classList.toggle("profile-message--error", Boolean(isError));
+    message.hidden = !text;
+}
+
+function updateCompleteness() {
+    const values = [headlineInput.value, overviewInput.value, skillsInput.value, experienceYearsInput.value, locationInput.value, availabilityInput.value];
+    const done = values.filter(value => String(value || "").trim() !== "").length;
+    const percent = Math.round(done / values.length * 100);
+    percentLabel.textContent = percent + "%";
+    progressBar.setAttribute("aria-valuenow", String(percent));
+    progressFill.style.width = percent + "%";
+    progressHint.textContent = percent === 100
+        ? "Your key profile details are complete. Add education, certifications, languages, or work samples to give clients more context."
+        : "Add a headline, overview, skills, experience, location, and availability to build a strong profile.";
+}
+
+overviewInput.addEventListener("input", () => {
+    overviewCount.textContent = overviewInput.value.length + " / 3000";
+    updateCompleteness();
+});
+[ [experienceInput, experienceCount, 2500], [educationInput, educationCount, 1500], [certificationsInput, certificationsCount, 1500] ].forEach(([input, counter, max]) => {
+    input.addEventListener("input", () => { counter.textContent = input.value.length + " / " + max; });
+});
+[headlineInput, experienceYearsInput, locationInput, availabilityInput, rateInput].forEach(input => input.addEventListener("input", updateCompleteness));
+availabilityInput.addEventListener("change", updateCompleteness);
+skillsInput.addEventListener("input", updateCompleteness);
+languagesInput.addEventListener("input", updateCompleteness);
+
+async function readResponse(response, fallback) {
+    let data = {};
+    try { data = await response.json(); } catch (_) { /* handled below */ }
+    if (response.status === 401) {
+        window.location.replace(contextPath + "/login.html");
+        throw new Error("Your session has expired. Please log in again.");
+    }
+    if (!response.ok) throw new Error(data.error || fallback);
+    return data;
+}
+
+async function loadProfile() {
+    try {
+        const response = await fetch(contextPath + "/freelancer-profile", {
+            method: "GET", credentials: "same-origin", headers: { Accept: "application/json" }, cache: "no-store"
+        });
+        const profile = await readResponse(response, "Unable to load your profile.");
+        accountNameInput.value = profile.fullName || "";
+        accountEmailInput.value = profile.email || "";
+        headlineInput.value = profile.headline || "";
+        overviewInput.value = profile.overview || "";
+        chips.set(profile.skills || "");
+        experienceYearsInput.value = profile.experienceYears === null || profile.experienceYears === undefined ? "" : String(profile.experienceYears);
+        experienceInput.value = profile.experience || "";
+        educationInput.value = profile.education || "";
+        certificationsInput.value = profile.certifications || "";
+        languageChips.set(profile.languages || "");
+        locationInput.value = profile.location || "";
+        availabilityInput.value = profile.availability || "";
+        phoneInput.value = profile.phone || "";
+        rateInput.value = profile.hourlyRate === null || profile.hourlyRate === undefined ? "" : String(profile.hourlyRate);
+        portfolioInput.value = profile.portfolioUrl || "";
+        linkedinInput.value = profile.linkedinUrl || "";
+        githubInput.value = profile.githubUrl || "";
+        overviewCount.textContent = overviewInput.value.length + " / 3000";
+        experienceCount.textContent = experienceInput.value.length + " / 2500";
+        educationCount.textContent = educationInput.value.length + " / 1500";
+        certificationsCount.textContent = certificationsInput.value.length + " / 1500";
+        updateCompleteness();
+    } catch (error) {
+        accountNameInput.value = "Unable to load account name";
+        accountEmailInput.value = "Unable to load email address";
+        showMessage(error.message || "Unable to load your profile.", true);
+    }
+}
+
+form.addEventListener("submit", async event => {
+    event.preventDefault();
+    chips.commit();
+    languageChips.commit();
+
+    if (!form.reportValidity()) return;
+    for (const [input, label] of [[portfolioInput, "Portfolio"], [linkedinInput, "LinkedIn"], [githubInput, "GitHub"]]) {
+        const value = input.value.trim();
+        if (!value) continue;
+        try {
+            const parsed = new URL(value);
+            if (!/^https?:$/.test(parsed.protocol) || !parsed.hostname) throw new Error();
+        } catch (_) {
+            showMessage(label + " URL must be a complete HTTP or HTTPS address.", true);
+            input.focus();
+            return;
+        }
+    }
+
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+    showMessage("", false);
+    try {
+        const response = await fetch(contextPath + "/freelancer-profile", {
+            method: "POST", credentials: "same-origin", cache: "no-store",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({
+                headline: headlineInput.value,
+                overview: overviewInput.value,
+                skills: skillsInput.value,
+                experienceYears: experienceYearsInput.value.trim() || null,
+                experience: experienceInput.value,
+                education: educationInput.value,
+                certifications: certificationsInput.value,
+                languages: languagesInput.value,
+                location: locationInput.value,
+                availability: availabilityInput.value,
+                phone: phoneInput.value,
+                hourlyRate: rateInput.value.trim() || null,
+                portfolioUrl: portfolioInput.value.trim(),
+                linkedinUrl: linkedinInput.value.trim(),
+                githubUrl: githubInput.value.trim()
+            })
+        });
+        const result = await readResponse(response, "Unable to save your profile.");
+        showMessage(result.message || "Your freelancer profile was saved.", false);
+        updateCompleteness();
+    } catch (error) {
+        showMessage(error.message || "Unable to save your profile.", true);
+    } finally {
+        saveButton.disabled = false;
+        saveButton.textContent = "Save profile";
+    }
+});
+
+loadProfile();
+</script>
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>

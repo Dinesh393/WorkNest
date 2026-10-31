@@ -1,0 +1,307 @@
+
+.section-shell {
+    width: min(calc(100% - var(--space-8)), var(--content-width));
+    margin-inline: auto;
+}
+
+.hero {
+    display: grid;
+    gap: var(--space-12);
+    padding-block: var(--space-16) var(--space-20);
+}
+
+.hero__copy {
+    position: relative;
+    z-index: var(--layer-base);
+}
+
+.hero__copy h1 {
+    margin-block: var(--space-6);
+    font-size: var(--text-hero);
+    line-height: var(--line-tight);
+}
+
+.hero__copy h1 em,
+.section-heading h2 em,
+.closing h2 em {
+    color: var(--color-accent);
+    font-weight: 400;
+}
+
+.hero__description {
+    max-width: 32rem;
+    color: var(--color-ink-soft);
+    font-size: var(--text-lg);
+}
+
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5) var(--space-6);
+    margin-block-start: var(--space-8);
+}
+
+.hero__note {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-block-start: var(--space-16);
+}
+
+.hero__note p {
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+}
+
+.hero__note-mark {
+    display: grid;
+    width: var(--space-12);
+    aspect-ratio: 1;
+    place-items: center;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-accent);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+}
+
+.hero__visual {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4) 0 var(--space-8);
+}
+
+.project-sheet {
+    width: min(100%, 33rem);
+}
+
+.hero__caption {
+    align-self: flex-end;
+    margin-block-start: var(--space-4);
+    color: var(--color-ink-muted);
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    text-align: end;
+}
+
+.principles {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: var(--space-10);
+    border-block: var(--border-width) solid var(--color-border);
+}
+
+.principles__intro {
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+}
+
+.principle {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+}
+
+.principle__number {
+    padding-block-start: var(--space-1);
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    letter-spacing: var(--letter-wide);
+}
+
+.principle h2 {
+    margin-block-end: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    letter-spacing: normal;
+}
+
+.principle p {
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+}
+
+.audience-section {
+    padding-block: var(--space-24);
+}
+
+.section-heading {
+    margin-block-end: var(--space-10);
+}
+
+.section-heading h2,
+.closing h2 {
+    font-size: var(--text-2xl);
+    line-height: var(--line-heading);
+}
+
+.audience-grid {
+    display: grid;
+    border-block: var(--border-width) solid var(--color-border);
+}
+
+.audience-panel {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-block: var(--space-8);
+}
+
+.audience-panel + .audience-panel {
+    border-block-start: var(--border-width) solid var(--color-border);
+}
+
+.audience-panel h3 {
+    max-width: 24rem;
+    margin-block: var(--space-6) var(--space-4);
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: var(--line-heading);
+    letter-spacing: var(--letter-tight);
+}
+
+.audience-panel > p:not(.audience-panel__index) {
+    max-width: 30rem;
+    color: var(--color-ink-soft);
+}
+
+.audience-panel .text-link {
+    margin-block-start: var(--space-6);
+}
+
+.audience-panel__detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-block-start: var(--space-10);
+}
+
+.closing {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: var(--space-16);
+    border-block-start: var(--border-width) solid var(--color-border);
+}
+
+.closing__action p {
+    max-width: 30rem;
+    margin-block-end: var(--space-6);
+    color: var(--color-ink-soft);
+}
+
+.site-footer {
+    padding-inline: max(var(--space-4), calc((100% - var(--content-width)) / 2));
+    background: var(--color-surface-muted);
+}
+
+.site-footer__main {
+    display: grid;
+    gap: var(--space-4);
+    padding-block: var(--space-10);
+}
+
+.site-footer__main > p {
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+}
+
+.site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-4);
+    border-block-start: var(--border-width) solid var(--color-border);
+    color: var(--color-ink-muted);
+    font-size: var(--text-xs);
+}
+
+@media (min-width: 48rem) {
+    .section-shell {
+        width: min(calc(100% - var(--space-16)), var(--content-width));
+    }
+
+    .hero {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        gap: var(--space-10);
+        align-items: center;
+        padding-block: var(--space-20) var(--space-24);
+    }
+
+    .hero__visual {
+        padding-inline: var(--space-4);
+    }
+
+    .principles {
+        grid-template-columns: 1fr 1fr;
+        column-gap: var(--space-10);
+        row-gap: var(--space-8);
+    }
+
+    .principles__intro {
+        grid-row: span 2;
+    }
+
+    .audience-grid {
+        grid-template-columns: 1fr 1fr;
+        column-gap: var(--space-10);
+    }
+
+    .audience-panel {
+        padding-block: var(--space-10);
+    }
+
+    .audience-panel + .audience-panel {
+        padding-inline-start: var(--space-10);
+        border-block-start: 0;
+        border-inline-start: var(--border-width) solid var(--color-border);
+    }
+
+    .closing {
+        grid-template-columns: 1fr 0.7fr;
+        align-items: end;
+        gap: var(--space-16);
+        padding-block: var(--space-20);
+    }
+
+    .site-footer__main {
+        grid-template-columns: 1fr 1fr auto;
+        align-items: center;
+        gap: var(--space-8);
+    }
+}
+
+@media (min-width: 64rem) {
+    .hero {
+        min-height: 40rem;
+        gap: var(--space-16);
+    }
+
+    .hero__visual {
+        padding-inline: var(--space-8);
+    }
+
+    .principles {
+        grid-template-columns: 1.1fr 1fr 1fr 1fr;
+        gap: var(--space-8);
+    }
+
+    .principles__intro {
+        grid-row: auto;
+    }
+}
+
+@media (min-width: 90rem) {
+    .hero {
+        padding-block: var(--space-24) var(--space-32);
+    }
+}

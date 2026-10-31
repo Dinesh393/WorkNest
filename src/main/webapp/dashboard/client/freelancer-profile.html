@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Review a WorkNest freelancer profile.">
+    <title>Freelancer Profile | WorkNest</title>
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/client-ui.css">
+    <style>
+        .freelancer-profile-page { width: min(calc(100% - 32px), 900px); margin: 42px auto 70px; }
+        .profile-back { display: inline-block; margin-bottom: 24px; color: #5040D8; font-weight: 700; text-decoration: none; }
+        .profile-back:hover { text-decoration: underline; }
+        .freelancer-profile-card { padding: clamp(22px, 5vw, 40px); border: 1px solid #E8E5DC; border-radius: 18px; background: #fff; box-shadow: 0 8px 28px rgba(36,39,31,.04); }
+        .profile-eyebrow { margin: 0 0 10px; color: #5040D8; font-size: .75rem; font-weight: 750; letter-spacing: .1em; }
+        .profile-name { margin: 0; color: #24271F; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.04em; }
+        .profile-headline { margin: 10px 0 0; color: #575950; font-size: 1.12rem; line-height: 1.5; }
+        .profile-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .profile-meta span { padding: 8px 12px; border: 1px solid #E8E5DC; border-radius: 999px; color: #484A43; background: #FAF9F6; font-size: .9rem; }
+        .profile-section { margin-top: 30px; padding-top: 24px; border-top: 1px solid #E8E5DC; }
+        .profile-section h2 { margin: 0 0 12px; color: #24271F; font-size: 1.15rem; }
+        .profile-overview { margin: 0; color: #575950; line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
+        .profile-skills { display: flex; flex-wrap: wrap; gap: 9px; margin: 0; padding: 0; list-style: none; }
+        .profile-skills li { padding: 8px 12px; border-radius: 999px; background: #F0EEFF; color: #4332B8; font-size: .9rem; font-weight: 650; }
+        .profile-portfolio { color: #5040D8; font-weight: 700; overflow-wrap: anywhere; }
+        .profile-links { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+        .profile-links a { color: #5040D8; font-weight: 700; overflow-wrap: anywhere; }
+        .profile-links a:hover { text-decoration: underline; }
+        .profile-message { padding: 18px 20px; border: 1px solid #E8E5DC; border-radius: 12px; color: #5E6058; background: #fff; line-height: 1.6; }
+        .profile-message--error { color: #A12B25; background: #FCE8E6; border-color: #F5C6C2; }
+        [hidden] { display: none !important; }
+        @media (max-width: 600px) { .freelancer-profile-page { margin-top: 28px; } }
+    </style>
+    <link rel="stylesheet" href="../../css/notifications.css">
+</head>
+<body class="dashboard-body client-dashboard">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html" class="wordmark" aria-label="WorkNest client dashboard">worknest<span class="wordmark__period">.</span></a>
+        <div class="site-header__actions">
+            <span class="dashboard-role">Client account</span>
+            <form action="../../logout" method="post"><button class="button button--dark" type="submit">Log out</button></form>
+        </div>
+    </div>
+</header>
+<main id="main-content" class="freelancer-profile-page">
+    <a id="back-link" class="profile-back" href="index.html">← Back to dashboard</a>
+    <p id="loading-message" class="profile-message" role="status">Loading freelancer profile…</p>
+    <p id="error-message" class="profile-message profile-message--error" role="alert" hidden></p>
+    <article id="profile-card" class="freelancer-profile-card" hidden>
+        <p class="profile-eyebrow">FREELANCER PROFILE</p>
+        <h1 id="profile-name" class="profile-name"></h1>
+        <p id="profile-headline" class="profile-headline" hidden></p>
+        <div id="profile-meta" class="profile-meta"></div>
+        <section class="profile-section" aria-labelledby="about-title">
+            <h2 id="about-title">About</h2>
+            <p id="profile-overview" class="profile-overview"></p>
+        </section>
+        <section id="experience-section" class="profile-section" aria-labelledby="experience-title" hidden>
+            <h2 id="experience-title">Relevant experience</h2>
+            <p id="profile-experience" class="profile-overview"></p>
+        </section>
+        <section id="education-section" class="profile-section" aria-labelledby="education-title" hidden>
+            <h2 id="education-title">Education</h2>
+            <p id="profile-education" class="profile-overview"></p>
+        </section>
+        <section id="certifications-section" class="profile-section" aria-labelledby="certifications-title" hidden>
+            <h2 id="certifications-title">Certifications and courses</h2>
+            <p id="profile-certifications" class="profile-overview"></p>
+        </section>
+        <section class="profile-section" aria-labelledby="skills-title">
+            <h2 id="skills-title">Skills</h2>
+            <ul id="profile-skills" class="profile-skills"></ul>
+            <p id="no-skills" class="profile-overview" hidden>No skills have been added yet.</p>
+        </section>
+        <section id="languages-section" class="profile-section" aria-labelledby="languages-title" hidden>
+            <h2 id="languages-title">Languages</h2>
+            <ul id="profile-languages" class="profile-skills"></ul>
+        </section>
+        <section id="links-section" class="profile-section" aria-labelledby="links-title" hidden>
+            <h2 id="links-title">Work and professional links</h2>
+            <ul id="profile-links" class="profile-links"></ul>
+        </section>
+    </article>
+</main>
+<footer class="dashboard-footer"><p>© WorkNest. Built for better collaboration.</p></footer>
+<script>
+"use strict";
+const contextPath = "/WorkNest";
+const query = new URLSearchParams(window.location.search);
+const userId = query.get("userId");
+const projectId = query.get("projectId");
+const backLink = document.getElementById("back-link");
+if (projectId && /^[1-9]\d*$/.test(projectId)) {
+    backLink.href = "project-proposals.html?projectId=" + encodeURIComponent(projectId);
+    backLink.textContent = "← Back to proposals";
+}
+
+function addMeta(label, value) {
+    if (!value) return;
+    const item = document.createElement("span");
+    item.textContent = label + ": " + value;
+    document.getElementById("profile-meta").appendChild(item);
+}
+
+function safeHttpUrl(value) {
+    try {
+        const url = new URL(value);
+        return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+    } catch (_) { return ""; }
+}
+
+async function loadProfile() {
+    const loading = document.getElementById("loading-message");
+    const error = document.getElementById("error-message");
+    if (!userId || !/^[1-9]\d*$/.test(userId)) {
+        loading.hidden = true;
+        error.textContent = "This freelancer profile link is invalid.";
+        error.hidden = false;
+        return;
+    }
+    try {
+        const response = await fetch(contextPath + "/freelancer-profile?userId=" + encodeURIComponent(userId), {
+            credentials: "same-origin", cache: "no-store", headers: { Accept: "application/json" }
+        });
+        let data = {};
+        try { data = await response.json(); } catch (_) { /* handled as a request error */ }
+        if (response.status === 401) { window.location.replace("../../login.html"); return; }
+        if (!response.ok) throw new Error(data.error || "Unable to load this freelancer profile.");
+        document.getElementById("profile-name").textContent = data.fullName || "Freelancer";
+        const headline = document.getElementById("profile-headline");
+        if (data.headline) { headline.textContent = data.headline; headline.hidden = false; }
+        document.getElementById("profile-overview").textContent = data.overview || "No introduction has been added yet.";
+        addMeta("Location", data.location || "");
+        if (data.hourlyRate !== null && data.hourlyRate !== undefined && data.hourlyRate !== "") {
+            const rate = Number(data.hourlyRate);
+            if (Number.isFinite(rate) && rate >= 0) addMeta("Hourly rate", "₹" + rate.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " / hour");
+        }
+        if (data.experienceYears !== null && data.experienceYears !== undefined && data.experienceYears !== "") {
+            const years = Number(data.experienceYears);
+            if (Number.isInteger(years) && years >= 0) addMeta("Experience", years + (years === 1 ? " year" : " years"));
+        }
+        const availabilityLabels = { AVAILABLE: "Available for work", PART_TIME: "Part-time", FULL_TIME: "Full-time", UNAVAILABLE: "Not currently available" };
+        addMeta("Availability", availabilityLabels[data.availability] || "");
+        [["experience", "profile-experience", "experience-section"], ["education", "profile-education", "education-section"], ["certifications", "profile-certifications", "certifications-section"]].forEach(([field, elementId, sectionId]) => {
+            const value = String(data[field] || "").trim();
+            if (value) {
+                document.getElementById(elementId).textContent = value;
+                document.getElementById(sectionId).hidden = false;
+            }
+        });
+        const skillList = document.getElementById("profile-skills");
+        const skills = String(data.skills || "").split(",").map(value => value.trim()).filter(Boolean);
+        skills.forEach(skill => { const item = document.createElement("li"); item.textContent = skill; skillList.appendChild(item); });
+        document.getElementById("no-skills").hidden = skills.length > 0;
+        const languageList = document.getElementById("profile-languages");
+        const languages = String(data.languages || "").split(",").map(value => value.trim()).filter(Boolean);
+        languages.forEach(language => { const item = document.createElement("li"); item.textContent = language; languageList.appendChild(item); });
+        document.getElementById("languages-section").hidden = languages.length === 0;
+        const links = [["Portfolio", data.portfolioUrl], ["LinkedIn", data.linkedinUrl], ["GitHub", data.githubUrl]];
+        const linkList = document.getElementById("profile-links");
+        links.forEach(([label, rawUrl]) => {
+            const safeUrl = safeHttpUrl(String(rawUrl || "").trim());
+            if (!safeUrl) return;
+            const item = document.createElement("li");
+            const link = document.createElement("a");
+            link.href = safeUrl;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = label + " ↗";
+            item.appendChild(link);
+            linkList.appendChild(item);
+        });
+        document.getElementById("links-section").hidden = linkList.childElementCount === 0;
+        document.getElementById("profile-card").hidden = false;
+        loading.hidden = true;
+    } catch (exception) {
+        loading.hidden = true;
+        error.textContent = exception.message || "Unable to load this freelancer profile. Please try again.";
+        error.hidden = false;
+    }
+}
+loadProfile();
+</script>
+    <script src="../../js/notifications.js"></script>
+</body>
+</html>

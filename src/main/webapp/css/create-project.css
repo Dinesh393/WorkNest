@@ -1,0 +1,241 @@
+
+/* Page layout */
+
+.create-project-main {
+    width: min(100% - 40px, 760px);
+    margin-inline: auto;
+    padding: 36px 0 64px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    color: var(--color-text, #25291f);
+    text-decoration: none;
+    font-size: 0.92rem;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.project-form-heading {
+    margin-bottom: 32px;
+}
+
+.project-form-heading .eyebrow {
+    margin-bottom: 12px;
+}
+
+.project-form-heading h1 {
+    margin: 0 0 12px;
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+.project-form-heading > p:last-child {
+    max-width: 600px;
+    margin: 0;
+    color: var(--color-text-muted, #66736a);
+    line-height: 1.7;
+}
+
+/* Form card */
+
+.project-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.project-form-section {
+    padding: 28px;
+    border: 1px solid var(--color-border, #e3e3dc);
+    border-radius: 16px;
+    background: var(--color-surface, #ffffff);
+}
+
+.form-section-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.form-step {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-background, #f5f4ef);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.form-section-heading h2 {
+    margin: 0 0 6px;
+    font-size: 1.2rem;
+}
+
+.form-section-heading p {
+    margin: 0;
+    color: var(--color-text-muted, #66736a);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Fields */
+
+.project-form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.project-form .form-field:last-child {
+    margin-bottom: 0;
+}
+
+.project-form label {
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.project-form input,
+.project-form textarea,
+.project-form select {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border, #d8d9d1);
+    border-radius: 8px;
+    background: var(--color-surface, #ffffff);
+    color: var(--color-text, #25291f);
+    font: inherit;
+}
+
+.project-form textarea {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.project-form input:focus,
+.project-form textarea:focus,
+.project-form select:focus {
+    outline: 2px solid var(--color-text, #25291f);
+    outline-offset: 2px;
+}
+
+.project-form .form-help {
+    margin: 0;
+    color: var(--color-text-muted, #66736a);
+    font-size: 0.82rem;
+    line-height: 1.6;
+}
+
+.project-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+/* Actions */
+
+.project-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.project-form-actions .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.project-form-actions .button--secondary {
+    border: 1px solid var(--color-border, #d8d9d1);
+    background: transparent;
+    color: var(--color-text, #25291f);
+}
+
+.project-form-actions .button--dark {
+    border: 1px solid #25291f;
+    background: #25291f;
+    color: #ffffff;
+}
+
+.project-form-actions .button:hover {
+    opacity: 0.88;
+}
+
+.project-form-note {
+    margin: -12px 0 0;
+    color: var(--color-text-muted, #66736a);
+    font-size: 0.82rem;
+    text-align: right;
+}
+
+.project-form-message {
+    padding: 14px 16px;
+    border: 1px solid #e5a5a5;
+    border-radius: 8px;
+    background: #fff1f1;
+    color: #8b2020;
+    line-height: 1.5;
+}
+
+.project-form-message[hidden] {
+    display: none;
+}
+
+/* Responsive layout */
+
+@media (max-width: 600px) {
+    .create-project-main {
+        width: calc(100% - 32px);
+        padding-top: 24px;
+    }
+
+    .project-form-section {
+        padding: 20px;
+    }
+
+    .project-form .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .project-form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .project-form-actions .button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .project-form-note {
+        text-align: left;
+    }
+}
