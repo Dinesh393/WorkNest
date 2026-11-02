@@ -8,8 +8,8 @@ WorkNest is a web application that connects clients with freelancers to post pro
 
 - Register and sign in as a client.
 - Create, update, view, and cancel projects.
-- Draft project details from a short summary with Gemini AI, then review and edit the suggestions before posting.
-- Review proposal details with Gemini and see an evidence-based best-fit suggestion for pending proposals.
+- Draft project details from a short summary with AI, then review and edit the suggestions before posting.
+- Review proposal details with AI and see an evidence-based best-fit suggestion for pending proposals.
 - Summarize freelancer progress updates in the client workspace.
 - Review freelancer proposals and accept a proposal.
 - Find freelancers using search, filters, sorting, and a saved shortlist.
@@ -22,7 +22,7 @@ WorkNest is a web application that connects clients with freelancers to post pro
 - Register and sign in as a freelancer.
 - Create and update a professional profile.
 - Browse open projects and submit proposals.
-- Draft a project-specific cover letter with Gemini, review it, and edit it before submission.
+- Draft a project-specific cover letter with AI, review it, and edit it before submission.
 - Track proposal and invitation statuses.
 - Accept or decline direct client invitations.
 - Share progress updates and submit final work in the project workspace.
@@ -36,7 +36,7 @@ WorkNest is a web application that connects clients with freelancers to post pro
 - MySQL Connector/J
 - Apache Tomcat 9
 - Eclipse IDE for Enterprise Java and Web Developers
-- Gemini Developer API for optional project drafting, proposal assistance, and summaries (model availability and usage limits apply)
+- AI text generation for optional project drafting, proposal assistance, and summaries (model availability and usage limits apply)
 
 The Eclipse project is currently configured with a JavaSE-25 classpath. The Java version can be adjusted to match the JDK installed in the development environment.
 
@@ -107,7 +107,7 @@ The last three scripts add optional supporting tables used by notifications, fre
 3. Import the project into Eclipse using **File → Import → Existing Projects into Workspace**.
 4. Set the project JDK and Apache Tomcat 9 runtime in Eclipse.
 5. Configure `DB_USERNAME` and `DB_PASSWORD` in the Tomcat launch configuration's Environment settings.
-6. To use AI features, add `GEMINI_API_KEY` to the same Tomcat Environment settings. The project form, proposal form, and workspace remain usable without AI. Optionally set `GEMINI_MODEL` to a model available to your Gemini API project.
+6. To use AI features, add `GEMINI_API_KEY` to the same Tomcat Environment settings. The project form, proposal form, and workspace remain usable without AI. Optionally set `GEMINI_MODEL` to a model available to your AI service account.
 7. Start Tomcat and open `http://localhost:8080/WorkNest/` in a browser.
 
 The port and context path may differ depending on the local Tomcat configuration.
@@ -124,7 +124,7 @@ The port and context path may differ depending on the local Tomcat configuration
 ## Security notes
 
 - Keep database passwords, API credentials, private keys, and certificates out of the repository.
-- Gemini free-tier requests are subject to model availability and usage limits. When an AI feature is used, the relevant project details, freelancer notes/profile details, proposal letters, or progress updates are sent to Google for processing. Avoid including confidential or sensitive information.
+- AI requests are subject to model availability and usage limits. When an AI feature is used, the relevant project details, freelancer notes/profile details, proposal letters, or progress updates are sent to the AI provider for processing. Avoid including confidential or sensitive information.
 - Use environment variables or a local configuration excluded by `.gitignore` for secrets.
 - Use test data in screenshots and remove personal account information before publishing.
 - Review the files staged for each commit before pushing to GitHub.

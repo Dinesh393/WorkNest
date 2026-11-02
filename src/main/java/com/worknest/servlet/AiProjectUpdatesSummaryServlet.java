@@ -123,7 +123,7 @@ public class AiProjectUpdatesSummaryServlet extends HttpServlet {
             if (summary.length() > 3500) summary = summary.substring(0, 3500).trim();
             if (summary.length() < 20) {
                 writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
-                        "Gemini did not return a useful summary. Please try again.");
+                        "The AI did not return a useful summary. Please try again.");
                 return;
             }
             response.setStatus(HttpServletResponse.SC_OK);
@@ -145,7 +145,7 @@ public class AiProjectUpdatesSummaryServlet extends HttpServlet {
                     "The progress summary was interrupted. Please try again.");
         } catch (IOException exception) {
             writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
-                    "Gemini is temporarily unavailable. Please try again.");
+                    "The AI service is temporarily unavailable. Please try again.");
         }
     }
 

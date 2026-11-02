@@ -126,6 +126,7 @@ public class AiProposalSummaryServlet extends HttpServlet {
                             String proposalStatus = result.getString("status");
                             proposalReferences.put(new JSONObject()
                                     .put("proposal", position)
+                                    .put("proposalId", result.getLong("proposal_id"))
                                     .put("freelancerName", clip(
                                             result.getString("freelancer_name"), 180))
                                     .put("status", proposalStatus));
@@ -133,9 +134,9 @@ public class AiProposalSummaryServlet extends HttpServlet {
                                     .put("proposal", position)
                                     .put("status", proposalStatus)
                                     .put("amount", result.getBigDecimal("proposed_amount"))
-                                    .put("coverLetter", clip(result.getString("cover_letter"), 1800))
+                                    .put("coverLetter", clip(result.getString("cover_letter"), 1200))
                                     .put("headline", clip(result.getString("headline"), 180))
-                                    .put("overview", clip(result.getString("overview"), 900))
+                                    .put("overview", clip(result.getString("overview"), 600))
                                     .put("skills", clip(result.getString("skills"), 500));
                             int years = result.getInt("experience_years");
                             proposal.put("experienceYears", result.wasNull()
@@ -169,18 +170,18 @@ public class AiProposalSummaryServlet extends HttpServlet {
                 + "whose status is not PENDING. Give a short evidence-based reason. If the "
                 + "available information is insufficient, choose the pending proposal with "
                 + "the strongest supported match and state the uncertainty in the reason. "
-                + "Details must be plain text, 1 or 2 short sentences and at most 350 characters. "
+                + "Details must be plain text, one short sentence and at most 200 characters. "
                 + "Project JSON: " + project + " Proposal JSON: " + proposals;
         try {
             JSONObject generated = new JSONObject(GeminiApiClient.generateJson(
-                    prompt, buildResponseSchema(), 3000));
+                    prompt, buildResponseSchema(), 1400));
             JSONArray generatedProposals = generated.optJSONArray("proposals");
             int bestFit = generated.optInt("bestFitProposal", -1);
             String reason = cleanAiText(generated.optString("bestFitReason", ""), 1200);
             if (generatedProposals == null || generatedProposals.length() != proposals.length()
                     || bestFit < 1 || bestFit > proposals.length() || reason.length() < 20) {
                 writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
-                        "Gemini returned an incomplete comparison. Please try again.");
+                        "The AI returned an incomplete review. Please try again.");
                 return;
             }
             JSONArray formattedProposals = new JSONArray();
@@ -194,7 +195,7 @@ public class AiProposalSummaryServlet extends HttpServlet {
                         || generatedItem.optInt("proposal", -1) != index + 1
                         || details.length() < 20) {
                     writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
-                            "Gemini returned proposal details in an unexpected format. Please try again.");
+                            "The AI returned proposal details in an unexpected format. Please try again.");
                     return;
                 }
                 if (index + 1 == bestFit
@@ -203,13 +204,15 @@ public class AiProposalSummaryServlet extends HttpServlet {
                 }
                 formattedProposals.put(new JSONObject()
                         .put("proposal", index + 1)
+                        .put("proposalId", proposalReferences
+                                .getJSONObject(index).getLong("proposalId"))
                         .put("freelancerName", proposalReferences
                                 .getJSONObject(index).optString("freelancerName", "Freelancer"))
                         .put("details", details));
             }
             if (!bestFitIsPending) {
                 writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
-                        "Gemini did not select an eligible pending proposal. Please try again.");
+                        "The AI could not identify an eligible pending proposal. Please try again.");
                 return;
             }
             JSONObject bestFitReference = proposalReferences.getJSONObject(bestFit - 1);
@@ -219,6 +222,7 @@ public class AiProposalSummaryServlet extends HttpServlet {
                     .put("proposalCount", totalProposalCount)
                     .put("proposals", formattedProposals)
                     .put("bestFitProposal", bestFit)
+                    .put("bestFitProposalId", bestFitReference.getLong("proposalId"))
                     .put("bestFitName", bestFitReference.optString("freelancerName", "Freelancer"))
                     .put("bestFitReason", reason)
                     .put("truncated", truncated)
@@ -235,7 +239,7 @@ public class AiProposalSummaryServlet extends HttpServlet {
                     "The proposal summary was interrupted. Please try again.");
         } catch (IOException exception) {
             writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
-                    "Gemini is temporarily unavailable. Please try again.");
+                    "The AI service is temporarily unavailable. Please try again.");
         }
     }
 

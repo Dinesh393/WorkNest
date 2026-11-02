@@ -10,7 +10,7 @@ import java.time.Duration;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/** Small server-side REST client shared by WorkNest's Gemini features. */
+/** Small server-side REST client shared by WorkNest's AI features. */
 public final class GeminiApiClient {
     private static final String DEFAULT_MODEL = "gemini-3.5-flash-lite";
     private static final HttpClient HTTP = HttpClient.newBuilder()
@@ -43,7 +43,7 @@ public final class GeminiApiClient {
         }
         if (prompt == null || prompt.isBlank()
                 || maxOutputTokens < 1 || maxOutputTokens > 4096) {
-            throw new IllegalArgumentException("Invalid Gemini request.");
+            throw new IllegalArgumentException("Invalid AI request.");
         }
 
         String model = System.getenv("GEMINI_MODEL");
@@ -53,7 +53,6 @@ public final class GeminiApiClient {
         }
 
         JSONObject generationConfig = new JSONObject()
-                .put("temperature", 0.2)
                 .put("maxOutputTokens", maxOutputTokens);
         if (responseSchema != null) {
             generationConfig.put("responseMimeType", "application/json")
@@ -70,7 +69,7 @@ public final class GeminiApiClient {
         HttpRequest request = HttpRequest.newBuilder(URI.create(
                     "https://generativelanguage.googleapis.com/v1beta/models/"
                     + model + ":generateContent"))
-                .timeout(Duration.ofSeconds(35))
+                .timeout(Duration.ofSeconds(20))
                 .header("Content-Type", "application/json")
                 .header("x-goog-api-key", apiKey)
                 .POST(HttpRequest.BodyPublishers.ofString(payload.toString()))
@@ -86,7 +85,7 @@ public final class GeminiApiClient {
         try {
             providerResponse = new JSONObject(response.body());
         } catch (RuntimeException exception) {
-            throw new ApiException("Gemini returned an unreadable response.",
+            throw new ApiException("The AI service returned an unreadable response.",
                     response.statusCode());
         }
 
@@ -98,7 +97,7 @@ public final class GeminiApiClient {
                 ? "" : parts.optJSONObject(0) == null ? ""
                         : parts.optJSONObject(0).optString("text", "");
         if (text.isBlank()) {
-            throw new ApiException("Gemini could not generate a response for that request.",
+            throw new ApiException("The AI service could not generate a response for that request.",
                     response.statusCode());
         }
         return text.trim();
@@ -107,14 +106,14 @@ public final class GeminiApiClient {
     private static ApiException apiError(int status) {
         if (status == 429) {
             return new ApiException(
-                    "Gemini is temporarily rate-limited. Wait a little and try again.", status);
+                    "The AI service is busy. Wait a little and try again.", status);
         }
         if (status == 401 || status == 403) {
             return new ApiException(
-                    "Gemini rejected the key or model access. Check the server configuration.", status);
+                    "The AI service rejected its credentials or model access. Check the server configuration.", status);
         }
         return new ApiException(
-                "Gemini is temporarily unavailable. Please try again later.", status);
+                "The AI service is temporarily unavailable. Please try again later.", status);
     }
 
     public static final class ApiException extends Exception {

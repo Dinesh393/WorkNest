@@ -1565,7 +1565,7 @@ html body header.site-header .site-header__actions .button {
             </div>
             <section id="ai-progress-summary" class="ai-progress-summary" aria-labelledby="ai-progress-heading" hidden>
                 <h3 id="ai-progress-heading">Progress summary</h3>
-                <p class="ai-progress-summary__notice">Gemini will receive the project title and progress notes to prepare this summary. Review the original updates for details.</p>
+                <p class="ai-progress-summary__notice">AI will use the project title and progress notes to prepare this summary. Review the original updates for details.</p>
                 <button id="ai-progress-button" type="button">Summarize progress</button>
                 <p id="ai-progress-status" role="status" aria-live="polite" hidden></p>
                 <div id="ai-progress-result" role="region" aria-label="Project progress summary" hidden></div>
@@ -1956,7 +1956,7 @@ html body header.site-header .site-header__actions .button {
             progressSummaryBusy = true;
             elements.aiProgressButton.disabled = true;
             elements.aiProgressButton.textContent = "Preparing summary...";
-            elements.aiProgressStatus.textContent = "Sending progress notes to Gemini...";
+            elements.aiProgressStatus.textContent = "Preparing the progress summary...";
             elements.aiProgressStatus.classList.remove("is-error");
             elements.aiProgressStatus.hidden = false;
             elements.aiProgressResult.hidden = true;
@@ -2531,5 +2531,6 @@ html body header.site-header .site-header__actions .button {
         });
     </script>
     <script src="../../js/notifications.js"></script>
+    <script src="../../js/worknest-footer.js"></script>
 </body>
 </html>

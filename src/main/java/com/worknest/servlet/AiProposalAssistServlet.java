@@ -158,7 +158,7 @@ public class AiProposalAssistServlet extends HttpServlet {
             }
             if (coverLetter.length() < 20) {
                 writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
-                        "Gemini did not return a usable draft. Please try again.");
+                        "The AI did not return a usable draft. Please try again.");
                 return;
             }
             response.setStatus(HttpServletResponse.SC_OK);
@@ -178,7 +178,7 @@ public class AiProposalAssistServlet extends HttpServlet {
                     "Proposal drafting was interrupted. Please try again.");
         } catch (IOException exception) {
             writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
-                    "Gemini is temporarily unavailable. You can write the cover letter manually.");
+                    "The AI service is temporarily unavailable. You can write the cover letter manually.");
         }
     }
 

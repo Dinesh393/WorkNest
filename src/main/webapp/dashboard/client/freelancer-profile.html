@@ -11,6 +11,19 @@
     <link rel="stylesheet" href="../../css/components.css">
     <link rel="stylesheet" href="../../css/client-ui.css">
     <style>
+        html body.dashboard-body header.site-header { position: sticky; top: 0; z-index: 50; background: rgba(248,247,242,.96); border-bottom: 1px solid #E8E5DC; }
+        html body.dashboard-body header.site-header .site-header__inner { width: min(calc(100% - 48px), 1180px); min-height: 88px; margin: 0 auto; display: flex; align-items: center; gap: 32px; }
+        html body.dashboard-body header.site-header .wordmark { flex: 0 0 auto; color: #24271F; font-size: 1.6rem; font-weight: 800; letter-spacing: -.055em; text-decoration: none; }
+        html body.dashboard-body header.site-header nav.dashboard-nav { display: flex; flex: 1 1 auto; align-items: center; justify-content: center; gap: 8px; min-width: 0; }
+        html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { display: inline-flex; align-items: center; min-height: 46px; padding: 0 18px; border-radius: 10px; background: transparent; color: #6B6D66; font-size: .95rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
+        html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+        html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible { background: #F0EEFF; color: #5040D8; }
+        html body.dashboard-body header.site-header .site-header__actions { display: flex; flex: 0 0 auto; align-items: center; gap: 16px; }
+        html body.dashboard-body header.site-header .dashboard-role { display: inline-flex; align-items: center; min-height: 34px; padding: 0 13px; border: 1px solid #E8E5DC; border-radius: 999px; background: #fff; color: #6B6D66; font-size: .8rem; font-weight: 700; white-space: nowrap; }
+        html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+        html body.dashboard-body header.site-header .site-header__actions .button { min-height: 46px; padding: 0 20px; border-radius: 10px; }
+        @media (max-width: 900px) { html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; } html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; } html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; } }
+        @media (max-width: 650px) { html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; } html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; } html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; } html body.dashboard-body header.site-header .dashboard-role { display: none; } }
         .freelancer-profile-page { width: min(calc(100% - 32px), 900px); margin: 42px auto 70px; }
         .profile-back { display: inline-block; margin-bottom: 24px; color: #5040D8; font-weight: 700; text-decoration: none; }
         .profile-back:hover { text-decoration: underline; }
@@ -32,6 +45,8 @@
         .profile-message { padding: 18px 20px; border: 1px solid #E8E5DC; border-radius: 12px; color: #5E6058; background: #fff; line-height: 1.6; }
         .profile-message--error { color: #A12B25; background: #FCE8E6; border-color: #F5C6C2; }
         [hidden] { display: none !important; }
+        .profile-meta[hidden] { display: none; }
+        html body.dashboard-body header.site-header .site-nav__link[aria-current="page"] { background: #F0EEFF; color: #5040D8; }
         @media (max-width: 600px) { .freelancer-profile-page { margin-top: 28px; } }
     </style>
     <link rel="stylesheet" href="../../css/notifications.css">
@@ -41,6 +56,11 @@
 <header class="site-header">
     <div class="site-header__inner">
         <a href="index.html" class="wordmark" aria-label="WorkNest client dashboard">worknest<span class="wordmark__period">.</span></a>
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link">Overview</a>
+            <a href="index.html#your-projects" class="site-nav__link" aria-current="page">Your projects</a>
+            <a href="create-project.html" class="site-nav__link">Post a project</a>
+        </nav>
         <div class="site-header__actions">
             <span class="dashboard-role">Client account</span>
             <form action="../../logout" method="post"><button class="button button--dark" type="submit">Log out</button></form>
@@ -146,6 +166,8 @@ async function loadProfile() {
         }
         const availabilityLabels = { AVAILABLE: "Available for work", PART_TIME: "Part-time", FULL_TIME: "Full-time", UNAVAILABLE: "Not currently available" };
         addMeta("Availability", availabilityLabels[data.availability] || "");
+        document.getElementById("profile-meta").hidden =
+            document.getElementById("profile-meta").childElementCount === 0;
         [["experience", "profile-experience", "experience-section"], ["education", "profile-education", "education-section"], ["certifications", "profile-certifications", "certifications-section"]].forEach(([field, elementId, sectionId]) => {
             const value = String(data[field] || "").trim();
             if (value) {
@@ -187,5 +209,6 @@ async function loadProfile() {
 loadProfile();
 </script>
     <script src="../../js/notifications.js"></script>
+    <script src="../../js/worknest-footer.js"></script>
 </body>
 </html>

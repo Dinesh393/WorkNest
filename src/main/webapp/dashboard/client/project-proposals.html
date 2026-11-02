@@ -693,10 +693,8 @@
         <strong id="project-status-value"></strong>
     </div>
 
-    <section id="ai-summary-panel" class="ai-summary-panel" aria-labelledby="ai-summary-heading" hidden>
-        <h2 id="ai-summary-heading">AI proposal review</h2>
-        <p>Gemini will receive the project details, proposal cover letters, and relevant freelancer profile details. It will summarize each proposal and identify a best fit from pending proposals. Review the original proposals before making your decision.</p>
-        <button id="ai-summary-button" type="button">Review proposals with AI</button>
+    <section id="ai-summary-panel" class="ai-summary-panel" aria-label="AI proposal review" hidden>
+        <button id="ai-summary-button" type="button" aria-label="Review proposals with AI">Review proposals</button>
         <p id="ai-summary-status" role="status" aria-live="polite" hidden></p>
         <div id="ai-summary-result" role="region" aria-label="Proposal comparison" hidden></div>
     </section>
@@ -822,6 +820,7 @@ let currentProjectStatus = null;
 let acceptingProposal = false;
 let confirmResolver = null;
 let pendingProposalCount = 0;
+let aiReviewCompleted = false;
 
 function showMessage(message, type = "info") {
     messageBox.textContent = message;
@@ -1528,14 +1527,13 @@ async function loadProposals() {
 }
 
 async function summarizePendingProposals() {
-    if (!projectId || currentProjectStatus !== "OPEN" || pendingProposalCount < 2) return;
+    if (aiReviewCompleted || !projectId || currentProjectStatus !== "OPEN" || pendingProposalCount < 2) return;
     aiSummaryButton.disabled = true;
     aiSummaryButton.textContent = "Reviewing proposals...";
-    aiSummaryStatus.textContent = "Sending proposal details to Gemini...";
+    aiSummaryStatus.textContent = "Preparing the proposal review...";
     aiSummaryStatus.classList.remove("is-error");
     aiSummaryStatus.hidden = false;
     aiSummaryResult.hidden = true;
-    aiSummaryReferences.hidden = true;
     try {
         const response = await fetch(`${contextPath}/ai-proposal-summary`, {
             method: "POST",
@@ -1545,7 +1543,8 @@ async function summarizePendingProposals() {
                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
             },
             body: new URLSearchParams({ projectId }),
-            cache: "no-store"
+            cache: "no-store",
+            signal: AbortSignal.timeout(22000)
         });
         if (response.status === 401) {
             window.location.replace("../../login.html");
@@ -1555,6 +1554,10 @@ async function summarizePendingProposals() {
         if (!response.ok) throw new Error(data.error || data.message || "Unable to summarize proposals.");
         if (!Array.isArray(data.proposals) || data.proposals.length === 0) {
             throw new Error("The server returned no proposal details.");
+        }
+        const recommendedProposalId = Number(data.bestFitProposalId);
+        if (!Number.isSafeInteger(recommendedProposalId) || recommendedProposalId < 1) {
+            throw new Error("The recommended proposal could not be matched to its original proposal.");
         }
         aiSummaryResult.replaceChildren();
         const total = document.createElement("p");
@@ -1581,7 +1584,14 @@ async function summarizePendingProposals() {
         const reason = document.createElement("p");
         reason.className = "ai-proposal-result__details";
         reason.textContent = data.bestFitReason || "No reason was returned.";
-        aiSummaryResult.append(bestFitHeading, bestFitName, reason);
+        const acceptRecommendedButton = document.createElement("button");
+        acceptRecommendedButton.type = "button";
+        acceptRecommendedButton.className = "accept-proposal-button";
+        acceptRecommendedButton.textContent = "Accept recommended proposal";
+        acceptRecommendedButton.addEventListener("click", () => {
+            acceptProposal(recommendedProposalId, acceptRecommendedButton);
+        });
+        aiSummaryResult.append(bestFitHeading, bestFitName, reason, acceptRecommendedButton);
         if (data.truncated) {
             const note = document.createElement("p");
             note.className = "ai-proposal-result__note";
@@ -1589,13 +1599,20 @@ async function summarizePendingProposals() {
             aiSummaryResult.appendChild(note);
         }
         aiSummaryResult.hidden = false;
+        aiReviewCompleted = true;
         aiSummaryStatus.textContent = "Review ready. Confirm details in the original proposals before deciding.";
+        aiSummaryButton.textContent = "Review completed";
+        aiSummaryButton.disabled = true;
     } catch (error) {
-        aiSummaryStatus.textContent = error.message || "Unable to summarize proposals. Please try again.";
+        aiSummaryStatus.textContent = error.name === "TimeoutError" || error.name === "AbortError"
+                ? "The AI review took too long. Please try again."
+                : error.message || "Unable to review proposals. Please try again.";
         aiSummaryStatus.classList.add("is-error");
     } finally {
-        aiSummaryButton.disabled = false;
-        aiSummaryButton.textContent = "Review proposals with AI";
+        if (!aiReviewCompleted) {
+            aiSummaryButton.disabled = false;
+            aiSummaryButton.textContent = "Review proposals";
+        }
     }
 }
 
@@ -1754,5 +1771,6 @@ loadProposals();
 </script>
 
     <script src="../../js/notifications.js"></script>
+    <script src="../../js/worknest-footer.js"></script>
 </body>
 </html>
