@@ -791,6 +791,41 @@
             overflow-wrap: anywhere;
         }
 
+        .ai-progress-summary {
+            margin: 20px 0 0;
+            padding: 18px;
+            border: 1px solid var(--workspace-border);
+            border-radius: 12px;
+            background: var(--workspace-card);
+        }
+
+        .ai-progress-summary h3 { margin: 0 0 8px; font-size: 1rem; }
+        .ai-progress-summary__notice { margin: 0 0 12px; color: var(--workspace-muted); line-height: 1.55; }
+        .ai-progress-summary button {
+            padding: 10px 14px;
+            border: 1px solid var(--workspace-accent);
+            border-radius: 8px;
+            background: var(--workspace-accent);
+            color: #FFFFFF;
+            font: inherit;
+            font-weight: 650;
+            cursor: pointer;
+        }
+        .ai-progress-summary button:hover { filter: brightness(.92); }
+        .ai-progress-summary button:focus-visible { outline: 3px solid rgba(80,64,216,.3); outline-offset: 2px; }
+        .ai-progress-summary button:disabled { opacity: .65; cursor: wait; }
+        #ai-progress-result {
+            margin: 14px 0 0;
+            padding: 14px;
+            border: 1px solid var(--workspace-border);
+            border-radius: 8px;
+            background: var(--workspace-bg);
+            white-space: pre-wrap;
+            line-height: 1.65;
+        }
+        #ai-progress-status { margin: 10px 0 0; }
+        #ai-progress-status.is-error { color: #A12622; }
+
         /* Activity timeline */
         .workspace-timeline {
             display: grid;
@@ -1528,6 +1563,13 @@ html body header.site-header .site-header__actions .button {
             <div id="progress-list" class="workspace-loading">
                 Loading progress updates...
             </div>
+            <section id="ai-progress-summary" class="ai-progress-summary" aria-labelledby="ai-progress-heading" hidden>
+                <h3 id="ai-progress-heading">Progress summary</h3>
+                <p class="ai-progress-summary__notice">Gemini will receive the project title and progress notes to prepare this summary. Review the original updates for details.</p>
+                <button id="ai-progress-button" type="button">Summarize progress</button>
+                <p id="ai-progress-status" role="status" aria-live="polite" hidden></p>
+                <div id="ai-progress-result" role="region" aria-label="Project progress summary" hidden></div>
+            </section>
         </section>
 
         <section class="workspace-card ws-tabpanel" id="panel-activity" role="tabpanel" aria-labelledby="tab-activity" hidden>
@@ -1590,6 +1632,10 @@ html body header.site-header .site-header__actions .button {
             type: document.getElementById("project-type"),
             skills: document.getElementById("project-skills"),
             progress: document.getElementById("progress-list"),
+            aiProgressSummary: document.getElementById("ai-progress-summary"),
+            aiProgressButton: document.getElementById("ai-progress-button"),
+            aiProgressStatus: document.getElementById("ai-progress-status"),
+            aiProgressResult: document.getElementById("ai-progress-result"),
             activity: document.getElementById("activity-list"),
             delivery: document.getElementById("delivery-list"),
             reviewMessage: document.getElementById("review-message"),
@@ -1599,6 +1645,7 @@ html body header.site-header .site-header__actions .button {
         let workspaceStatus = "";
         let updateCount = 0;
         let submissionLoaded = false;
+        let progressSummaryBusy = false;
         const approvalDialog = document.getElementById("approve-delivery-dialog");
         const cancelApprovalButton = document.getElementById("cancel-approval");
         const confirmApprovalButton = document.getElementById("confirm-approval");
@@ -1849,6 +1896,9 @@ html body header.site-header .site-header__actions .button {
 
                 const updates = Array.isArray(data.updates) ? data.updates : [];
                 updateCount = updates.length;
+                elements.aiProgressSummary.hidden = updates.length === 0;
+                elements.aiProgressStatus.hidden = true;
+                elements.aiProgressResult.hidden = true;
 
                 elements.progress.replaceChildren();
 
@@ -1896,9 +1946,43 @@ html body header.site-header .site-header__actions .button {
                 elements.progress.appendChild(list);
             } catch (error) {
                 console.error("Progress loading failed:", error);
+                elements.aiProgressSummary.hidden = true;
                 renderError(elements.progress, error.message, loadProgress);
             }
         }
+
+        async function summarizeProjectProgress() {
+            if (progressSummaryBusy || !projectId) return;
+            progressSummaryBusy = true;
+            elements.aiProgressButton.disabled = true;
+            elements.aiProgressButton.textContent = "Preparing summary...";
+            elements.aiProgressStatus.textContent = "Sending progress notes to Gemini...";
+            elements.aiProgressStatus.classList.remove("is-error");
+            elements.aiProgressStatus.hidden = false;
+            elements.aiProgressResult.hidden = true;
+            try {
+                const data = await fetchJson("../../ai-project-updates-summary", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+                    body: new URLSearchParams({ projectId })
+                });
+                elements.aiProgressResult.textContent = data.summary || "No summary was returned.";
+                if (data.truncated) {
+                    elements.aiProgressResult.textContent += "\n\nThis summary covers the 20 most recent updates.";
+                }
+                elements.aiProgressResult.hidden = false;
+                elements.aiProgressStatus.textContent = "Summary ready. Check the original updates for context.";
+            } catch (error) {
+                elements.aiProgressStatus.textContent = error.message || "Unable to summarize progress. Please try again.";
+                elements.aiProgressStatus.classList.add("is-error");
+            } finally {
+                progressSummaryBusy = false;
+                elements.aiProgressButton.disabled = false;
+                elements.aiProgressButton.textContent = "Summarize progress";
+            }
+        }
+
+        elements.aiProgressButton.addEventListener("click", summarizeProjectProgress);
 
         function getActivityMeta(type) {
             const knownTypes = {

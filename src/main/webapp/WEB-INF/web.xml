@@ -327,5 +327,15 @@
     <url-pattern>/ai-proposal-summary</url-pattern>
 </servlet-mapping>
 
+<servlet>
+    <servlet-name>AiProjectUpdatesSummaryServlet</servlet-name>
+    <servlet-class>com.worknest.servlet.AiProjectUpdatesSummaryServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AiProjectUpdatesSummaryServlet</servlet-name>
+    <url-pattern>/ai-project-updates-summary</url-pattern>
+</servlet-mapping>
+
  
 </web-app>
