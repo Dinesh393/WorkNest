@@ -9,6 +9,7 @@ body.public-home {
     --home-text: #172B2A;
     --home-muted: #526766;
     --home-border: #D8E5E1;
+    --home-shadow-rgb: 23, 43, 42;
     --color-page: var(--home-page);
     --color-surface: var(--home-surface);
     --color-surface-muted: #E9F0EE;
@@ -889,5 +890,141 @@ body.public-home {
 
     .public-home .workspace-preview__milestones {
         flex-wrap: wrap;
+    }
+}
+
+/* Subtle depth treatment, kept within the homepage palette. */
+.public-home .home-hero__preview {
+    perspective: 1400px;
+    perspective-origin: 48% 50%;
+}
+
+.public-home .workspace-preview {
+    transform: rotateY(-3.5deg) rotateX(1deg);
+    transform-style: preserve-3d;
+    box-shadow: 0 24px 42px rgba(var(--home-shadow-rgb), .12),
+                0 5px 12px rgba(var(--home-shadow-rgb), .06);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.public-home .workspace-preview:hover {
+    transform: rotateY(-1deg) rotateX(0);
+    box-shadow: 0 28px 48px rgba(var(--home-shadow-rgb), .14),
+                0 7px 15px rgba(var(--home-shadow-rgb), .07);
+}
+
+.public-home .workspace-preview__top {
+    transform: translateZ(5px);
+}
+
+.public-home .workspace-preview__update {
+    transform: translateZ(9px);
+    box-shadow: 0 5px 12px rgba(var(--home-shadow-rgb), .06);
+}
+
+.public-home .home-hero h1,
+.public-home .home-section__heading h2,
+.public-home .home-workspace h2,
+.public-home .home-role__heading h2 {
+    text-shadow: 0 1px 0 var(--home-surface),
+                 0 2px 0 var(--home-border),
+                 0 5px 12px rgba(var(--home-shadow-rgb), .08);
+}
+
+.public-home .home-button--primary,
+.public-home .home-button--light,
+.public-home .button {
+    box-shadow: 0 3px 0 var(--home-primary-hover),
+                0 7px 14px rgba(var(--home-shadow-rgb), .1);
+}
+
+.public-home .home-button--primary:active,
+.public-home .button:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--home-primary-hover),
+                0 3px 7px rgba(var(--home-shadow-rgb), .08);
+}
+
+.public-home .home-button--light {
+    box-shadow: 0 3px 0 var(--home-primary-soft),
+                0 7px 14px rgba(var(--home-shadow-rgb), .12);
+}
+
+.public-home .home-button--light:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--home-primary-soft),
+                0 3px 7px rgba(var(--home-shadow-rgb), .08);
+}
+
+.public-home .process-steps {
+    overflow: hidden;
+    border: 1px solid var(--home-border);
+    border-radius: 9px;
+    background: var(--home-surface);
+    box-shadow: 0 12px 26px rgba(var(--home-shadow-rgb), .06);
+}
+
+.public-home .process-steps li:nth-child(odd) {
+    padding-left: 22px;
+}
+
+.public-home .process-steps li:nth-child(even) {
+    padding-right: 22px;
+}
+
+.public-home .home-role__details {
+    box-shadow: 0 10px 22px rgba(var(--home-shadow-rgb), .07),
+                0 2px 5px rgba(var(--home-shadow-rgb), .04);
+}
+
+.public-home .faq-list details {
+    padding-inline: 14px;
+    background: var(--home-surface);
+}
+
+.public-home .home-cta {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18),
+                inset 0 -1px 0 rgba(0, 0, 0, .08);
+}
+
+@media (max-width: 760px) {
+    .public-home .workspace-preview {
+        transform: none;
+    }
+
+    .public-home .workspace-preview:hover {
+        transform: none;
+    }
+
+    .public-home .home-hero h1,
+    .public-home .home-section__heading h2,
+    .public-home .home-workspace h2,
+    .public-home .home-role__heading h2 {
+        text-shadow: 0 1px 0 var(--home-surface),
+                     0 2px 0 var(--home-border);
+    }
+}
+
+@media (max-width: 500px) {
+    .public-home .process-steps {
+        border-top: 1px solid var(--home-border);
+    }
+
+    .public-home .process-steps li,
+    .public-home .process-steps li:nth-child(odd),
+    .public-home .process-steps li:nth-child(even) {
+        padding-inline: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .public-home .workspace-preview,
+    .public-home .home-button,
+    .public-home .button {
+        transition: none;
+    }
+
+    .public-home .workspace-preview:hover {
+        transform: none;
     }
 }
