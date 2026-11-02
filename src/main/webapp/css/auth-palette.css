@@ -1,0 +1,82 @@
+/* Blue palette used by the public home, login, and registration pages. */
+body {
+    --primary: #1D4ED8;
+    --primary-hover: #1D4ED8;
+    --primary-soft: #EFF6FF;
+    --accent: #1D4ED8;
+    --accent-soft: #EFF6FF;
+    --bg: #EFF6FF;
+    --surface: #FFFFFF;
+    --text: #1D4ED8;
+    --text-muted: #1D4ED8;
+    --border: #EFF6FF;
+    --success: #1D4ED8;
+    --warning: #1D4ED8;
+    --danger: #1D4ED8;
+    --overlay: #EFF6FF;
+}
+
+body.auth-body .site-header,
+body.auth-body .auth-panel,
+body.auth-body .account-type,
+body.auth-body .form-field input {
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+body .site-header {
+    background-color: var(--surface);
+}
+
+body.auth-body .site-header,
+body.auth-body .auth-panel,
+body.auth-body .account-type,
+body.auth-body .form-field input,
+body.auth-body .auth-switch {
+    border-color: var(--primary-soft);
+}
+
+body.auth-body .form-field input::placeholder {
+    color: var(--text);
+}
+
+body.auth-body .form-field input:focus-visible,
+body.auth-body :is(a, button, input, textarea, select):focus-visible {
+    outline-color: var(--primary);
+}
+
+body.auth-body .account-type:has(input:checked),
+body.auth-body .form-message,
+body.auth-body .form-help {
+    background-color: var(--primary-soft);
+    color: var(--text);
+}
+
+body.auth-body .auth-submit,
+body.auth-body button[class*="submit"],
+body.auth-body a.button {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--surface);
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+body.auth-body .auth-submit:hover:not(:disabled),
+body.auth-body button[class*="submit"]:hover:not(:disabled),
+body.auth-body a.button:hover {
+    background-color: var(--primary-soft);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+body.auth-body .site-header a:hover,
+body.auth-body .auth-switch a:hover {
+    background-color: var(--primary-soft);
+    color: var(--primary);
+}
+
+body.auth-body :is(button, input, textarea, select):disabled {
+    background-color: var(--primary-soft);
+    border-color: var(--primary-soft);
+    color: var(--text);
+}

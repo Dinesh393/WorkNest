@@ -1,18 +1,20 @@
 body.public-home {
-    --home-primary: #0F766E;
-    --home-primary-hover: #115E59;
-    --home-primary-soft: #E3F2F0;
-    --home-accent: #F59E0B;
-    --home-accent-soft: #FFF4DF;
-    --home-page: #F3F7F6;
+    --home-primary: #1D4ED8;
+    --home-primary-hover: #1E40AF;
+    --home-primary-soft: #EFF6FF;
+    --home-secondary: #0F766E;
+    --home-accent: #D97706;
+    --home-accent-hover: #B45309;
+    --home-accent-soft: #FEF3C7;
+    --home-page: #F8FAFC;
     --home-surface: #FFFFFF;
-    --home-text: #172B2A;
-    --home-muted: #526766;
-    --home-border: #D8E5E1;
-    --home-shadow-rgb: 23, 43, 42;
+    --home-text: #0F172A;
+    --home-muted: #64748B;
+    --home-border: #E2E8F0;
+    --home-shadow-rgb: 15, 23, 42;
     --color-page: var(--home-page);
     --color-surface: var(--home-surface);
-    --color-surface-muted: #E9F0EE;
+    --color-surface-muted: #F1F5F9;
     --color-ink: var(--home-text);
     --color-ink-soft: var(--home-muted);
     --color-ink-muted: var(--home-muted);
@@ -53,6 +55,10 @@ body.public-home {
 
 .public-home .wordmark__period {
     color: var(--home-accent);
+}
+
+.public-home .wordmark:hover .wordmark__period {
+    color: var(--home-accent-hover);
 }
 
 .public-home .home-nav {
@@ -276,7 +282,7 @@ body.public-home {
     border: 1px solid var(--home-border);
     border-radius: 10px;
     background: var(--home-surface);
-    box-shadow: 0 14px 34px rgba(23, 43, 42, .08);
+    box-shadow: 0 14px 34px rgba(var(--home-shadow-rgb), .08);
 }
 
 .public-home .workspace-preview__top {
@@ -523,9 +529,15 @@ body.public-home {
     padding-left: 28px;
 }
 
-.public-home .process-steps__number,
+.public-home .process-steps__number {
+    color: var(--home-accent-hover);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+}
+
 .public-home .workspace-points article > span {
-    color: var(--home-accent);
+    color: var(--home-secondary);
     font-size: .78rem;
     font-weight: 700;
     letter-spacing: .08em;
@@ -1042,7 +1054,7 @@ body.public-home {
 
 .public-home .home-cta {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18),
-                inset 0 -1px 0 rgba(0, 0, 0, .08);
+                inset 0 -1px 0 rgba(var(--home-shadow-rgb), .08);
 }
 
 @media (max-width: 760px) {

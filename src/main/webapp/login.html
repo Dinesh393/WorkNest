@@ -1,49 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" class="auth-document">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#FFFFFF">
 
     <title>Login | WorkNest</title>
     <meta name="description"
           content="Sign in to your WorkNest account and continue collaborating.">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/design-tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/register.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/palette-states.css">
+    <link rel="stylesheet" href="css/auth-palette.css">
 </head>
 
 <body class="auth-body">
 
-    <a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+    <div class="site-header__inner">
+        <a href="index.html"
+           class="wordmark"
+           aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
 
-    <header class="site-header">
-        <div class="site-header__inner">
-            <a href="index.html" class="wordmark" aria-label="WorkNest home">
-                worknest<span class="wordmark__period">.</span>
+        <div class="site-header__actions">
+            <a href="register.html" class="text-link">
+                Create account
+                <span aria-hidden="true">→</span>
             </a>
-
-            <div class="site-header__actions auth-header__actions">
-                <a href="register.html" class="button button--primary auth-header-cta">
-                    Create account <span aria-hidden="true">→</span>
-                </a>
-            </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main id="main-content" class="auth-page">
+    <main class="auth-page">
 
         <section class="auth-intro" aria-labelledby="intro-heading">
-            <p class="eyebrow">
-                <span class="eyebrow__line" aria-hidden="true"></span>
-                A better way to work independently
-            </p>
+            <p class="eyebrow">A BETTER WAY TO WORK INDEPENDENTLY</p>
 
             <h1 id="intro-heading">
                 Good work starts with
@@ -81,12 +78,7 @@
 
             <form action="login" method="post">
 
-				<p id="login-message"
-                   class="form-message"
-                   role="alert"
-                   aria-live="assertive"
-                   tabindex="-1"
-                   hidden></p>
+				<p id="login-message" role="alert" aria-live="polite" hidden></p>
 				
                 <div class="form-field">
                     <label for="email">Email address</label>
@@ -129,13 +121,7 @@
 
     </main>
 
-    <footer class="auth-footer">
-        <a class="wordmark" href="index.html" aria-label="WorkNest home">
-            worknest<span class="wordmark__period">.</span>
-        </a>
-        <p>Good work, done together.</p>
-    </footer>
-
+    
 <script>
     const params = new URLSearchParams(window.location.search);
 
@@ -161,16 +147,6 @@
     if (Object.hasOwn(errorMessages, error)) {
         loginMessage.textContent = errorMessages[error];
         loginMessage.hidden = false;
-        loginMessage.focus();
-    }
-
-    if (params.has("error")) {
-        params.delete("error");
-        const cleanQuery = params.toString();
-        const cleanUrl = window.location.pathname
-            + (cleanQuery ? "?" + cleanQuery : "")
-            + window.location.hash;
-        window.history.replaceState(window.history.state, "", cleanUrl);
     }
     
     if (params.get("loggedOut") === "true") {
@@ -179,5 +155,12 @@
     }
 </script>
 
+
+<footer class="auth-footer">
+    <a class="wordmark wordmark--footer" href="index.html">worknest<span class="wordmark__period">.</span></a>
+    <p>Good work, done together.</p>
+    <a href="terms-and-conditions.html">Terms and Conditions</a>
+</footer>
 </body>
 </html>
+```

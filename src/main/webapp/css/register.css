@@ -4,32 +4,34 @@
 }
 
 .auth-body {
-    --color-page: #F3F7F6;
+    --color-page: #F8FAFC;
     --color-surface: var(--auth-canvas);
-    --color-surface-muted: #E3F2F0;
-    --color-ink: #172B2A;
-    --color-ink-soft: #405653;
-    --color-ink-muted: #526766;
-    --color-accent: #0F766E;
-    --color-accent-hover: #115E59;
-    --color-accent-soft: #E3F2F0;
-    --color-border: #D8E5E1;
-    --color-focus: #0F766E;
+    --color-surface-muted: #F1F5F9;
+    --color-ink: #0F172A;
+    --color-ink-soft: #64748B;
+    --color-ink-muted: #64748B;
+    --color-accent: #1D4ED8;
+    --color-accent-hover: #1E40AF;
+    --color-accent-soft: #EFF6FF;
+    --color-border: #E2E8F0;
+    --color-focus: #1D4ED8;
     --color-on-accent: #FFFFFF;
-    --auth-accent: #F59E0B;
-    --auth-intro-muted: #DDEDE9;
+    --auth-accent: #D97706;
+    --auth-accent-hover: #B45309;
+    --auth-secondary: #0F766E;
+    --auth-intro-muted: #CCFBF1;
     --auth-intro-highlight: #FFFFFF;
-    --auth-border-hover: #8BB9B2;
-    --auth-input-surface: #FBFCFB;
-    --auth-placeholder: #697C79;
-    --auth-error-border: #E3B8B4;
-    --auth-error-surface: #FFF5F3;
-    --auth-error-ink: #7D2922;
-    --auth-error-rgb: 125, 41, 34;
-    --auth-shadow-rgb: 23, 43, 42;
-    --auth-focus-rgb: 15, 118, 110;
-    --auth-button-shadow: #115E59;
-    --auth-button-shadow-hover: #0D4F4A;
+    --auth-border-hover: #93C5FD;
+    --auth-input-surface: #F8FAFC;
+    --auth-placeholder: #64748B;
+    --auth-error-border: #FECACA;
+    --auth-error-surface: #FEF2F2;
+    --auth-error-ink: #B91C1C;
+    --auth-error-rgb: 185, 28, 28;
+    --auth-shadow-rgb: 15, 23, 42;
+    --auth-focus-rgb: 29, 78, 216;
+    --auth-button-shadow: #1E40AF;
+    --auth-button-shadow-hover: #1E3A8A;
     display: flex;
     min-height: 100vh;
     flex-direction: column;
@@ -67,6 +69,10 @@
 
 .auth-body .wordmark__period {
     color: var(--auth-accent);
+}
+
+.auth-body .wordmark:hover .wordmark__period {
+    color: var(--auth-accent-hover);
 }
 
 .auth-body .site-header__actions.auth-header__actions {
@@ -142,7 +148,7 @@
     flex-direction: column;
     justify-content: center;
     padding: clamp(34px, 5vw, 70px);
-    background: var(--color-accent);
+    background: var(--auth-secondary);
     color: var(--color-on-accent);
 }
 
