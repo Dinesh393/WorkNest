@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="auth-document">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FFFFFF">
 
     <title>Login | WorkNest</title>
     <meta name="description"
           content="Sign in to your WorkNest account and continue collaborating.">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/design-tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -17,27 +21,29 @@
 
 <body class="auth-body">
 
-<header class="site-header">
-    <div class="site-header__inner">
-        <a href="index.html"
-           class="wordmark"
-           aria-label="WorkNest home">
-            worknest<span class="wordmark__period">.</span>
-        </a>
+    <a class="skip-link" href="#main-content">Skip to content</a>
 
-        <div class="site-header__actions">
-            <a href="register.html" class="text-link">
-                Create account
-                <span aria-hidden="true">→</span>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a href="index.html" class="wordmark" aria-label="WorkNest home">
+                worknest<span class="wordmark__period">.</span>
             </a>
-        </div>
-    </div>
-</header>
 
-    <main class="auth-page">
+            <div class="site-header__actions auth-header__actions">
+                <a href="register.html" class="button button--primary auth-header-cta">
+                    Create account <span aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="auth-page">
 
         <section class="auth-intro" aria-labelledby="intro-heading">
-            <p class="eyebrow">A BETTER WAY TO WORK INDEPENDENTLY</p>
+            <p class="eyebrow">
+                <span class="eyebrow__line" aria-hidden="true"></span>
+                A better way to work independently
+            </p>
 
             <h1 id="intro-heading">
                 Good work starts with
@@ -123,7 +129,13 @@
 
     </main>
 
-    
+    <footer class="auth-footer">
+        <a class="wordmark" href="index.html" aria-label="WorkNest home">
+            worknest<span class="wordmark__period">.</span>
+        </a>
+        <p>Good work, done together.</p>
+    </footer>
+
 <script>
     const params = new URLSearchParams(window.location.search);
 
@@ -151,13 +163,21 @@
         loginMessage.hidden = false;
         loginMessage.focus();
     }
+
+    if (params.has("error")) {
+        params.delete("error");
+        const cleanQuery = params.toString();
+        const cleanUrl = window.location.pathname
+            + (cleanQuery ? "?" + cleanQuery : "")
+            + window.location.hash;
+        window.history.replaceState(window.history.state, "", cleanUrl);
+    }
     
     if (params.get("loggedOut") === "true") {
         statusMessage.textContent = "You have been logged out successfully.";
         statusMessage.hidden = false;
     }
 </script>
-
 
 </body>
 </html>

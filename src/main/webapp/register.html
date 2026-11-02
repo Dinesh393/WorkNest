@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="auth-document">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FFFFFF">
     <meta name="description" content="Create your WorkNest account and start working better together.">
     <title>Create an account | WorkNest</title>
 
@@ -28,21 +29,21 @@
                 worknest<span class="wordmark__period">.</span>
             </a>
 
-            <a class="site-nav__link" href="login.html">
-                Already have an account? <strong>Log in</strong>
-            </a>
+            <div class="site-header__actions auth-header__actions">
+                <a class="button button--quiet auth-header-cta" href="login.html">Log in</a>
+            </div>
         </div>
     </header>
 
     <main id="main-content" class="auth-page">
 
-        <section class="auth-intro">
+        <section class="auth-intro" aria-labelledby="intro-heading">
             <p class="eyebrow">
                 <span class="eyebrow__line" aria-hidden="true"></span>
                 A better way to work independently
             </p>
 
-            <h1>
+            <h1 id="intro-heading">
                 Good work starts with
                 <em>the right connection.</em>
             </h1>
@@ -105,58 +106,62 @@
                     </label>
                 </fieldset>
 
-                <div class="form-field">
-                    <label for="full-name">Full name</label>
-                    <input
-                        type="text"
-                        id="full-name"
-                        name="fullName"
-                        autocomplete="name"
-                        placeholder="Enter your full name"
-                        maxlength="100"
-                        required>
+                <div class="register-fields-grid">
+                    <div class="form-field">
+                        <label for="full-name">Full name</label>
+                        <input
+                            type="text"
+                            id="full-name"
+                            name="fullName"
+                            autocomplete="name"
+                            placeholder="Enter your full name"
+                            maxlength="100"
+                            required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="email">Email address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            autocomplete="email"
+                            placeholder="you@example.com"
+                            maxlength="254"
+                            required>
+                    </div>
                 </div>
 
-                <div class="form-field">
-                    <label for="email">Email address</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        autocomplete="email"
-                        placeholder="you@example.com"
-                        maxlength="254"
-                        required>
-                </div>
+                <div class="register-fields-grid register-fields-grid--security">
+                    <div class="form-field">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            autocomplete="new-password"
+                            placeholder="Create a strong password"
+                            minlength="6"
+                            maxlength="100"
+                            aria-describedby="password-help"
+                            required>
+                        <p class="form-help" id="password-help">
+                            Use at least 6 characters. Avoid passwords you use elsewhere.
+                        </p>
+                    </div>
 
-                <div class="form-field">
-                    <label for="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        autocomplete="new-password"
-                        placeholder="Create a strong password"
-                        minlength="6"
-                        maxlength="100"
-                        aria-describedby="password-help"
-                        required>
-                    <p class="form-help" id="password-help">
-                        Use at least 6 characters. Avoid passwords you use elsewhere.
-                    </p>
-                </div>
-
-                <div class="form-field">
-                    <label for="confirm-password">Confirm password</label>
-                    <input
-                        type="password"
-                        id="confirm-password"
-                        name="confirmPassword"
-                        autocomplete="new-password"
-                        placeholder="Enter your password again"
-                        minlength="6"
-                        maxlength="100"
-                        required>
+                    <div class="form-field">
+                        <label for="confirm-password">Confirm password</label>
+                        <input
+                            type="password"
+                            id="confirm-password"
+                            name="confirmPassword"
+                            autocomplete="new-password"
+                            placeholder="Enter your password again"
+                            minlength="6"
+                            maxlength="100"
+                            required>
+                    </div>
                 </div>
 
                 <label class="terms-agreement">
@@ -216,6 +221,15 @@
                 messageElement.textContent = messages[error];
                 messageElement.hidden = false;
                 messageElement.focus();
+            }
+
+            if (params.has("error")) {
+                params.delete("error");
+                const cleanQuery = params.toString();
+                const cleanUrl = window.location.pathname
+                    + (cleanQuery ? "?" + cleanQuery : "")
+                    + window.location.hash;
+                window.history.replaceState(window.history.state, "", cleanUrl);
             }
         })();
     </script>
