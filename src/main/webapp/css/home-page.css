@@ -2,7 +2,7 @@ body.public-home {
     --home-primary: #1D4ED8;
     --home-primary-hover: #1E40AF;
     --home-primary-soft: #EFF6FF;
-    --home-secondary: #0F766E;
+    --home-secondary: #1D4ED8;
     --home-accent: #D97706;
     --home-accent-hover: #B45309;
     --home-accent-soft: #FEF3C7;
@@ -58,7 +58,7 @@ body.public-home {
 }
 
 .public-home .wordmark:hover .wordmark__period {
-    color: var(--home-accent-hover);
+    color: var(--home-accent);
 }
 
 .public-home .home-nav {
@@ -179,7 +179,7 @@ body.public-home {
 }
 
 .public-home .home-hero {
-    padding: clamp(48px, 7vw, 96px) 24px clamp(56px, 8vw, 104px);
+    padding: clamp(40px, 5vw, 64px) 24px clamp(48px, 6vw, 76px);
 }
 
 .public-home .home-hero__inner {
@@ -438,12 +438,7 @@ body.public-home {
     font-size: .72rem;
 }
 
-.public-home .home-hero__preview-caption {
-    margin: 11px 0 0;
-    color: var(--home-muted);
-    font-size: .8rem;
-    text-align: right;
-}
+
 
 .public-home .home-proof {
     border-block: 1px solid var(--home-border);
@@ -1182,4 +1177,65 @@ body.public-home {
     .public-home .home-nav .site-nav__mobile-actions {
         display: none;
     }
+}
+
+/* Raised, restrained depth for the public header and sample workspace. */
+.public-home .home-header {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+}
+
+.public-home .home-header__inner {
+    transform-style: preserve-3d;
+}
+
+.public-home .home-nav {
+    transform: translateZ(8px);
+    box-shadow: 0 6px 16px rgba(var(--home-shadow-rgb), .045);
+}
+
+.public-home .home-header__actions .button {
+    transform: translateZ(10px);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.public-home .home-header__actions .button:hover {
+    transform: translateY(-2px) translateZ(14px);
+}
+
+.public-home .workspace-preview--complete .workspace-preview__progress span {
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .public-home .home-nav,
+    .public-home .home-header__actions .button {
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .public-home .home-header__actions .button {
+        transition: none;
+    }
+
+    .public-home .home-header__actions .button:hover {
+        transform: none;
+    }
+}
+
+/* Keep the public-page overscroll and logo hover consistent with the auth header. */
+html {
+    background-color: #FFFFFF;
+}
+
+.public-home .wordmark:hover,
+.public-home .wordmark:focus-visible {
+    background-color: transparent;
+    color: var(--home-text);
+}
+
+.public-home .wordmark:hover .wordmark__period,
+.public-home .wordmark:focus-visible .wordmark__period {
+    color: var(--home-accent);
 }

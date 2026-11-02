@@ -37,7 +37,8 @@ body.auth-body .auth-switch {
 }
 
 body.auth-body .form-field input::placeholder {
-    color: var(--text);
+    color: var(--auth-placeholder);
+    opacity: 1;
 }
 
 body.auth-body .form-field input:focus-visible,
@@ -69,14 +70,45 @@ body.auth-body a.button:hover {
     color: var(--primary);
 }
 
-body.auth-body .site-header a:hover,
 body.auth-body .auth-switch a:hover {
     background-color: var(--primary-soft);
     color: var(--primary);
+}
+
+body.auth-body .site-header a:hover {
+    background-color: transparent;
+    color: var(--color-ink-soft);
 }
 
 body.auth-body :is(button, input, textarea, select):disabled {
     background-color: var(--primary-soft);
     border-color: var(--primary-soft);
     color: var(--text);
+}
+
+html.auth-document {
+    background-color: #FFFFFF;
+}
+
+body.auth-body .site-header {
+    inset-block-start: 0;
+    background-color: #FFFFFF;
+}
+
+body.auth-body .site-header .wordmark:hover,
+body.auth-body .site-header .wordmark:focus-visible {
+    background-color: transparent;
+    color: var(--color-ink);
+}
+
+body.auth-body .site-header .wordmark {
+    font-family: var(--font-body);
+    font-size: 1.42rem;
+    font-weight: 700;
+    letter-spacing: -.07em;
+}
+
+body.auth-body .site-header .wordmark:hover .wordmark__period,
+body.auth-body .site-header .wordmark:focus-visible .wordmark__period {
+    color: var(--auth-accent);
 }

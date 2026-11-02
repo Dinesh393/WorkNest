@@ -6,6 +6,9 @@
     <meta name="description" content="Post a new project on WorkNest and find the right freelancer.">
 
     <title>Post a Project | WorkNest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../../css/design-tokens.css">
     <link rel="stylesheet" href="../../css/base.css">
@@ -13,115 +16,8 @@
     <link rel="stylesheet" href="../../css/components.css">
     <link rel="stylesheet" href="../../css/create-project.css">
     <link rel="stylesheet" href="../../css/client-ui.css">
-    <style>
-/* ===== Shared freelancer header: identical on every freelancer page ===== */
-html body.dashboard-body header.site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(248, 247, 242, .94);
-    border-bottom: 1px solid #E8E5DC;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-}
-html body.dashboard-body header.site-header .site-header__inner {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    min-height: 88px;
-}
-html body.dashboard-body header.site-header .wordmark {
-    flex: 0 0 auto;
-    color: #24271F;
-    font-size: 1.6rem;
-    font-weight: 800;
-    letter-spacing: -.055em;
-    text-decoration: none;
-}
-html body.dashboard-body header.site-header nav.dashboard-nav {
-    display: flex;
-    flex: 1 1 auto;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-width: 0;
-}
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
-    display: inline-flex;
-    align-items: center;
-    min-height: 46px;
-    padding: 0 18px;
-    border-radius: 10px;
-    background: transparent;
-    color: #6B6D66;
-    font-size: .95rem;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: none;
-}
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
-    background: #F0EEFF;
-    color: #5040D8;
-}
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
-html body.dashboard-body header.site-header .wordmark:focus-visible,
-html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
-    outline: 2px solid #5040D8;
-    outline-offset: 2px;
-}
-html body.dashboard-body header.site-header .site-header__actions {
-    display: flex;
-    flex: 0 0 auto;
-    align-items: center;
-    gap: 16px;
-}
-html body.dashboard-body header.site-header .dashboard-role {
-    display: inline-flex;
-    align-items: center;
-    min-height: 34px;
-    padding: 0 13px;
-    border: 1px solid #E8E5DC;
-    border-radius: 999px;
-    background: #FFFFFF;
-    color: #6B6D66;
-    font-size: .8rem;
-    font-weight: 700;
-    white-space: nowrap;
-}
-html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
-html body.dashboard-body header.site-header .site-header__actions .button {
-    min-height: 46px;
-    padding: 0 20px;
-    border-radius: 10px;
-    transition: none;
-}
-@media (max-width: 900px) {
-    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
-    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
-    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
-}
-@media (max-width: 650px) {
-    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
-    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
-    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
-    html body.dashboard-body header.site-header .dashboard-role { display: none; }
-}
-
-/* ===== Create project ===== */
-/* Back link: same look as the other client pages */
-a.back-link {
-    display: inline-block;
-    margin-bottom: 24px;
-    color: #24271F;
-    font-weight: 600;
-    text-decoration: none;
-}
-a.back-link:hover { color: #5040D8; }
-    </style>
     <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="stylesheet" href="../../css/client-dashboard-refresh.css?v=20261103-header">
 </head>
 
 <body class="dashboard-body create-project-page">
@@ -130,16 +26,14 @@ a.back-link:hover { color: #5040D8; }
 
     <header class="site-header">
     <div class="site-header__inner">
-        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+        <a href="index.html" class="wordmark" aria-label="WorkNest client dashboard">
             worknest<span class="wordmark__period">.</span>
         </a>
-
         <nav class="dashboard-nav" aria-label="Main navigation">
             <a href="index.html" class="site-nav__link">Overview</a>
             <a href="index.html#your-projects" class="site-nav__link">Your projects</a>
             <a href="create-project.html" class="site-nav__link" aria-current="page">Post a project</a>
         </nav>
-
         <div class="site-header__actions">
             <span class="dashboard-role">Client account</span>
             <form action="../../logout" method="post">
@@ -167,6 +61,7 @@ a.back-link:hover { color: #5040D8; }
             </p>
         </section>
 
+        <div class="create-project-layout">
         <form id="project-form"
               class="project-form"
               action="../../create-project"
@@ -356,6 +251,22 @@ a.back-link:hover { color: #5040D8; }
             </p>
 
         </form>
+
+        <aside class="project-posting-guide" aria-labelledby="posting-guide-title">
+            <p class="project-posting-guide__eyebrow">PROJECT POSTING</p>
+            <h2 id="posting-guide-title">A clear brief helps freelancers respond well.</h2>
+            <p class="project-posting-guide__intro">Share the outcome you need, the skills involved, and the budget and timing you have in mind.</p>
+            <ol class="project-posting-guide__steps">
+                <li><span>01</span><div><strong>Describe the work</strong><p>Include the goal, key requirements, and expected deliverables.</p></div></li>
+                <li><span>02</span><div><strong>Set the terms</strong><p>Choose fixed price or hourly, then enter a realistic range.</p></div></li>
+                <li><span>03</span><div><strong>Review before posting</strong><p>Check every AI suggestion and form field before you submit.</p></div></li>
+            </ol>
+            <div class="project-posting-guide__note">
+                <strong>Using AI to draft?</strong>
+                <p>Start with a short summary. WorkNest can suggest a title, scope, skills, budget, and deadline. You stay in control of the final details.</p>
+            </div>
+        </aside>
+        </div>
     </main>
 
     <footer class="wn-footer">

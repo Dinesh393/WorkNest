@@ -18,8 +18,8 @@
     --color-on-accent: #FFFFFF;
     --auth-accent: #D97706;
     --auth-accent-hover: #B45309;
-    --auth-secondary: #0F766E;
-    --auth-intro-muted: #CCFBF1;
+    --auth-secondary: #1D4ED8;
+    --auth-intro-muted: #DBEAFE;
     --auth-intro-highlight: #FFFFFF;
     --auth-border-hover: #93C5FD;
     --auth-input-surface: #F8FAFC;
@@ -72,7 +72,7 @@
 }
 
 .auth-body .wordmark:hover .wordmark__period {
-    color: var(--auth-accent-hover);
+    color: var(--auth-accent);
 }
 
 .auth-body .site-header__actions.auth-header__actions {

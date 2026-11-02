@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Project Proposals | WorkNest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <meta name="description"
           content="Review freelancer proposals, project progress, and final deliveries in WorkNest.">
 
@@ -20,8 +23,8 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            background: rgba(248, 247, 242, .94);
-            border-bottom: 1px solid #E8E5DC;
+            background: rgba(255, 255, 255, .96);
+            border-bottom: 1px solid #E2E8F0;
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
         }
@@ -33,7 +36,7 @@
         }
         html body.dashboard-body header.site-header .wordmark {
             flex: 0 0 auto;
-            color: #24271F;
+            color: #0F172A;
             font-size: 1.6rem;
             font-weight: 800;
             letter-spacing: -.055em;
@@ -54,7 +57,7 @@
             padding: 0 18px;
             border-radius: 10px;
             background: transparent;
-            color: #6B6D66;
+            color: #64748B;
             font-size: .95rem;
             font-weight: 600;
             text-decoration: none;
@@ -64,13 +67,13 @@
         html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
         html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
         html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
-            background: #F0EEFF;
-            color: #5040D8;
+            background: #EFF6FF;
+            color: #1D4ED8;
         }
         html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
         html body.dashboard-body header.site-header .wordmark:focus-visible,
         html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
-            outline: 2px solid #5040D8;
+            outline: 2px solid #1D4ED8;
             outline-offset: 2px;
         }
         html body.dashboard-body header.site-header .site-header__actions {
@@ -84,10 +87,10 @@
             align-items: center;
             min-height: 34px;
             padding: 0 13px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 999px;
             background: #FFFFFF;
-            color: #6B6D66;
+            color: #64748B;
             font-size: .8rem;
             font-weight: 700;
             white-space: nowrap;
@@ -143,19 +146,19 @@
 
         .proposals-intro,
         .proposal-date {
-            color: #6B6D66;
+            color: #64748B;
             line-height: 1.6;
         }
 
         .freelancer-profile-link {
             display: inline-block;
             margin: -4px 0 18px;
-            color: #5040D8;
+            color: #1D4ED8;
             font-weight: 700;
             text-decoration: none;
         }
         .freelancer-profile-link:hover { text-decoration: underline; }
-        .freelancer-profile-link:focus-visible { outline: 3px solid rgba(80,64,216,.3); outline-offset: 3px; border-radius: 3px; }
+        .freelancer-profile-link:focus-visible { outline: 3px solid rgba(29, 78, 216, .3); outline-offset: 3px; border-radius: 3px; }
 
         .project-status-summary {
             display: flex;
@@ -164,19 +167,19 @@
             gap: 10px;
             margin-top: 22px;
             padding: 15px 18px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 12px;
             background: #FFFFFF;
         }
 
         .project-status-summary strong {
-            color: #24271F;
+            color: #0F172A;
         }
 
         .ai-summary-panel {
             margin-top: 16px;
             padding: 18px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 12px;
             background: #FFFFFF;
         }
@@ -187,31 +190,31 @@
         }
 
         .ai-summary-panel p {
-            color: #6B6D66;
+            color: #64748B;
             line-height: 1.55;
         }
 
         .ai-summary-panel button {
             padding: 10px 14px;
-            border: 1px solid #5040D8;
+            border: 1px solid #1D4ED8;
             border-radius: 8px;
-            background: #5040D8;
+            background: #1D4ED8;
             color: #FFFFFF;
             font: inherit;
             font-weight: 600;
             cursor: pointer;
         }
 
-        .ai-summary-panel button:hover { background: #4032B8; }
-        .ai-summary-panel button:focus-visible { outline: 3px solid rgba(80,64,216,.3); outline-offset: 2px; }
+        .ai-summary-panel button:hover { background: #1E40AF; }
+        .ai-summary-panel button:focus-visible { outline: 3px solid rgba(29, 78, 216, .3); outline-offset: 2px; }
         .ai-summary-panel button:disabled { opacity: .65; cursor: wait; }
 
         #ai-summary-result {
             margin: 16px 0 0;
             padding: 14px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 8px;
-            background: #FAF9F6;
+            background: #F8FAFC;
             white-space: pre-wrap;
             line-height: 1.6;
         }
@@ -219,14 +222,14 @@
         #ai-summary-result h3 { margin: 18px 0 6px; font-size: 1rem; }
         #ai-summary-result h3:first-of-type { margin-top: 14px; }
         .ai-proposal-result__total,
-        .ai-proposal-result__label { color: #24271F; font-weight: 700; }
+        .ai-proposal-result__label { color: #0F172A; font-weight: 700; }
         .ai-proposal-result__details { margin: 4px 0 12px; }
         #ai-summary-result .ai-proposal-result__best-fit {
             margin-top: 22px;
             padding-top: 16px;
-            border-top: 1px solid #E8E5DC;
+            border-top: 1px solid #E2E8F0;
         }
-        .ai-proposal-result__note { color: #6B6D66; font-size: .9rem; }
+        .ai-proposal-result__note { color: #64748B; font-size: .9rem; }
 
         #ai-summary-status { margin: 10px 0 0; }
         #ai-summary-status.is-error { color: #A12622; }
@@ -240,7 +243,7 @@
         .proposal-card {
             padding: 24px;
             background: #FFFFFF;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 14px;
         }
 
@@ -282,13 +285,13 @@
         .proposal-amount {
             margin: 22px 0;
             padding: 16px;
-            background: #F8F7F2;
+            background: #F8FAFC;
             border-radius: 9px;
         }
 
         .proposal-amount p {
             margin: 0 0 6px;
-            color: #6B6D66;
+            color: #64748B;
             font-size: 0.9rem;
         }
 
@@ -308,7 +311,7 @@
             gap: 12px;
             margin-top: 24px;
             padding-top: 18px;
-            border-top: 1px solid #E8E5DC;
+            border-top: 1px solid #E2E8F0;
         }
 
         .accept-proposal-button {
@@ -317,9 +320,9 @@
             align-items: center;
             min-height: 44px;
             padding: 0 20px;
-            border: 1px solid #5040D8;
+            border: 1px solid #1D4ED8;
             border-radius: 10px;
-            background: #5040D8;
+            background: #1D4ED8;
             color: #FFFFFF;
             font: inherit;
             font-size: 0.9rem;
@@ -330,13 +333,13 @@
         }
 
         .accept-proposal-button:hover:not(:disabled) {
-            background: #4031B8;
+            background: #1E40AF;
             transform: translateY(-1px);
         }
 
         .accept-proposal-button:focus-visible,
         .review-button:focus-visible {
-            outline: 3px solid rgba(80, 64, 216, 0.35);
+            outline: 3px solid rgba(29, 78, 216, 0.35);
             outline-offset: 3px;
         }
 
@@ -350,9 +353,9 @@
         .proposals-message {
             margin-top: 24px;
             padding: 20px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 12px;
-            color: #6B6D66;
+            color: #64748B;
             line-height: 1.6;
         }
 
@@ -375,13 +378,13 @@
         .back-link {
             display: inline-block;
             margin-bottom: 24px;
-            color: #24271F;
+            color: #0F172A;
             font-weight: 600;
             text-decoration: none;
         }
 
         .back-link:hover {
-            color: #5040D8;
+            color: #1D4ED8;
         }
 
         /* Project progress */
@@ -389,7 +392,7 @@
         .project-progress {
             margin-top: 28px;
             padding-top: 20px;
-            border-top: 1px solid #E8E5DC;
+            border-top: 1px solid #E2E8F0;
         }
 
         .project-progress h3 {
@@ -406,7 +409,7 @@
         .progress-update {
             padding: 14px;
             border-radius: 10px;
-            background: #F8F7F2;
+            background: #F8FAFC;
             overflow-wrap: anywhere;
         }
 
@@ -418,12 +421,12 @@
         }
 
         .progress-update-date {
-            color: #6B6D66;
+            color: #64748B;
             font-size: 0.82rem;
         }
 
         .progress-message {
-            color: #6B6D66;
+            color: #64748B;
             line-height: 1.6;
         }
 
@@ -436,7 +439,7 @@
         .delivery-review {
             margin-top: 28px;
             padding-top: 22px;
-            border-top: 1px solid #E8E5DC;
+            border-top: 1px solid #E2E8F0;
         }
 
         .delivery-review h3 {
@@ -447,9 +450,9 @@
         .delivery-card {
             margin-top: 14px;
             padding: 16px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 10px;
-            background: #F8F7F2;
+            background: #F8FAFC;
             overflow-wrap: anywhere;
         }
 
@@ -457,8 +460,8 @@
             display: inline-block;
             padding: 6px 10px;
             border-radius: 999px;
-            background: #EDE9FE;
-            color: #5040D8;
+            background: #EFF6FF;
+            color: #1D4ED8;
             font-size: 0.78rem;
             font-weight: 700;
             margin-bottom: 12px;
@@ -482,7 +485,7 @@
         }
 
         .delivery-date {
-            color: #6B6D66;
+            color: #64748B;
             font-size: 0.82rem;
             line-height: 1.6;
             margin-top: 10px;
@@ -491,14 +494,14 @@
         .delivery-link {
             display: inline-block;
             margin-top: 10px;
-            color: #5040D8;
+            color: #1D4ED8;
             overflow-wrap: anywhere;
         }
 
         .delivery-feedback {
             margin-top: 16px;
             padding: 14px;
-            border-left: 3px solid #5040D8;
+            border-left: 3px solid #1D4ED8;
             border-radius: 6px;
             background: #FFFFFF;
         }
@@ -519,9 +522,9 @@
         .review-button {
             min-height: 42px;
             padding: 10px 16px;
-            border: 1px solid #5040D8;
+            border: 1px solid #1D4ED8;
             border-radius: 10px;
-            background: #5040D8;
+            background: #1D4ED8;
             color: #FFFFFF;
             font: inherit;
             font-size: 0.9rem;
@@ -531,7 +534,7 @@
 
         .review-button--secondary {
             background: #FFFFFF;
-            color: #5040D8;
+            color: #1D4ED8;
         }
 
         .review-button:hover:not(:disabled) {
@@ -580,8 +583,8 @@
             width: 100%;
             max-width: 480px;
             background: #FFFFFF;
-            color: #24271F;
-            border: 1px solid #E8E5DC;
+            color: #0F172A;
+            border: 1px solid #E2E8F0;
             border-radius: 16px;
             padding: 28px;
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
@@ -602,7 +605,7 @@
             width: 100%;
             box-sizing: border-box;
             padding: 12px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 9px;
             font: inherit;
             resize: vertical;
@@ -610,7 +613,7 @@
         }
 
         .modal-card textarea:focus {
-            border-color: #5040D8;
+            border-color: #1D4ED8;
         }
 
         .modal-actions {
@@ -629,15 +632,15 @@
         }
 
         .primary-button {
-            background: #5040D8;
+            background: #1D4ED8;
             color: #FFFFFF;
-            border: 1px solid #5040D8;
+            border: 1px solid #1D4ED8;
         }
 
         .secondary-button {
             background: #FFFFFF;
-            color: #24271F;
-            border: 1px solid #E8E5DC;
+            color: #0F172A;
+            border: 1px solid #E2E8F0;
         }
 
         /* Confirm modal */
@@ -648,25 +651,25 @@
         }
     </style>
     <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="stylesheet" href="../../css/client-dashboard-refresh.css">
 </head>
 
 <body class="dashboard-body client-dashboard">
 
 <header class="site-header">
     <div class="site-header__inner">
-        <a href="index.html"
-           class="wordmark"
-           aria-label="WorkNest home">
+        <a href="index.html" class="wordmark" aria-label="WorkNest client dashboard">
             worknest<span class="wordmark__period">.</span>
         </a>
-
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a href="index.html" class="site-nav__link">Overview</a>
+            <a href="index.html#your-projects" class="site-nav__link" aria-current="page">Your projects</a>
+            <a href="create-project.html" class="site-nav__link">Post a project</a>
+        </nav>
         <div class="site-header__actions">
             <span class="dashboard-role">Client account</span>
-
             <form action="../../logout" method="post">
-                <button class="button button--dark" type="submit">
-                    Log out
-                </button>
+                <button class="button button--dark" type="submit">Log out</button>
             </form>
         </div>
     </div>

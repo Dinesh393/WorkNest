@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Manage your projects and collaborations on WorkNest.">
     <title>Client Dashboard | WorkNest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/design-tokens.css">
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../css/layout.css">
@@ -13,9 +16,9 @@
 
 <style>
 :root {
-    --wn-ink:#24271F; --wn-muted:#6B6D66; --wn-border:#E8E5DC;
-    --wn-paper:#F8F7F2; --wn-white:#FFFFFF; --wn-purple:#5040D8;
-    --wn-purple-soft:#F0EEFF; --wn-green:#176B38; --wn-green-soft:#DFF4E5;
+    --wn-ink:#0F172A; --wn-muted:#64748B; --wn-border:#E2E8F0;
+    --wn-paper:#F8FAFC; --wn-white:#FFFFFF; --wn-purple:#1D4ED8;
+    --wn-purple-soft:#EFF6FF; --wn-green:#176B38; --wn-green-soft:#DFF4E5;
     --wn-blue:#254EA8; --wn-blue-soft:#E5EDFF; --wn-red:#A52828;
     --wn-red-soft:#FEF0F0; --wn-shadow:0 12px 34px rgba(36,39,31,.07);
 }
@@ -85,13 +88,13 @@ body.dashboard-body.client-dashboard { background:var(--wn-paper); color:var(--w
     box-shadow:0 3px 12px rgba(36,39,31,.025);
     transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
 }
-.project-card:hover { border-color:#D8D2F7; box-shadow:var(--wn-shadow); transform:translateY(-2px); }
+.project-card:hover { border-color:#BFDBFE; box-shadow:var(--wn-shadow); transform:translateY(-2px); }
 .project-card__header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
 .project-card__title { min-width:0; margin:0; color:var(--wn-ink); font-size:1.08rem; line-height:1.4; overflow-wrap:anywhere; }
 .project-status {
     flex:0 0 auto; display:inline-flex; align-items:center; min-height:27px;
     padding:5px 10px; border-radius:999px; background:#F1F0EC;
-    color:#575950; font-size:.7rem; font-weight:800; letter-spacing:.025em;
+    color:#64748B; font-size:.7rem; font-weight:800; letter-spacing:.025em;
 }
 .project-status--open { background:var(--wn-purple-soft); color:var(--wn-purple); }
 .project-status--in_progress { background:var(--wn-green-soft); color:var(--wn-green); }
@@ -107,20 +110,20 @@ body.dashboard-body.client-dashboard { background:var(--wn-paper); color:var(--w
     display:flex; flex-wrap:wrap; gap:8px; margin-top:15px;
 }
 .project-card__details span {
-    padding:7px 10px; border:1px solid #F0EEE8; border-radius:8px;
-    background:#FAF9F6; color:#55584F; font-size:.78rem; font-weight:650;
+    padding:7px 10px; border:1px solid #F1F5F9; border-radius:8px;
+    background:#F8FAFC; color:#55584F; font-size:.78rem; font-weight:650;
     overflow-wrap:anywhere;
 }
 .project-card__footer {
     display:flex; align-items:center; justify-content:space-between; gap:12px;
-    margin-top:16px; padding-top:14px; border-top:1px solid #F0EEE8;
+    margin-top:16px; padding-top:14px; border-top:1px solid #F1F5F9;
     color:var(--wn-muted); font-size:.8rem;
 }
 .project-card__footer time { color:var(--wn-ink); font-weight:650; text-align:right; }
 .project-card-actions {
     display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
     grid-auto-rows:minmax(42px,auto); gap:10px; margin-top:17px; padding-top:16px;
-    border-top:1px solid #F0EEE8;
+    border-top:1px solid #F1F5F9;
 }
 .project-card-actions > a, .project-card-actions > button {
     display:inline-flex; align-items:center; justify-content:center; width:100%;
@@ -133,14 +136,14 @@ body.dashboard-body.client-dashboard { background:var(--wn-paper); color:var(--w
 .project-card-actions > a:hover, .project-card-actions > button:hover { transform:translateY(-1px); }
 .project-card-actions > a:focus-visible, .project-card-actions > button:focus-visible,
 .button:focus-visible, dialog button:focus-visible, dialog select:focus-visible {
-    outline:3px solid rgba(80,64,216,.35); outline-offset:3px;
+    outline:3px solid rgba(29, 78, 216, .35); outline-offset:3px;
 }
-.view-details-button { background:#24271F; color:#fff; border-color:#24271F; }
+.view-details-button { background:#0F172A; color:#fff; border-color:#0F172A; }
 .view-details-button:hover { background:#11140F; }
 .view-proposals-button { background:var(--wn-purple); color:#fff; border-color:var(--wn-purple); }
-.view-proposals-button:hover { background:#4031B8; }
-.edit-project-button { background:#fff; color:var(--wn-ink); border-color:#D8D5CC !important; }
-.edit-project-button:hover { background:#F5F4EF; }
+.view-proposals-button:hover { background:#1E40AF; }
+.edit-project-button { background:#fff; color:var(--wn-ink); border-color:#CBD5E1 !important; }
+.edit-project-button:hover { background:#F8FAFC; }
 .change-status-button { background:#EEF3FF; color:#254EA8; border-color:#D4E0FF !important; }
 .change-status-button:hover { background:#E1EAFE; }
 .cancel-project-button { background:var(--wn-red-soft); color:#A52828; border-color:#F4D0D0 !important; }
@@ -219,9 +222,9 @@ body.dashboard-body.client-dashboard { background:var(--wn-paper); color:var(--w
     border:1px solid var(--wn-purple); border-radius:9px; background:var(--wn-purple);
     color:#fff; font-family:inherit; font-size:.82rem; font-weight:700; cursor:pointer;
 }
-.talent-card__invite:hover { background:#4031B8; }
+.talent-card__invite:hover { background:#1E40AF; }
 .talent-card__invite:focus-visible { outline:3px solid rgba(83,66,226,.3); outline-offset:2px; }
-.talent-card__invite:disabled { border-color:var(--wn-border); background:#F5F4EF; color:var(--wn-muted); cursor:not-allowed; }
+.talent-card__invite:disabled { border-color:var(--wn-border); background:#F8FAFC; color:var(--wn-muted); cursor:not-allowed; }
 .invite-dialog { width:min(520px,calc(100% - 28px)); padding:0; border:1px solid var(--wn-border); border-radius:14px; background:#fff; color:var(--wn-ink); }
 .invite-dialog::backdrop { background:rgba(24,26,22,.48); }
 .invite-dialog__content { padding:24px; }
@@ -257,7 +260,7 @@ dialog::backdrop { background:rgba(24,26,22,.48); backdrop-filter:blur(3px); }
 .cancel-dialog-content > p, .status-dialog-content > p { color:var(--wn-muted); line-height:1.6; }
 .status-dialog-content label { display:block; margin:18px 0 7px; font-size:.86rem; font-weight:700; }
 .status-dialog-content select {
-    width:100%; min-height:44px; padding:0 12px; border:1px solid #D8D5CC;
+    width:100%; min-height:44px; padding:0 12px; border:1px solid #CBD5E1;
     border-radius:9px; background:#fff; color:var(--wn-ink); font:inherit;
 }
 .cancel-dialog-actions, .status-dialog-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:10px; margin-top:22px; }
@@ -265,7 +268,7 @@ dialog::backdrop { background:rgba(24,26,22,.48); backdrop-filter:blur(3px); }
     min-height:42px; padding:0 15px; border:1px solid transparent;
     border-radius:9px; font:700 .86rem inherit; cursor:pointer;
 }
-.cancel-dialog-button--secondary, .status-dialog-button--secondary { background:#F5F4EF; color:var(--wn-ink); border-color:var(--wn-border); }
+.cancel-dialog-button--secondary, .status-dialog-button--secondary { background:#F8FAFC; color:var(--wn-ink); border-color:var(--wn-border); }
 .cancel-dialog-button--danger { background:#B42318; color:#fff; }
 .status-dialog-button--primary { background:var(--wn-purple); color:#fff; }
 .cancel-dialog-message, .status-dialog-message { margin:15px 0 0; color:var(--wn-red); font-size:.86rem; line-height:1.5; }
@@ -305,8 +308,8 @@ html body.dashboard-body header.site-header {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(248, 247, 242, .94);
-    border-bottom: 1px solid #E8E5DC;
+    background: rgba(255, 255, 255, .96);
+    border-bottom: 1px solid #E2E8F0;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
 }
@@ -318,7 +321,7 @@ html body.dashboard-body header.site-header .site-header__inner {
 }
 html body.dashboard-body header.site-header .wordmark {
     flex: 0 0 auto;
-    color: #24271F;
+    color: #0F172A;
     font-size: 1.6rem;
     font-weight: 800;
     letter-spacing: -.055em;
@@ -339,7 +342,7 @@ html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link
     padding: 0 18px;
     border-radius: 10px;
     background: transparent;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .95rem;
     font-weight: 600;
     text-decoration: none;
@@ -349,13 +352,13 @@ html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
-    background: #F0EEFF;
-    color: #5040D8;
+    background: #EFF6FF;
+    color: #1D4ED8;
 }
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body.dashboard-body header.site-header .wordmark:focus-visible,
 html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
-    outline: 2px solid #5040D8;
+    outline: 2px solid #1D4ED8;
     outline-offset: 2px;
 }
 html body.dashboard-body header.site-header .site-header__actions {
@@ -369,10 +372,10 @@ html body.dashboard-body header.site-header .dashboard-role {
     align-items: center;
     min-height: 34px;
     padding: 0 13px;
-    border: 1px solid #E8E5DC;
+    border: 1px solid #E2E8F0;
     border-radius: 999px;
     background: #FFFFFF;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .8rem;
     font-weight: 700;
     white-space: nowrap;
@@ -406,18 +409,18 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     border:1px solid var(--wn-border); border-radius:999px; background:#fff;
     color:var(--wn-muted); font:inherit; font-size:.86rem; font-weight:700; cursor:pointer;
 }
-.filter-tab:hover { background:#F5F4EF; color:var(--wn-ink); }
-.filter-tab[aria-pressed="true"] { background:var(--wn-purple-soft); border-color:#D8D2F7; color:var(--wn-purple); }
+.filter-tab:hover { background:#F8FAFC; color:var(--wn-ink); }
+.filter-tab[aria-pressed="true"] { background:var(--wn-purple-soft); border-color:#BFDBFE; color:var(--wn-purple); }
 .filter-tab__count { padding:1px 7px; border-radius:999px; background:rgba(36,39,31,.07); font-size:.76rem; }
 .project-search { flex:1 1 240px; max-width:340px; margin-left:auto; }
 .project-search input {
-    width:100%; min-height:42px; padding:0 14px; border:1px solid #D8D5CC; border-radius:10px;
+    width:100%; min-height:42px; padding:0 14px; border:1px solid #CBD5E1; border-radius:10px;
     background:#fff; color:var(--wn-ink); font:inherit; font-size:.9rem;
 }
 .proposal-badge {
     border-color:#DED9FA !important; background:var(--wn-purple-soft) !important; color:var(--wn-purple) !important;
 }
-.proposal-badge--none { border-color:#F0EEE8 !important; background:#FAF9F6 !important; color:#898B84 !important; }
+.proposal-badge--none { border-color:#F1F5F9 !important; background:#F8FAFC !important; color:#898B84 !important; }
 .deadline-group { text-align:right; }
 .deadline-chip { display:block; margin-top:2px; font-size:.76rem; font-weight:700; color:var(--wn-muted); }
 .deadline-chip--soon { color:#875A00; }
@@ -425,7 +428,7 @@ html body.dashboard-body header.site-header .site-header__actions .button {
 .projects-empty .empty-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
 .projects-empty .empty-steps { margin:0 auto 18px; padding:0; max-width:420px; list-style:none; text-align:left; color:var(--wn-muted); font-size:.9rem; }
 .projects-empty .empty-steps li { margin-top:6px; }
-.projects-empty .button--ghost { background:#fff; border:1px solid #D8D5CC; color:var(--wn-ink); cursor:pointer; font:inherit; font-weight:700; }
+.projects-empty .button--ghost { background:#fff; border:1px solid #CBD5E1; color:var(--wn-ink); cursor:pointer; font:inherit; font-weight:700; }
 .visually-hidden { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); border:0; }
 @media (max-width:600px) {
     .project-search { max-width:none; margin-left:0; flex-basis:100%; }
@@ -437,21 +440,20 @@ html body.dashboard-body header.site-header .site-header__actions .button {
 
     <link rel="stylesheet" href="../../css/notifications.css">
     <link rel="stylesheet" href="../../css/marketplace-refresh.css">
+    <link rel="stylesheet" href="../../css/client-dashboard-refresh.css?v=20261103-header">
 </head>
 <body class="dashboard-body client-dashboard">
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
     <div class="site-header__inner">
-        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+        <a href="index.html" class="wordmark" aria-label="WorkNest client dashboard">
             worknest<span class="wordmark__period">.</span>
         </a>
-
         <nav class="dashboard-nav" aria-label="Main navigation">
             <a href="index.html" class="site-nav__link" aria-current="page">Overview</a>
             <a href="index.html#your-projects" class="site-nav__link">Your projects</a>
             <a href="create-project.html" class="site-nav__link">Post a project</a>
         </nav>
-
         <div class="site-header__actions">
             <span class="dashboard-role">Client account</span>
             <form action="../../logout" method="post">

@@ -1,41 +1,41 @@
 /* WorkNest refresh, phase 1: shared dashboard visual system and overview pages. */
 body.dashboard-body {
-    --color-page: #F3F6F4;
+    --color-page: #F8FAFC;
     --color-surface: #FFFFFF;
-    --color-surface-muted: #EAF0ED;
-    --color-ink: #182521;
-    --color-ink-soft: #485852;
-    --color-ink-muted: #5E6B66;
-    --color-border: #D9E3DE;
-    --color-accent: #0F5F58;
-    --color-accent-hover: #0B4D47;
-    --color-accent-soft: #E5F2EF;
+    --color-surface-muted: #F1F5F9;
+    --color-ink: #0F172A;
+    --color-ink-soft: #475569;
+    --color-ink-muted: #64748B;
+    --color-border: #E2E8F0;
+    --color-accent: #1D4ED8;
+    --color-accent-hover: #1E40AF;
+    --color-accent-soft: #EFF6FF;
     --color-on-accent: #FFFFFF;
-    --color-focus: #0F5F58;
+    --color-focus: #1D4ED8;
     --color-success: #286B49;
-    --wn-ink: #182521;
-    --wn-muted: #5E6B66;
-    --wn-border: #D9E3DE;
-    --wn-paper: #F3F6F4;
+    --wn-ink: #0F172A;
+    --wn-muted: #64748B;
+    --wn-border: #E2E8F0;
+    --wn-paper: #F8FAFC;
     --wn-white: #FFFFFF;
-    --wn-purple: #0F5F58;
-    --wn-purple-soft: #E5F2EF;
-    --wn-shadow: 0 8px 24px rgba(24, 37, 33, .07);
+    --wn-purple: #1D4ED8;
+    --wn-purple-soft: #EFF6FF;
+    --wn-shadow: 0 8px 24px rgba(15, 23, 42, .07);
     background: var(--color-page);
     color: var(--color-ink);
 }
 
 body.dashboard-body.freelancer-dashboard {
-    --color-accent: #0F5F58;
-    --color-accent-hover: #0B4D47;
-    --color-accent-soft: #E5F2EF;
-    --color-focus: #0F5F58;
+    --color-accent: #1D4ED8;
+    --color-accent-hover: #1E40AF;
+    --color-accent-soft: #EFF6FF;
+    --color-focus: #1D4ED8;
 }
 
 .dashboard-body .site-header {
     background: #FFFFFF;
     border-bottom: 1px solid var(--color-border);
-    box-shadow: 0 2px 8px rgba(24, 37, 33, .035);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, .035);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
 }
@@ -52,7 +52,7 @@ body.dashboard-body.freelancer-dashboard {
 }
 
 .dashboard-body .wordmark__period {
-    color: #BF8B35;
+    color: #D97706;
 }
 
 .dashboard-body .dashboard-nav {
@@ -126,7 +126,7 @@ body.dashboard-body.freelancer-dashboard {
 }
 
 .dashboard-body .eyebrow {
-    color: #8A6428;
+    color: #92400E;
     font-size: .72rem;
     font-weight: 700;
     letter-spacing: .12em;
@@ -140,7 +140,7 @@ body.dashboard-body.freelancer-dashboard {
     border: 1px solid var(--color-border);
     border-radius: 11px;
     background: var(--color-surface);
-    box-shadow: 0 2px 7px rgba(24, 37, 33, .025);
+    box-shadow: 0 2px 7px rgba(15, 23, 42, .025);
 }
 
 .dashboard-body .dashboard-stat__label {
@@ -152,11 +152,11 @@ body.dashboard-body.freelancer-dashboard {
 }
 
 .dashboard-body .dashboard-stat--attention .dashboard-stat__value {
-    color: #8A6428;
+    color: #92400E;
 }
 
 .dashboard-body .project-create-card {
-    border-color: #C8DDD6;
+    border-color: #BFDBFE;
     border-radius: 11px;
     background: var(--color-accent-soft);
     box-shadow: none;
@@ -192,20 +192,20 @@ body.dashboard-body.freelancer-dashboard {
     border-color: var(--color-border);
     border-radius: 11px;
     background: var(--color-surface);
-    box-shadow: 0 2px 8px rgba(24, 37, 33, .03);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, .03);
 }
 
 .dashboard-body .project-card:hover,
 .dashboard-body .freelancer-active-project:hover,
 .dashboard-body .talent-directory-card:hover {
-    border-color: #AFCBC1;
-    box-shadow: 0 8px 20px rgba(24, 37, 33, .07);
+    border-color: #BFDBFE;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, .07);
     transform: none;
 }
 
 .dashboard-body .filter-tab[aria-pressed="true"],
 .dashboard-body .filter-tab.is-active {
-    border-color: #B9D5CB;
+    border-color: #BFDBFE;
     background: var(--color-accent-soft);
     color: var(--color-accent);
 }

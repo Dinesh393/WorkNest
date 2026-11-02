@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Manage your WorkNest project and collaborate with your freelancer.">
     <title>Client Project Workspace | WorkNest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/design-tokens.css">
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../css/layout.css">
     <link rel="stylesheet" href="../../css/components.css">
     <style>
         :root {
-            --workspace-bg: #F8F7F2;
+            --workspace-bg: #F8FAFC;
             --workspace-card: #FFFFFF;
-            --workspace-text: #24271F;
-            --workspace-muted: #77786F;
-            --workspace-border: #E8E5DC;
-            --workspace-accent: #5040D8;
+            --workspace-text: #0F172A;
+            --workspace-muted: #64748B;
+            --workspace-border: #E2E8F0;
+            --workspace-accent: #1D4ED8;
         }
 
         * {
@@ -34,7 +37,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: #F8F7F2;
+            background: #F8FAFC;
             border-bottom: 1px solid var(--workspace-border);
         }
 
@@ -88,7 +91,7 @@
             padding: 12px 19px;
             border: 0;
             border-radius: 8px;
-            background: #24271F;
+            background: #0F172A;
             color: #FFFFFF;
             font-weight: 600;
             cursor: pointer;
@@ -102,7 +105,7 @@
         .workspace-back {
             display: inline-block;
             margin-bottom: 28px;
-            color: #5040D8;
+            color: #1D4ED8;
             text-decoration: none;
             font-size: .9rem;
             font-weight: 600;
@@ -110,7 +113,7 @@
 
         .workspace-eyebrow {
             margin: 0 0 10px;
-            color: #77786F;
+            color: #64748B;
             font-size: .75rem;
             font-weight: 750;
             letter-spacing: .1em;
@@ -155,8 +158,8 @@
             align-items: center;
             padding: 7px 12px;
             border-radius: 30px;
-            background: #EDE9FE;
-            color: #5040D8;
+            background: #EFF6FF;
+            color: #1D4ED8;
             font-size: .75rem;
             font-weight: 750;
         }
@@ -200,7 +203,7 @@
         .overview-item {
             padding: 15px;
             border-radius: 11px;
-            background: #F8F7F2;
+            background: #F8FAFC;
             min-width: 0;
         }
 
@@ -236,7 +239,7 @@
             bottom: 0;
             left: 7px;
             width: 2px;
-            background: #E8E5DC;
+            background: #E2E8F0;
         }
 
         .activity-marker {
@@ -245,9 +248,9 @@
             width: 16px;
             height: 16px;
             margin-top: 3px;
-            border: 4px solid #EDE9FE;
+            border: 4px solid #EFF6FF;
             border-radius: 50%;
-            background: #5040D8;
+            background: #1D4ED8;
         }
 
         .activity-content {
@@ -367,7 +370,7 @@
             margin: 0;
             padding: 15px;
             border-radius: 9px;
-            background: #F8F7F2;
+            background: #F8FAFC;
             line-height: 1.7;
             white-space: pre-wrap;
         }
@@ -431,14 +434,14 @@
             width: 100%;
             min-height: 105px;
             padding: 13px;
-            border: 1px solid #D8D5CC;
+            border: 1px solid #CBD5E1;
             border-radius: 9px;
             font: inherit;
             resize: vertical;
         }
 
         .review-form textarea:focus {
-            outline: 2px solid rgba(80, 64, 216, .2);
+            outline: 2px solid rgba(29, 78, 216, .2);
             border-color: var(--workspace-accent);
         }
 
@@ -532,12 +535,12 @@
     
         /* ===== WorkNest Client Workspace: complete refinement ===== */
         :root {
-            --workspace-bg: #F8F7F2;
+            --workspace-bg: #F8FAFC;
             --workspace-card: #FFFFFF;
-            --workspace-text: #24271F;
-            --workspace-muted: #77786F;
-            --workspace-border: #E8E5DC;
-            --workspace-accent: #5040D8;
+            --workspace-text: #0F172A;
+            --workspace-muted: #64748B;
+            --workspace-border: #E2E8F0;
+            --workspace-accent: #1D4ED8;
             --workspace-accent-soft: #F2F0FF;
             --workspace-success: #18743A;
             --workspace-warning: #8A5700;
@@ -556,7 +559,7 @@
         }
 
         .workspace-header {
-            background: rgba(248, 247, 242, .96);
+            background: rgba(255, 255, 255, .96);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
@@ -631,7 +634,7 @@
 
         .workspace-eyebrow {
             margin-bottom: 11px;
-            color: #77786F;
+            color: #64748B;
         }
 
         .workspace-title {
@@ -701,7 +704,7 @@
             padding: 16px;
             border: 1px solid #EFEEE8;
             border-radius: 11px;
-            background: #FAF9F6;
+            background: #F8FAFC;
         }
 
         .overview-item span {
@@ -713,7 +716,7 @@
         }
 
         .overview-item strong {
-            color: #292B25;
+            color: #0F172A;
             font-size: .94rem;
             line-height: 1.5;
         }
@@ -760,7 +763,7 @@
         }
 
         .progress-entry__author {
-            color: #292B25;
+            color: #0F172A;
             font-size: .94rem;
             font-weight: 750;
         }
@@ -812,7 +815,7 @@
             cursor: pointer;
         }
         .ai-progress-summary button:hover { filter: brightness(.92); }
-        .ai-progress-summary button:focus-visible { outline: 3px solid rgba(80,64,216,.3); outline-offset: 2px; }
+        .ai-progress-summary button:focus-visible { outline: 3px solid rgba(29, 78, 216, .3); outline-offset: 2px; }
         .ai-progress-summary button:disabled { opacity: .65; cursor: wait; }
         #ai-progress-result {
             margin: 14px 0 0;
@@ -854,7 +857,7 @@
             margin: 0;
             border: 1px solid #E5E0FA;
             background: #F0EDFF;
-            color: #5040D8;
+            color: #1D4ED8;
             font-size: .75rem;
             font-weight: 800;
             line-height: 1;
@@ -879,7 +882,7 @@
         }
 
         .activity-header h3 {
-            color: #292B25;
+            color: #0F172A;
             font-size: .96rem;
             line-height: 1.45;
         }
@@ -924,7 +927,7 @@
         .activity-item--progress .activity-marker {
             border-color: #E5E0FA;
             background: #F0EDFF;
-            color: #5040D8;
+            color: #1D4ED8;
         }
 
         .activity-item--submitted .activity-marker {
@@ -966,11 +969,11 @@
 
         .delivery-item__header {
             padding-bottom: 14px;
-            border-bottom: 1px solid #F0EEE8;
+            border-bottom: 1px solid #F1F5F9;
         }
 
         .delivery-item__header h3 {
-            color: #292B25;
+            color: #0F172A;
             font-size: 1.02rem;
             font-weight: 750;
         }
@@ -1017,7 +1020,7 @@
         }
 
         .review-form label {
-            color: #292B25;
+            color: #0F172A;
             font-size: .91rem;
         }
 
@@ -1036,7 +1039,7 @@
         .review-form textarea:focus {
             outline: none;
             border-color: var(--workspace-accent);
-            box-shadow: 0 0 0 3px rgba(80, 64, 216, .11);
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, .11);
         }
 
         .review-actions {
@@ -1301,11 +1304,11 @@
         }
 
         .review-button--cancel:hover {
-            background: #F8F7F2;
+            background: #F8FAFC;
         }
 
         .approval-dialog :focus-visible {
-            outline: 3px solid rgba(80, 64, 216, .35);
+            outline: 3px solid rgba(29, 78, 216, .35);
             outline-offset: 3px;
         }
 
@@ -1328,8 +1331,8 @@ html body header.site-header {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(248, 247, 242, .94);
-    border-bottom: 1px solid #E8E5DC;
+    background: rgba(255, 255, 255, .96);
+    border-bottom: 1px solid #E2E8F0;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
 }
@@ -1341,7 +1344,7 @@ html body header.site-header .site-header__inner {
 }
 html body header.site-header .wordmark {
     flex: 0 0 auto;
-    color: #24271F;
+    color: #0F172A;
     font-size: 1.6rem;
     font-weight: 800;
     letter-spacing: -.055em;
@@ -1362,7 +1365,7 @@ html body header.site-header nav.dashboard-nav > a.site-nav__link {
     padding: 0 18px;
     border-radius: 10px;
     background: transparent;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .95rem;
     font-weight: 600;
     text-decoration: none;
@@ -1372,13 +1375,13 @@ html body header.site-header nav.dashboard-nav > a.site-nav__link {
 html body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
 html body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
-    background: #F0EEFF;
-    color: #5040D8;
+    background: #EFF6FF;
+    color: #1D4ED8;
 }
 html body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body header.site-header .wordmark:focus-visible,
 html body header.site-header .site-header__actions .button:focus-visible {
-    outline: 2px solid #5040D8;
+    outline: 2px solid #1D4ED8;
     outline-offset: 2px;
 }
 html body header.site-header .site-header__actions {
@@ -1392,10 +1395,10 @@ html body header.site-header .dashboard-role {
     align-items: center;
     min-height: 34px;
     padding: 0 13px;
-    border: 1px solid #E8E5DC;
+    border: 1px solid #E2E8F0;
     border-radius: 999px;
     background: #FFFFFF;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .8rem;
     font-weight: 700;
     white-space: nowrap;
@@ -1421,25 +1424,25 @@ html body header.site-header .site-header__actions .button {
 
 /* ===== Workspace: progress bar + tabs ===== */
 .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
-.ws-progress { padding: 22px 24px; margin-bottom: 20px; border: 1px solid #E8E5DC; border-radius: 16px; background: #fff; }
+.ws-progress { padding: 22px 24px; margin-bottom: 20px; border: 1px solid #E2E8F0; border-radius: 16px; background: #fff; }
 .ws-progress__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .ws-progress__head h2 { margin: 0; font-size: 1.1rem; }
-.ws-progress__pct { font-size: 1.3rem; font-weight: 800; color: #5040D8; }
+.ws-progress__pct { font-size: 1.3rem; font-weight: 800; color: #1D4ED8; }
 .ws-progress__track { height: 12px; margin-top: 14px; border-radius: 999px; background: #EFEDE6; overflow: hidden; }
-.ws-progress__fill { display: block; height: 100%; width: 0; border-radius: 999px; background: #5040D8; }
+.ws-progress__fill { display: block; height: 100%; width: 0; border-radius: 999px; background: #1D4ED8; }
 .ws-progress__fill.is-complete { background: #176B38; }
 .ws-progress__steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
 .ws-progress__steps li { color: #8A8C84; font-size: .8rem; font-weight: 700; line-height: 1.4; }
 .ws-progress__steps li.is-done { color: #176B38; }
-.ws-progress__steps li.is-current { color: #5040D8; }
-.ws-progress__note { margin: 12px 0 0; color: #6B6D66; font-size: .86rem; }
-.ws-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; padding: 6px; border: 1px solid #E8E5DC; border-radius: 14px; background: #fff; }
+.ws-progress__steps li.is-current { color: #1D4ED8; }
+.ws-progress__note { margin: 12px 0 0; color: #64748B; font-size: .86rem; }
+.ws-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; padding: 6px; border: 1px solid #E2E8F0; border-radius: 14px; background: #fff; }
 .ws-tab {
     position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px;
-    border: 0; border-radius: 10px; background: transparent; color: #6B6D66; font: inherit; font-size: .92rem; font-weight: 700; cursor: pointer;
+    border: 0; border-radius: 10px; background: transparent; color: #64748B; font: inherit; font-size: .92rem; font-weight: 700; cursor: pointer;
 }
-.ws-tab:hover { background: #F5F4EF; color: #24271F; }
-.ws-tab[aria-selected="true"] { background: #F0EEFF; color: #5040D8; }
+.ws-tab:hover { background: #F8FAFC; color: #0F172A; }
+.ws-tab[aria-selected="true"] { background: #EFF6FF; color: #1D4ED8; }
 .ws-tab__dot { display: none; width: 9px; height: 9px; border-radius: 50%; background: #D92D20; }
 .ws-tab.has-unread .ws-tab__dot { display: inline-block; }
 .ws-tabpanel[hidden] { display: none !important; }
@@ -1452,20 +1455,19 @@ html body header.site-header .site-header__actions .button {
     </style>
     <link rel="stylesheet" href="../../css/client-ui.css">
     <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="stylesheet" href="../../css/client-dashboard-refresh.css">
 </head>
-<body>
+<body class="dashboard-body client-dashboard">
     <header class="site-header">
     <div class="site-header__inner">
-        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+        <a href="index.html" class="wordmark" aria-label="WorkNest client dashboard">
             worknest<span class="wordmark__period">.</span>
         </a>
-
         <nav class="dashboard-nav" aria-label="Main navigation">
             <a href="index.html" class="site-nav__link">Overview</a>
             <a href="index.html#your-projects" class="site-nav__link" aria-current="page">Your projects</a>
             <a href="create-project.html" class="site-nav__link">Post a project</a>
         </nav>
-
         <div class="site-header__actions">
             <span class="dashboard-role">Client account</span>
             <form action="../../logout" method="post">

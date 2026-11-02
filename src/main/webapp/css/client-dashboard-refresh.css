@@ -1,0 +1,638 @@
+/* WorkNest client workspace theme: aligned with the public, login, and register pages. */
+:root { --client-canvas: #F8FAFC; }
+html { background-color: var(--client-canvas); }
+
+body.dashboard-body {
+    min-height: 100vh;
+    --color-page: var(--client-canvas);
+    --color-surface: #FFFFFF;
+    --color-surface-muted: #F1F5F9;
+    --color-ink: #0F172A;
+    --color-ink-soft: #334155;
+    --color-ink-muted: #64748B;
+    --color-border: #E2E8F0;
+    --color-accent: #1D4ED8;
+    --color-accent-hover: #1E40AF;
+    --color-accent-soft: #EFF6FF;
+    --color-on-accent: var(--color-surface);
+    --color-focus: var(--color-accent);
+    --color-success: #166534;
+    --color-warning: #92400E;
+    --color-danger: #B91C1C;
+    --wn-ink: var(--color-ink);
+    --wn-muted: var(--color-ink-muted);
+    --wn-border: var(--color-border);
+    --wn-paper: var(--color-page);
+    --wn-white: var(--color-surface);
+    --wn-purple: var(--color-accent);
+    --wn-purple-soft: var(--color-accent-soft);
+    --wn-blue: var(--color-accent);
+    --wn-blue-soft: var(--color-accent-soft);
+    --wn-shadow: 0 14px 34px rgba(var(--client-shadow-rgb), .08), 0 3px 9px rgba(var(--client-shadow-rgb), .035);
+    --client-border-strong: #CBD5E1;
+    --client-border-hover: #93C5FD;
+    --client-danger-hover: #991B1B;
+    --client-accent-border: #BFDBFE;
+    --client-accent-tint: #DBEAFE;
+    --client-primary-shadow: #173EA8;
+    --client-primary-shadow-hover: #173782;
+    --client-primary-rgb: 29, 78, 216;
+    --client-shadow-rgb: 15, 23, 42;
+    --client-success-soft: #F0FDF4;
+    --client-success-border: #BBF7D0;
+    --client-danger-soft: #FEF2F2;
+    --client-danger-border: #FECACA;
+    --client-accent-text: #1E3A8A;
+    --client-warm-accent: #D97706;
+    --client-surface-highlight: rgba(255, 255, 255, .9);
+    --client-modal-overlay: rgba(15, 23, 42, .48);
+    background-color: var(--color-page);
+    color: var(--color-ink);
+}
+
+
+
+/* One shared dashboard header across every client page. */
+html body.dashboard-body header.site-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 100;
+    background-color: var(--color-surface);
+    border-block-end: 1px solid var(--color-border);
+    box-shadow: 0 1px 2px rgba(var(--client-shadow-rgb), .025), 0 8px 22px rgba(var(--client-shadow-rgb), .045);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+html body.dashboard-body header.site-header .site-header__inner {
+    display: flex;
+    width: min(calc(100% - 56px), 1320px);
+    min-height: 82px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 26px;
+    margin-inline: auto;
+    padding-block: 13px;
+}
+
+html body.dashboard-body header.site-header .wordmark {
+    flex: 0 0 auto;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1.42rem;
+    font-weight: 700;
+    letter-spacing: -.07em;
+    line-height: 1;
+    text-decoration: none;
+}
+
+html body.dashboard-body header.site-header .wordmark__period { color: var(--client-warm-accent); }
+
+html body.dashboard-body header.site-header .dashboard-nav {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    margin-inline: auto;
+    padding: 5px;
+    border: 1px solid var(--color-border);
+    border-radius: 9px;
+    background-color: var(--color-page);
+    box-shadow: inset 0 1px 0 var(--client-surface-highlight);
+}
+
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 7px;
+    background-color: transparent;
+    color: var(--color-ink-soft);
+    font-family: var(--font-body);
+    font-size: .9rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 160ms ease, background-color 160ms ease;
+}
+
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+}
+
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
+html body.dashboard-body header.site-header .wordmark:focus-visible,
+html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
+    outline: 3px solid rgba(var(--client-primary-rgb), .32);
+    outline-offset: 3px;
+}
+
+html body.dashboard-body header.site-header .site-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-inline-start: 0;
+}
+
+html body.dashboard-body header.site-header .dashboard-role {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    padding: 0 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background-color: var(--color-surface);
+    color: var(--color-ink-soft);
+    font-family: var(--font-body);
+    font-size: .8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
+
+/* Shared buttons and clear hover/focus states. */
+body.dashboard-body :is(.button--dark, .button--primary, .primary-button, .action-button--primary, .edit-button--primary, .status-dialog-button--primary, .project-card-actions .button--primary) {
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+    background-color: var(--color-accent);
+    color: var(--color-surface);
+    font-family: var(--font-body);
+    font-weight: 650;
+    box-shadow: 0 3px 0 var(--client-primary-shadow), 0 7px 16px rgba(var(--client-primary-rgb), .16);
+    transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+body.dashboard-body :is(.button--dark, .button--primary, .primary-button, .action-button--primary, .edit-button--primary, .status-dialog-button--primary, .project-card-actions .button--primary):hover:not(:disabled) {
+    border-color: var(--color-accent-hover);
+    background-color: var(--color-accent-hover);
+    color: var(--color-surface);
+    box-shadow: 0 2px 0 var(--client-primary-shadow-hover), 0 9px 18px rgba(var(--client-primary-rgb), .19);
+    transform: translateY(-1px);
+}
+
+body.dashboard-body :is(.button--secondary, .secondary-button, .action-button--secondary, .edit-button--secondary, .status-dialog-button, .cancel-dialog-button) {
+    border: 1px solid var(--client-border-strong);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-ink-soft);
+    font-family: var(--font-body);
+    font-weight: 600;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+body.dashboard-body :is(.button--secondary, .secondary-button, .action-button--secondary, .edit-button--secondary, .status-dialog-button, .cancel-dialog-button):hover:not(:disabled) {
+    border-color: var(--client-border-hover);
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+}
+
+body.dashboard-body :is(button, a, input, select, textarea, [role="tab"]):focus-visible {
+    outline-color: var(--color-accent);
+    outline-offset: 3px;
+}
+
+body.dashboard-body :is(button, input, select, textarea):disabled {
+    cursor: not-allowed;
+    opacity: .62;
+    box-shadow: none;
+    transform: none;
+}
+
+
+body.dashboard-body .skeleton {
+    background-color: var(--color-surface-muted);
+    background-image: none;
+    animation: none;
+}
+/* Clear type and softly raised surfaces. */
+body.dashboard-body :is(.dashboard-welcome h1, .dashboard-section__header h2, .project-form-heading h1, .edit-project-heading h1, .profile-name, .summary-card h1, .proposals-page h1, .workspace-title) {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -.035em;
+}
+
+body.dashboard-body :is(.dashboard-welcome > p:last-child, .dashboard-section__header p, .project-form-heading p, .edit-project-heading p, .proposals-intro, .workspace-subtitle, .overview-description, .profile-overview) { color: var(--color-ink-soft); }
+body.dashboard-body :is(.eyebrow, .profile-eyebrow, .workspace-eyebrow) { color: var(--color-accent); }
+
+body.dashboard-body :is(.dashboard-stat, .project-card, .project-create-card, .summary-card, .panel, .state-card, .proposal-card, .ai-summary-panel, .project-form-section, .edit-project-card, .freelancer-profile-card, .workspace-card, .overview-item, .skeleton-card) {
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    background-color: var(--color-surface);
+    box-shadow: 0 2px 5px rgba(var(--client-shadow-rgb), .025), 0 12px 28px rgba(var(--client-shadow-rgb), .045);
+}
+
+body.dashboard-body :is(.project-card, .proposal-card, .talent-directory-card, .freelancer-profile-card) { transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+body.dashboard-body :is(.project-card, .proposal-card, .talent-directory-card):hover {
+    border-color: var(--client-accent-border);
+    box-shadow: 0 4px 8px rgba(var(--client-shadow-rgb), .035), 0 16px 32px rgba(var(--client-primary-rgb), .09);
+    transform: translateY(-2px);
+}
+
+body.dashboard-body :is(.dashboard-stat, .project-card, .summary-card, .panel, .proposal-card, .ai-summary-panel, .project-form-section, .edit-project-card, .freelancer-profile-card, .workspace-card, .state-card):focus-within {
+    border-color: var(--client-accent-border);
+    box-shadow: 0 0 0 3px rgba(var(--client-primary-rgb), .08), 0 10px 26px rgba(var(--client-shadow-rgb), .055);
+}
+
+body.dashboard-body :is(.project-create-card, .filter-tab[aria-pressed="true"], .filter-tab.is-active, .project-status-summary) {
+    border-color: var(--client-accent-border);
+    background-color: var(--color-accent-soft);
+    color: var(--client-accent-text);
+}
+
+body.dashboard-body :is(.project-status, .workspace-status, .status-badge) { border: 1px solid var(--client-accent-border); background-color: var(--color-accent-soft); color: var(--color-accent-hover); }
+body.dashboard-body :is(.project-status--in_progress, .status-in_progress, .workspace-status--progress, .project-status--completed, .status-completed, .workspace-status--completed) { border-color: var(--client-success-border); background-color: var(--client-success-soft); color: var(--color-success); }
+body.dashboard-body :is(.project-status--cancelled, .status-cancelled, .workspace-status--cancelled) { border-color: var(--client-danger-border); background-color: var(--client-danger-soft); color: var(--color-danger); }
+body.dashboard-body :is(.dashboard-stat, .dashboard-stat--attention) { border-color: var(--color-border); background-color: var(--color-surface); }
+body.dashboard-body :is(.dashboard-stat__label, .dashboard-stat__note, .project-card__description, .project-card__skills, .summary-fact span, .summary-fact small, .workspace-muted, .profile-meta) { color: var(--color-ink-muted); }
+
+body.dashboard-body :is(.project-search, .projects-toolbar input, .projects-toolbar select, .talent-directory-controls input, .form-field input, .form-field select, .form-field textarea, .edit-project-form input, .edit-project-form select, .edit-project-form textarea, .sort-control select) {
+    border: 1px solid var(--client-border-strong);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+}
+
+body.dashboard-body :is(.project-search, .projects-toolbar input, .projects-toolbar select, .talent-directory-controls input, .form-field input, .form-field select, .form-field textarea, .edit-project-form input, .edit-project-form select, .edit-project-form textarea, .sort-control select):focus {
+    border-color: var(--color-accent);
+    outline: 3px solid rgba(var(--client-primary-rgb), .16);
+}
+
+body.dashboard-body :is(input, textarea, select)::placeholder { color: var(--color-ink-muted); opacity: 1; }
+body.dashboard-body :is(.form-field label, .form-section-heading, .form-help, .field-error) { color: var(--color-ink-soft); }
+body.dashboard-body .skill-chips { border-color: var(--client-border-strong); border-radius: 8px; background-color: var(--color-surface); }
+body.dashboard-body .skill-chips:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(var(--client-primary-rgb), .13); }
+body.dashboard-body .skill-chip { border: 1px solid var(--client-accent-border); background-color: var(--color-accent-soft); color: var(--color-accent-hover); }
+body.dashboard-body .skill-chip button:hover { background-color: var(--client-accent-tint); }
+
+body.dashboard-body :is(.back-link, .profile-back, .workspace-back, .freelancer-profile-link, .link-button) { color: var(--color-accent); }
+body.dashboard-body :is(.back-link:hover, .profile-back:hover, .workspace-back:hover, .freelancer-profile-link:hover, .link-button:hover) { color: var(--color-accent-hover); }
+body.dashboard-body :is(.project-card__details, .summary-fact, .overview-item) { border-color: var(--color-border); background-color: var(--color-page); }
+body.dashboard-body :is(.timeline, .workspace-timeline)::before { background-color: var(--client-accent-tint); }
+body.dashboard-body :is(.timeline-dot, .activity-marker, .ws-tab__dot) { border-color: var(--color-accent); }
+
+body.dashboard-body .modal-overlay { background-color: rgba(var(--client-shadow-rgb), .48); backdrop-filter: none; }
+body.dashboard-body :is(.modal-card, .approval-dialog) { border: 1px solid var(--color-border); border-radius: 14px; background-color: var(--color-surface); box-shadow: 0 24px 64px rgba(var(--client-shadow-rgb), .2); }
+body.dashboard-body .wn-banner { border-color: var(--client-success-border); background-color: var(--client-success-soft); color: var(--color-success); }
+body.dashboard-body :is(.wn-banner--error, .field-error, .form-message--error, .proposals-message--error, .state-card--error) { border-color: var(--client-danger-border); background-color: var(--client-danger-soft); color: var(--color-danger); }
+
+@media (max-width: 900px) {
+    html body.dashboard-body header.site-header .site-header__inner { width: min(calc(100% - 36px), 1320px); min-height: 72px; flex-wrap: wrap; gap: 8px 16px; padding-block: 10px; }
+    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; overflow-x: auto; }
+    html body.dashboard-body header.site-header .site-header__actions { margin-inline-start: auto; }
+    body.dashboard-body :is(.dashboard-page, .create-project-main, .edit-project-container, .freelancer-profile-page, .details-page, .proposals-page, .workspace-container) { width: min(calc(100% - 36px), 1180px); }
+}
+
+@media (max-width: 650px) {
+    html body.dashboard-body header.site-header .site-header__inner { width: min(calc(100% - 28px), 1320px); gap: 8px 12px; }
+    html body.dashboard-body header.site-header .wordmark { font-size: 1.28rem; }
+    html body.dashboard-body header.site-header .dashboard-nav { gap: 2px; width: 100%; }
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { min-height: 38px; padding-inline: 10px; font-size: .82rem; }
+    html body.dashboard-body header.site-header .dashboard-role { display: none; }
+    body.dashboard-body :is(.dashboard-page, .create-project-main, .edit-project-container, .freelancer-profile-page, .details-page, .proposals-page, .workspace-container) { width: min(calc(100% - 28px), 1180px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.dashboard-body :is(.button--dark, .button--primary, .primary-button, .action-button--primary, .edit-button--primary, .project-card, .proposal-card, .talent-directory-card) { transition: none; }
+    body.dashboard-body :is(.project-card, .proposal-card, .talent-directory-card):hover,
+    body.dashboard-body :is(.button--dark, .button--primary, .primary-button, .action-button--primary, .edit-button--primary):hover { transform: none; }
+}
+/* Header action and proposal/workspace primary actions share the homepage button treatment. */
+html body.dashboard-body header.site-header .site-header__actions .button {
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+    background-color: var(--color-accent);
+    color: var(--color-surface);
+    box-shadow: 0 3px 0 var(--client-primary-shadow), 0 7px 16px rgba(var(--client-primary-rgb), .16);
+}
+
+html body.dashboard-body header.site-header .site-header__actions .button:hover:not(:disabled) {
+    border-color: var(--color-accent-hover);
+    background-color: var(--color-accent-hover);
+    color: var(--color-surface);
+    box-shadow: 0 2px 0 var(--client-primary-shadow-hover), 0 9px 18px rgba(var(--client-primary-rgb), .19);
+    transform: translateY(-1px);
+}
+
+body.dashboard-body :is(.accept-proposal-button, .review-button:not(.review-button--secondary):not(.review-button--revision):not(.review-button--cancel), .review-button--approve) {
+    border-color: var(--color-accent);
+    border-radius: 8px;
+    background-color: var(--color-accent);
+    color: var(--color-surface);
+    box-shadow: 0 3px 0 var(--client-primary-shadow), 0 7px 16px rgba(var(--client-primary-rgb), .16);
+}
+
+body.dashboard-body :is(.accept-proposal-button, .review-button:not(.review-button--secondary):not(.review-button--revision):not(.review-button--cancel), .review-button--approve):hover:not(:disabled) {
+    border-color: var(--color-accent-hover);
+    background-color: var(--color-accent-hover);
+    color: var(--color-surface);
+    transform: translateY(-1px);
+}
+
+body.dashboard-body :is(.review-button--secondary, .review-button--revision, .review-button--cancel) {
+    border: 1px solid var(--client-border-strong);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-ink-soft);
+}
+
+body.dashboard-body :is(.review-button--secondary, .review-button--revision, .review-button--cancel):hover:not(:disabled) {
+    border-color: var(--client-border-hover);
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+}
+
+body.dashboard-body .cancel-dialog-button--danger:hover:not(:disabled) {
+    background-color: var(--client-danger-hover);
+}
+/* Post project: aligned with the overview header and the shared blue workspace. */
+body.dashboard-body.create-project-page .create-project-main {
+    width: min(calc(100% - 48px), 1240px);
+    margin-inline: auto;
+    padding: 34px 0 72px;
+}
+
+body.dashboard-body.create-project-page .back-link {
+    margin-bottom: 22px;
+    color: var(--color-accent);
+}
+
+body.dashboard-body.create-project-page .project-form-heading {
+    max-width: 760px;
+    margin-bottom: 28px;
+}
+
+body.dashboard-body.create-project-page .project-form-heading h1 {
+    margin-bottom: 10px;
+    font-size: clamp(2.35rem, 4vw, 3.35rem);
+    line-height: 1.04;
+}
+
+body.dashboard-body.create-project-page .project-form-heading > p:last-child {
+    max-width: 620px;
+    color: var(--color-ink-muted);
+}
+
+body.dashboard-body.create-project-page .create-project-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 310px);
+    align-items: start;
+    gap: 24px;
+}
+
+body.dashboard-body.create-project-page .project-form {
+    min-width: 0;
+    gap: 20px;
+}
+
+body.dashboard-body.create-project-page .project-form-section {
+    padding: clamp(22px, 3vw, 32px);
+    border-radius: 14px;
+}
+
+body.dashboard-body.create-project-page .form-section-heading {
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+body.dashboard-body.create-project-page .form-step {
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--client-accent-border);
+    border-radius: 10px;
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+}
+
+body.dashboard-body.create-project-page .form-section-heading h2,
+body.dashboard-body.create-project-page .ai-draft-block h3 {
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: -.015em;
+}
+
+body.dashboard-body.create-project-page .form-section-heading p {
+    margin-top: 4px;
+    color: var(--color-ink-muted);
+}
+
+body.dashboard-body.create-project-page .ai-draft-block {
+    gap: 16px;
+    margin: 0 0 26px;
+    padding: 22px;
+    border: 1px solid var(--client-accent-border);
+    border-radius: 12px;
+    background-color: var(--color-accent-soft);
+    box-shadow: inset 0 1px 0 var(--color-surface);
+}
+
+body.dashboard-body.create-project-page .ai-draft-block h3 { margin: 0 0 5px; }
+body.dashboard-body.create-project-page .ai-draft-block > div:first-child p { max-width: 560px; }
+body.dashboard-body.create-project-page .ai-draft-block textarea { min-height: 112px; }
+body.dashboard-body.create-project-page .ai-draft-block .form-field { gap: 8px; }
+body.dashboard-body.create-project-page .ai-draft-actions { justify-content: flex-start; margin: 0; }
+body.dashboard-body.create-project-page .ai-draft-disclosure { color: var(--color-ink-muted); }
+body.dashboard-body.create-project-page .ai-draft-status {
+    padding: 0;
+    color: var(--color-ink-soft);
+    font-size: .9rem;
+}
+body.dashboard-body.create-project-page .ai-draft-status:not(:empty) {
+    padding: 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+}
+body.dashboard-body.create-project-page .ai-draft-status--error:not(:empty) {
+    border-color: var(--client-danger-border);
+    background-color: var(--client-danger-soft);
+    color: var(--color-danger);
+}
+
+body.dashboard-body.create-project-page .project-form .form-field { gap: 8px; margin-bottom: 20px; }
+body.dashboard-body.create-project-page .project-form label { color: var(--color-ink); font-weight: 650; }
+body.dashboard-body.create-project-page .project-form input,
+body.dashboard-body.create-project-page .project-form textarea,
+body.dashboard-body.create-project-page .project-form select {
+    min-height: 50px;
+    padding: 12px 14px;
+    border-color: var(--client-border-strong);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    box-shadow: 0 1px 2px rgba(var(--client-shadow-rgb), .025);
+}
+body.dashboard-body.create-project-page .project-form textarea { min-height: 150px; }
+body.dashboard-body.create-project-page .project-form :is(input, textarea, select):focus {
+    border-color: var(--color-accent);
+    outline: 3px solid rgba(var(--client-primary-rgb), .14);
+    outline-offset: 1px;
+}
+body.dashboard-body.create-project-page .project-form :is(input, textarea, select)::placeholder {
+    color: var(--color-ink-muted);
+    opacity: 1;
+}
+body.dashboard-body.create-project-page .project-form .form-help { color: var(--color-ink-muted); }
+body.dashboard-body.create-project-page .project-form .field-error:not([hidden]) {
+    padding: 9px 11px;
+    border: 1px solid var(--client-danger-border);
+    border-radius: 7px;
+    background-color: var(--client-danger-soft);
+    color: var(--color-danger);
+}
+body.dashboard-body.create-project-page .project-form-actions .button { min-height: 48px; }
+body.dashboard-body.create-project-page .project-form-note { color: var(--color-ink-muted); }
+body.dashboard-body.create-project-page .project-form-message:not([hidden]) {
+    border-color: var(--client-danger-border);
+    background-color: var(--client-danger-soft);
+    color: var(--color-danger);
+}
+
+body.dashboard-body.create-project-page .project-posting-guide {
+    position: sticky;
+    top: 108px;
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    background-color: var(--color-surface);
+    box-shadow: 0 3px 8px rgba(var(--client-shadow-rgb), .03), 0 16px 32px rgba(var(--client-shadow-rgb), .06);
+}
+body.dashboard-body.create-project-page .project-posting-guide__eyebrow {
+    margin: 0 0 11px;
+    color: var(--color-accent);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+}
+body.dashboard-body.create-project-page .project-posting-guide h2 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 1.62rem;
+    font-weight: 400;
+    line-height: 1.17;
+    letter-spacing: -.025em;
+}
+body.dashboard-body.create-project-page .project-posting-guide__intro {
+    margin: 12px 0 22px;
+    color: var(--color-ink-muted);
+    font-size: .92rem;
+    line-height: 1.65;
+}
+body.dashboard-body.create-project-page .project-posting-guide__steps {
+    display: grid;
+    gap: 17px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+body.dashboard-body.create-project-page .project-posting-guide__steps li {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+}
+body.dashboard-body.create-project-page .project-posting-guide__steps li > span {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    border: 1px solid var(--client-accent-border);
+    border-radius: 8px;
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-size: .72rem;
+    font-weight: 700;
+}
+body.dashboard-body.create-project-page .project-posting-guide__steps strong {
+    display: block;
+    color: var(--color-ink);
+    font-size: .9rem;
+}
+body.dashboard-body.create-project-page .project-posting-guide__steps p {
+    margin: 4px 0 0;
+    color: var(--color-ink-muted);
+    font-size: .82rem;
+    line-height: 1.55;
+}
+body.dashboard-body.create-project-page .project-posting-guide__note {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-ink-soft);
+    font-size: .85rem;
+    line-height: 1.6;
+}
+body.dashboard-body.create-project-page .project-posting-guide__note strong { color: var(--color-ink); }
+body.dashboard-body.create-project-page .project-posting-guide__note p { margin: 5px 0 0; color: var(--color-ink-muted); }
+
+@media (max-width: 960px) {
+    body.dashboard-body.create-project-page .create-project-layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 16px; }
+    body.dashboard-body.create-project-page .project-posting-guide { top: 100px; padding: 20px; }
+}
+@media (max-width: 760px) {
+    body.dashboard-body.create-project-page .create-project-layout { grid-template-columns: minmax(0, 1fr); }
+    body.dashboard-body.create-project-page .project-posting-guide { position: static; grid-row: 1; }
+}
+@media (max-width: 600px) {
+    body.dashboard-body.create-project-page .create-project-main { width: min(calc(100% - 32px), 1240px); padding-top: 24px; }
+    body.dashboard-body.create-project-page .project-form-section { padding: 20px; }
+    body.dashboard-body.create-project-page .ai-draft-block { padding: 17px; }
+    body.dashboard-body.create-project-page .project-form .form-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    body.dashboard-body.create-project-page .project-form-actions { flex-direction: column-reverse; align-items: stretch; }
+    body.dashboard-body.create-project-page .project-form-actions .button { width: 100%; box-sizing: border-box; }
+    body.dashboard-body.create-project-page .project-form-note { text-align: left; }
+}
+/* One identical three-column header layout for the client Overview and Post a project pages. */
+html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__inner {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+    column-gap: 26px;
+}
+html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header nav.dashboard-nav {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    margin-inline: 0;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__actions {
+    display: flex;
+    margin: 0;
+    gap: 12px;
+}
+@media (max-width: 900px) {
+    html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__inner {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        column-gap: 16px;
+    }
+    html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header nav.dashboard-nav {
+        order: 3;
+        width: 100%;
+        flex: 1 0 100%;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+    html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__actions {
+        margin-inline-start: auto;
+    }
+}

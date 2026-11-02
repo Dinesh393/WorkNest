@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Project | WorkNest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../../css/design-tokens.css">
     <link rel="stylesheet" href="../../css/base.css">
@@ -25,17 +28,17 @@
         .edit-project-heading h1 {
             margin-bottom: 8px;
             font-size: clamp(1.8rem, 4vw, 2.4rem);
-            color: #24271F;
+            color: #0F172A;
         }
 
         .edit-project-heading p {
-            color: #6B6D66;
+            color: #64748B;
             line-height: 1.6;
         }
 
         .edit-project-card {
             background: #FFFFFF;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 18px;
             padding: 32px;
             box-shadow: 0 8px 28px rgba(36, 39, 31, 0.04);
@@ -54,7 +57,7 @@
         .form-field label {
             font-size: 0.94rem;
             font-weight: 600;
-            color: #24271F;
+            color: #0F172A;
         }
 
         .form-field input,
@@ -66,7 +69,7 @@
             border: 1px solid #DAD8CF;
             border-radius: 9px;
             background: #FFFFFF;
-            color: #24271F;
+            color: #0F172A;
             font: inherit;
             outline: none;
         }
@@ -74,8 +77,8 @@
         .form-field input:focus,
         .form-field textarea:focus,
         .form-field select:focus {
-            border-color: #5040D8;
-            box-shadow: 0 0 0 3px rgba(80, 64, 216, 0.12);
+            border-color: #1D4ED8;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
         }
 
         .form-field textarea {
@@ -131,7 +134,7 @@
             align-items: center;
             min-height: 44px;
             padding: 0 20px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 9px;
             font: inherit;
             font-weight: 600;
@@ -146,12 +149,12 @@
 
         .edit-button--primary {
             color: #FFFFFF;
-            background: #24271F;
-            border-color: #24271F;
+            background: #0F172A;
+            border-color: #0F172A;
         }
 
         .edit-button--secondary {
-            color: #24271F;
+            color: #0F172A;
             background: #FFFFFF;
         }
 
@@ -161,7 +164,7 @@
         }
 
         .edit-loading {
-            color: #6B6D66;
+            color: #64748B;
             padding: 20px 0;
         }
 
@@ -193,8 +196,8 @@ html body.dashboard-body header.site-header {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(248, 247, 242, .94);
-    border-bottom: 1px solid #E8E5DC;
+    background: rgba(255, 255, 255, .96);
+    border-bottom: 1px solid #E2E8F0;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
 }
@@ -206,7 +209,7 @@ html body.dashboard-body header.site-header .site-header__inner {
 }
 html body.dashboard-body header.site-header .wordmark {
     flex: 0 0 auto;
-    color: #24271F;
+    color: #0F172A;
     font-size: 1.6rem;
     font-weight: 800;
     letter-spacing: -.055em;
@@ -227,7 +230,7 @@ html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link
     padding: 0 18px;
     border-radius: 10px;
     background: transparent;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .95rem;
     font-weight: 600;
     text-decoration: none;
@@ -237,13 +240,13 @@ html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
-    background: #F0EEFF;
-    color: #5040D8;
+    background: #EFF6FF;
+    color: #1D4ED8;
 }
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body.dashboard-body header.site-header .wordmark:focus-visible,
 html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
-    outline: 2px solid #5040D8;
+    outline: 2px solid #1D4ED8;
     outline-offset: 2px;
 }
 html body.dashboard-body header.site-header .site-header__actions {
@@ -257,10 +260,10 @@ html body.dashboard-body header.site-header .dashboard-role {
     align-items: center;
     min-height: 34px;
     padding: 0 13px;
-    border: 1px solid #E8E5DC;
+    border: 1px solid #E2E8F0;
     border-radius: 999px;
     background: #FFFFFF;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .8rem;
     font-weight: 700;
     white-space: nowrap;
@@ -286,22 +289,21 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     </style>
     <link rel="stylesheet" href="../../css/client-ui.css">
     <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="stylesheet" href="../../css/client-dashboard-refresh.css">
 </head>
 
 <body class="dashboard-body client-dashboard">
 
 <header class="site-header">
     <div class="site-header__inner">
-        <a href="index.html" class="wordmark" aria-label="WorkNest home">
+        <a href="index.html" class="wordmark" aria-label="WorkNest client dashboard">
             worknest<span class="wordmark__period">.</span>
         </a>
-
         <nav class="dashboard-nav" aria-label="Main navigation">
             <a href="index.html" class="site-nav__link">Overview</a>
             <a href="index.html#your-projects" class="site-nav__link" aria-current="page">Your projects</a>
             <a href="create-project.html" class="site-nav__link">Post a project</a>
         </nav>
-
         <div class="site-header__actions">
             <span class="dashboard-role">Client account</span>
             <form action="../../logout" method="post">
