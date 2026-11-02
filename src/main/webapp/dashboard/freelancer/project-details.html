@@ -272,6 +272,57 @@
     line-height: 1.65;
 }
 
+.freelancer-details-page .ai-proposal-helper {
+    display: grid;
+    gap: 10px;
+    margin: 0 0 22px;
+    padding: 16px;
+    border: 1px solid #E8E5DC;
+    border-radius: 10px;
+    background: #F8F7F2;
+}
+
+.freelancer-details-page .ai-proposal-helper label {
+    font-weight: 600;
+}
+
+.freelancer-details-page .ai-proposal-helper p {
+    margin: 0;
+    color: #6B6D66;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.freelancer-details-page #draft-proposal-button {
+    justify-self: start;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 1px solid #5040D8;
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: #5040D8;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.freelancer-details-page #draft-proposal-button:hover:not(:disabled) {
+    background: #F0EEFF;
+}
+
+.freelancer-details-page #draft-proposal-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.freelancer-details-page #ai-proposal-status:empty {
+    display: none;
+}
+
+.freelancer-details-page .ai-proposal-status--error {
+    color: #8B2020;
+}
+
 .freelancer-details-page #proposal-form input:focus,
 .freelancer-details-page #proposal-form textarea:focus {
     outline: none;
@@ -531,6 +582,21 @@ html body.dashboard-body header.site-header .site-header__actions .button {
         </div>
 
         <div class="form-group">
+            <div class="ai-proposal-helper">
+                <label for="proposal-notes">Draft a cover letter with AI</label>
+                <textarea
+                    id="proposal-notes"
+                    rows="3"
+                    minlength="20"
+                    maxlength="2000"
+                    placeholder="Add your approach and relevant experience in your own words."
+                    aria-describedby="proposal-notes-help ai-proposal-status"
+                ></textarea>
+                <p id="proposal-notes-help">WorkNest uses the project details and your profile skills to draft the letter. Avoid confidential details. Review and edit it before submitting.</p>
+                <button type="button" id="draft-proposal-button">Draft cover letter</button>
+                <p id="ai-proposal-status" role="status" aria-live="polite"></p>
+            </div>
+
             <label for="cover-letter">Cover Letter</label>
             <textarea
                 id="cover-letter"
@@ -571,9 +637,59 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     const coverLetterInput = document.getElementById("cover-letter");
     const proposalMessage = document.getElementById("proposal-message");
     const submitProposalButton = document.getElementById("submit-proposal-button");
+    const proposalNotesInput = document.getElementById("proposal-notes");
+    const draftProposalButton = document.getElementById("draft-proposal-button");
+    const aiProposalStatus = document.getElementById("ai-proposal-status");
 
     let currentProjectId = null;
     let proposalSubmitted = false;
+
+    draftProposalButton.addEventListener("click", async function () {
+        const notes = proposalNotesInput.value.trim();
+        if (proposalSubmitted) return;
+        if (!currentProjectId || notes.length < 20 || notes.length > 2000) {
+            aiProposalStatus.textContent = "Enter notes between 20 and 2,000 characters first.";
+            aiProposalStatus.classList.add("ai-proposal-status--error");
+            proposalNotesInput.focus();
+            return;
+        }
+
+        draftProposalButton.disabled = true;
+        draftProposalButton.textContent = "Drafting cover letter…";
+        aiProposalStatus.classList.remove("ai-proposal-status--error");
+        aiProposalStatus.textContent = "Creating a draft. This may take a few seconds.";
+        try {
+            const response = await fetch(`${contextPath}/ai-proposal-assist`, {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ projectId: Number(currentProjectId), notes: notes }),
+                cache: "no-store"
+            });
+            const result = await response.json().catch(function () { return null; });
+            if (response.status === 401) {
+                window.location.replace("../../login.html");
+                return;
+            }
+            if (!response.ok || !result || !result.success) {
+                throw new Error(result && result.error
+                    ? result.error : "Unable to draft the cover letter. You can write it manually.");
+            }
+            coverLetterInput.value = result.coverLetter || "";
+            aiProposalStatus.textContent = "Draft added. Review and edit it before submitting your proposal.";
+            coverLetterInput.focus();
+        } catch (error) {
+            aiProposalStatus.classList.add("ai-proposal-status--error");
+            aiProposalStatus.textContent = error && error.message
+                ? error.message : "AI drafting is unavailable. You can write the cover letter manually.";
+        } finally {
+            draftProposalButton.disabled = false;
+            draftProposalButton.textContent = "Draft cover letter";
+        }
+    });
 
     function formatCurrency(value) {
         const amount = Number(value);
@@ -862,6 +978,8 @@ html body.dashboard-body header.site-header .site-header__actions .button {
 
             amountInput.disabled = true;
             coverLetterInput.disabled = true;
+            proposalNotesInput.disabled = true;
+            draftProposalButton.disabled = true;
             submitProposalButton.textContent = "Proposal Submitted";
 
         } catch (error) {

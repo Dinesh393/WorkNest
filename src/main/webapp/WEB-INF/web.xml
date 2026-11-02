@@ -297,5 +297,35 @@
     <url-pattern>/project-activity</url-pattern>
 </servlet-mapping>
 
+<servlet>
+    <servlet-name>AiProjectDraftServlet</servlet-name>
+    <servlet-class>com.worknest.servlet.AiProjectDraftServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AiProjectDraftServlet</servlet-name>
+    <url-pattern>/ai-project-draft</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>AiProposalAssistServlet</servlet-name>
+    <servlet-class>com.worknest.servlet.AiProposalAssistServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AiProposalAssistServlet</servlet-name>
+    <url-pattern>/ai-proposal-assist</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>AiProposalSummaryServlet</servlet-name>
+    <servlet-class>com.worknest.servlet.AiProposalSummaryServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AiProposalSummaryServlet</servlet-name>
+    <url-pattern>/ai-proposal-summary</url-pattern>
+</servlet-mapping>
+
  
 </web-app>

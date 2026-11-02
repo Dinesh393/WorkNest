@@ -173,6 +173,52 @@
             color: #24271F;
         }
 
+        .ai-summary-panel {
+            margin-top: 16px;
+            padding: 18px;
+            border: 1px solid #E8E5DC;
+            border-radius: 12px;
+            background: #FFFFFF;
+        }
+
+        .ai-summary-panel h2 {
+            margin: 0 0 8px;
+            font-size: 1.1rem;
+        }
+
+        .ai-summary-panel p {
+            color: #6B6D66;
+            line-height: 1.55;
+        }
+
+        .ai-summary-panel button {
+            padding: 10px 14px;
+            border: 1px solid #5040D8;
+            border-radius: 8px;
+            background: #5040D8;
+            color: #FFFFFF;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .ai-summary-panel button:hover { background: #4032B8; }
+        .ai-summary-panel button:focus-visible { outline: 3px solid rgba(80,64,216,.3); outline-offset: 2px; }
+        .ai-summary-panel button:disabled { opacity: .65; cursor: wait; }
+
+        #ai-summary-result {
+            margin: 16px 0 0;
+            padding: 14px;
+            border: 1px solid #E8E5DC;
+            border-radius: 8px;
+            background: #FAF9F6;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        #ai-summary-status { margin: 10px 0 0; }
+        #ai-summary-status.is-error { color: #A12622; }
+
         .proposals-list {
             display: grid;
             gap: 20px;
@@ -635,6 +681,14 @@
         <strong id="project-status-value"></strong>
     </div>
 
+    <section id="ai-summary-panel" class="ai-summary-panel" aria-labelledby="ai-summary-heading" hidden>
+        <h2 id="ai-summary-heading">Compare pending proposals</h2>
+        <p>Gemini will receive the project details, pending cover letters, and relevant freelancer profile details to prepare a neutral comparison. Review the result yourself; it does not choose who to hire.</p>
+        <button id="ai-summary-button" type="button">Summarize proposals</button>
+        <p id="ai-summary-status" role="status" aria-live="polite" hidden></p>
+        <div id="ai-summary-result" role="region" aria-label="Proposal comparison" hidden></div>
+    </section>
+
     <p id="loading-message"
        class="proposals-message"
        role="status">
@@ -731,6 +785,10 @@ const projectStatusSummary =
 
 const projectStatusValue =
     document.getElementById("project-status-value");
+const aiSummaryPanel = document.getElementById("ai-summary-panel");
+const aiSummaryButton = document.getElementById("ai-summary-button");
+const aiSummaryStatus = document.getElementById("ai-summary-status");
+const aiSummaryResult = document.getElementById("ai-summary-result");
 
 // Revision modal elements
 const revisionModal = document.getElementById("revisionModal");
@@ -751,6 +809,7 @@ let confirmOpener = null;
 let currentProjectStatus = null;
 let acceptingProposal = false;
 let confirmResolver = null;
+let pendingProposalCount = 0;
 
 function showMessage(message, type = "info") {
     messageBox.textContent = message;
@@ -1380,6 +1439,9 @@ async function loadProposals() {
     proposalsList.replaceChildren();
     messageBox.hidden = true;
     projectStatusSummary.hidden = true;
+    aiSummaryPanel.hidden = true;
+    aiSummaryResult.hidden = true;
+    aiSummaryStatus.hidden = true;
 
     try {
         const response = await fetch(
@@ -1410,10 +1472,14 @@ async function loadProposals() {
         }
 
         currentProjectStatus = normalizeStatus(data.projectStatus);
+        pendingProposalCount = data.proposals.filter(proposal =>
+            normalizeStatus(proposal.status) === "PENDING").length;
 
         projectStatusValue.textContent =
             currentProjectStatus.replaceAll("_", " ");
         projectStatusSummary.hidden = false;
+        aiSummaryPanel.hidden = currentProjectStatus !== "OPEN"
+                || pendingProposalCount < 2;
 
         if (data.proposals.length === 0) {
             showMessage(
@@ -1448,6 +1514,48 @@ async function loadProposals() {
         loadingMessage.hidden = true;
     }
 }
+
+async function summarizePendingProposals() {
+    if (!projectId || currentProjectStatus !== "OPEN" || pendingProposalCount < 2) return;
+    aiSummaryButton.disabled = true;
+    aiSummaryButton.textContent = "Preparing comparison...";
+    aiSummaryStatus.textContent = "Sending proposal details to Gemini...";
+    aiSummaryStatus.classList.remove("is-error");
+    aiSummaryStatus.hidden = false;
+    aiSummaryResult.hidden = true;
+    try {
+        const response = await fetch(`${contextPath}/ai-proposal-summary`, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            },
+            body: new URLSearchParams({ projectId }),
+            cache: "no-store"
+        });
+        if (response.status === 401) {
+            window.location.replace("../../login.html");
+            return;
+        }
+        const data = await readJsonResponse(response);
+        if (!response.ok) throw new Error(data.error || data.message || "Unable to summarize proposals.");
+        aiSummaryResult.textContent = data.summary || "No comparison was returned.";
+        if (data.truncated) {
+            aiSummaryResult.textContent += "\n\nThis comparison covers the 10 most recent pending proposals.";
+        }
+        aiSummaryResult.hidden = false;
+        aiSummaryStatus.textContent = "Comparison ready. Verify every detail in the original proposals.";
+    } catch (error) {
+        aiSummaryStatus.textContent = error.message || "Unable to summarize proposals. Please try again.";
+        aiSummaryStatus.classList.add("is-error");
+    } finally {
+        aiSummaryButton.disabled = false;
+        aiSummaryButton.textContent = "Summarize proposals";
+    }
+}
+
+aiSummaryButton.addEventListener("click", summarizePendingProposals);
 
 async function acceptProposal(proposalId, button) {
     if (acceptingProposal) {

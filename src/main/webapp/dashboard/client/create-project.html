@@ -182,6 +182,30 @@ a.back-link:hover { color: #5040D8; }
                     </div>
                 </div>
 
+                <div class="ai-draft-block" aria-labelledby="ai-draft-heading">
+                    <div>
+                        <h3 id="ai-draft-heading">Draft details with AI</h3>
+                        <p class="form-help">Write a short summary and WorkNest will suggest details for this form.</p>
+                    </div>
+                    <div class="form-field">
+                        <label for="ai-project-summary">Project summary</label>
+                        <textarea id="ai-project-summary"
+                                  rows="3"
+                                  minlength="20"
+                                  maxlength="2000"
+                                  placeholder="For example: I need an online store for handmade products with product pages and a simple checkout."
+                                  aria-describedby="ai-project-summary-help ai-draft-status"></textarea>
+                        <p class="form-help" id="ai-project-summary-help">20 to 2,000 characters. Avoid confidential information.</p>
+                    </div>
+                    <div class="project-form-actions ai-draft-actions">
+                        <button class="button button--dark" id="ai-draft-button" type="button">
+                            Draft details with AI
+                        </button>
+                    </div>
+                    <p class="ai-draft-disclosure">AI suggestions, including budget and deadline, may be inaccurate. Review and edit every field before posting.</p>
+                    <p class="ai-draft-status" id="ai-draft-status" role="status" aria-live="polite"></p>
+                </div>
+
                 <div class="form-field">
                     <label for="title">Project title</label>
                     <input
@@ -358,6 +382,9 @@ a.back-link:hover { color: #5040D8; }
     const budgetMaxInput = document.getElementById("budget-max");
     const deadlineInput = document.getElementById("deadline");
     const messageElement = document.getElementById("project-form-message");
+    const aiSummaryInput = document.getElementById("ai-project-summary");
+    const aiDraftButton = document.getElementById("ai-draft-button");
+    const aiDraftStatus = document.getElementById("ai-draft-status");
     const banner = document.getElementById("wn-banner");
     const bannerText = document.getElementById("wn-banner-text");
     let bannerTimer = null;
@@ -492,6 +519,66 @@ a.back-link:hover { color: #5040D8; }
     });
     typeInput.addEventListener("change", function () { touched.add("type"); validateField("type"); });
     deadlineInput.addEventListener("change", function () { touched.add("deadline"); validateField("deadline"); });
+
+    /* ---------- AI project draft ---------- */
+    function setAiDraftStatus(message, isError) {
+        aiDraftStatus.textContent = message;
+        aiDraftStatus.classList.toggle("ai-draft-status--error", Boolean(isError));
+    }
+
+    aiDraftButton.addEventListener("click", async function () {
+        const summary = aiSummaryInput.value.trim();
+        if (summary.length < 20 || summary.length > 2000) {
+            setAiDraftStatus("Write a summary between 20 and 2,000 characters.", true);
+            aiSummaryInput.focus();
+            return;
+        }
+
+        aiDraftButton.disabled = true;
+        aiDraftButton.textContent = "Drafting details…";
+        setAiDraftStatus("Creating a draft. This may take a few seconds.", false);
+
+        try {
+            const contextPath = window.location.pathname.split("/dashboard/")[0] || "";
+            const response = await fetch(contextPath + "/ai-project-draft", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ summary: summary })
+            });
+            const result = await response.json().catch(function () { return null; });
+            if (!response.ok || !result || !result.success) {
+                throw new Error(result && result.error
+                    ? result.error : "AI could not draft the project details. You can fill in the form manually.");
+            }
+
+            titleInput.value = result.title || "";
+            descriptionInput.value = result.description || "";
+            chips.set(result.requiredSkills || "");
+            typeInput.value = result.projectType || "FIXED";
+            budgetMinInput.value = result.budgetMin == null ? "" : result.budgetMin;
+            budgetMaxInput.value = result.budgetMax == null ? "" : result.budgetMax;
+            deadlineInput.value = result.deadline || "";
+
+            Object.keys(rules).forEach(function (name) {
+                touched.add(name);
+                validateField(name);
+            });
+            messageElement.hidden = true;
+            setAiDraftStatus("Draft added to the form. Review and edit the suggestions before posting.", false);
+            titleInput.focus();
+        } catch (error) {
+            setAiDraftStatus(error && error.message
+                ? error.message
+                : "AI drafting is unavailable right now. You can complete the form manually and try again later.", true);
+        } finally {
+            aiDraftButton.disabled = false;
+            aiDraftButton.textContent = "Draft details with AI";
+        }
+    });
 
     /* ---------- Submit ---------- */
     form.addEventListener("submit", function (event) {
