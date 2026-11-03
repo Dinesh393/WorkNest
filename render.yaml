@@ -5,6 +5,8 @@ services:
     plan: free
     healthCheckPath: /
     envVars:
+      - key: APP_ENV
+        value: production
       - key: DB_URL
         sync: false
       - key: DB_USERNAME

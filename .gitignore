@@ -47,3 +47,6 @@ database/local/
 
 # User-specific Eclipse server configuration
 /Servers/
+*.crt
+*.cer
+*.der

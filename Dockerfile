@@ -11,6 +11,7 @@ RUN set -eux; \
       -cp 'src/main/webapp/WEB-INF/lib/*' \
       -d /tmp/worknest-classes @/tmp/worknest-sources.txt; \
     cp -a src/main/webapp/. /opt/worknest/; \
+    rm -f /opt/worknest/WEB-INF/lib/servlet-api.jar; \
     mkdir -p /opt/worknest/WEB-INF/classes; \
     cp -a /tmp/worknest-classes/. /opt/worknest/WEB-INF/classes/
 

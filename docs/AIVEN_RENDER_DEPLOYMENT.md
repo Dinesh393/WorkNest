@@ -1,40 +1,46 @@
 # Aiven and Render deployment notes
 
-## Database configuration
+WorkNest uses an external MySQL database and a Tomcat 9 Docker web service. The application reads connection settings from the process environment; it does not run database scripts during startup.
 
-WorkNest reads database settings from the process environment. It does not contain a database password in source code.
+## Environment variables
 
-Set these values in the Tomcat Run Configuration in Eclipse and in the Render service environment:
+Set these in Eclipse's Tomcat launch environment for local testing and in Render's service Environment settings for deployment:
 
-- `DB_URL`: use the Aiven MySQL JDBC URL from the Aiven console, targeting `defaultdb` and including `sslMode=REQUIRED`.
-- `DB_USERNAME`: the Aiven database username (`avnadmin` for the service described in the project setup).
-- `DB_PASSWORD`: the current Aiven database password. Keep it in the environment settings only; do not commit it or paste it into source files.
-- `GEMINI_API_KEY`: optional for project features that call Gemini. Set it as a secret in Render, never as a Docker build argument.
+- DB_URL: MySQL JDBC URL for the target database, including sslMode=REQUIRED. Example shape: jdbc:mysql://YOUR_HOST:YOUR_PORT/YOUR_DATABASE?sslMode=REQUIRED.
+- DB_USERNAME: database account name.
+- DB_PASSWORD: database password.
+- GEMINI_API_KEY: optional secret for AI drafting and summaries.
+- GEMINI_MODEL: optional model override.
+- APP_ENV: set to `production` on Render to mark session cookies Secure; leave unset for local HTTP development.
 
-`DatabaseUtil` stops with a clear configuration error if any database value is missing, rejects non-MySQL URLs, and requires TLS mode `REQUIRED`.
+Do not commit real values or put secrets in render.yaml, the Dockerfile, a Docker build argument, or frontend code. Render's sync: false entries avoid storing values in the Blueprint file. When creating a new Blueprint, enter the prompted values. For an existing service, set them in the service's Environment settings.
 
-The project SQL scripts define the same nine table names as the supplied schema dump: `users`, `projects`, `proposals`, `project_updates`, `project_submissions`, `client_profiles`, `freelancer_profiles`, `notifications`, and `project_invitations`. No schema was executed or changed as part of this migration. Do not import the dump into the existing Aiven database because it contains `DROP TABLE` statements. Confirm exact column definitions in Aiven before applying any future schema migration.
+DatabaseUtil validates that the JDBC URL is MySQL and requires TLS mode REQUIRED. The application uses a Tomcat JDBC pool and closes it when the web application stops. Unsafe form and API requests are protected with session-bound CSRF tokens; Tomcat adds `SameSite=Lax` to the session cookie.
+
+## Database setup
+
+The SQL files in database/ are manual scripts. They are not run by Docker or Render. Review the target database and the complete script before execution. schema.sql is intended for a fresh local WorkNest database; feature scripts create additional tables. Do not apply the fresh-install schema over an existing database without confirming its current structure and backup plan.
+
+remove_client_profile_verification.sql drops four columns from an older client_profiles table. It is a targeted, destructive migration, not part of deployment startup. Run it only when all named columns exist and removing them is intended. Back up the database first. No database migration or data change is performed by this project configuration.
 
 ## Run locally from Eclipse
 
-1. Open **Run Configurations** for the Tomcat server you use.
-2. Under **Environment**, add `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD`. Use the Aiven endpoint values from its console; do not copy the password into this document.
-3. Set `DB_URL` to the Aiven MySQL connection URL, database `defaultdb`, with `sslMode=REQUIRED`.
-4. Apply the settings and restart Tomcat and Eclipse if you changed Windows-level environment variables.
-5. Open the application and check login, registration, dashboards, proposals, invitations, notifications, profiles, project updates, and delivery review.
-6. If Aiven reports access denied, verify the active username and rotate/reset the database password in Aiven, then update the Eclipse environment entry. The application code cannot repair an invalid database credential.
+1. Use JDK 17 and the Apache Tomcat 9 server configured for the project.
+2. Open the Tomcat Run Configurations and add DB_URL, DB_USERNAME, and DB_PASSWORD under Environment.
+3. Build DB_URL using the database host, port, database name, and sslMode=REQUIRED; keep the password in its separate environment variable.
+4. Add GEMINI_API_KEY only if you want AI features.
+5. Restart Tomcat after changing its environment settings.
+6. Sign in and review client and freelancer flows. Check Tomcat logs for configuration or database connection errors; never paste secret values into logs or support messages.
 
-## Deploy to Render
+## Render setup
 
-The root `render.yaml` and `Dockerfile` prepare a Docker-based Tomcat 9 service. The container compiles the project with Java 17, packages the existing `src/main/webapp` application, and binds Tomcat to Render's `PORT` value. The health check uses `/`.
+The root render.yaml defines a Docker web service named worknest, a health check at /, and the DB_URL, DB_USERNAME, DB_PASSWORD, and GEMINI_API_KEY secret entries. The Docker build compiles the servlet sources for Java 17, deploys them to Tomcat 9's ROOT context, and the entrypoint configures Tomcat to listen on Render's PORT (default 10000 for local containers).
 
-1. Commit and push the project to your GitHub repository after reviewing staged files for secrets.
-2. In Render, create a Blueprint from that repository, or create a Docker web service from the repository root.
-3. Choose the Free plan if it is available for your account and region. Free services can sleep when idle and have usage limits; use this for a demo, not a production workload.
-4. In the Render service environment, add `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, and `GEMINI_API_KEY` as runtime values. Do not put the password or API key in `render.yaml`, `Dockerfile`, or Git.
-5. Deploy and review Render logs. A successful build does not prove the Aiven connection works; verify the app after deployment.
-6. Test the same client and freelancer flows listed above, including AI drafting and proposal review if `GEMINI_API_KEY` is configured.
+1. Push the reviewed project to GitHub, then create a Render Blueprint from the repository or create a Docker web service using the repository root.
+2. Select the Free plan if offered for the account and region. Free web services can sleep while idle and have usage limits; expect a cold-start delay after inactivity.
+3. Set the database environment values in Render. Use a MySQL provider that permits connections from Render and requires TLS. Keep the database separate from the web service.
+4. Set GEMINI_API_KEY if AI features are desired. Without it, normal non-AI project workflows remain available; AI requests require the configured secret.
+5. Review the deployment logs. A successful container build does not establish that database credentials, network access, or schema are correct.
+6. Open the deployed site and verify registration/login, both dashboards, project posting, proposal submission and acceptance, invitations, profiles, notifications, project workspace, delivery review, and AI features if configured.
 
-## Current verification status
-
-The Java source compiled successfully with `javac --release 17`. A read-only Aiven connection check was attempted using `SELECT DATABASE()` and `SHOW TABLES`; Aiven rejected the configured credentials with an authentication error. No database writes or schema changes were performed. Update the active environment credentials and retry the connection check before deploying.
+Do not run destructive SQL against a populated database as part of deployment. Confirm the live database schema and take a backup before any deliberate migration.

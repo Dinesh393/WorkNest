@@ -101,6 +101,7 @@ public class LoginServlet extends HttpServlet {
         }
         HttpSession session = req.getSession();
         req.changeSessionId();
+        com.worknest.util.CsrfTokenUtil.rotateToken(session);
 
         session.setAttribute("userId", userId);
         session.setAttribute("fullName", fullName);

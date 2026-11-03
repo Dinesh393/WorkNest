@@ -9,6 +9,18 @@
     <listener>
         <listener-class>com.worknest.listener.DatabasePoolContextListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>com.worknest.listener.SessionCookieSecurityListener</listener-class>
+    </listener>
+         <servlet>
+    <servlet-name>CsrfTokenServlet</servlet-name>
+    <servlet-class>com.worknest.servlet.CsrfTokenServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>CsrfTokenServlet</servlet-name>
+    <url-pattern>/csrf-token</url-pattern>
+</servlet-mapping>
+
          <servlet>
     <servlet-name>register</servlet-name>
     <servlet-class>com.worknest.servlet.RegisterServlet</servlet-class>
@@ -102,6 +114,15 @@
     <tracking-mode>COOKIE</tracking-mode>
 </session-config>
 
+
+<filter>
+    <filter-name>CsrfFilter</filter-name>
+    <filter-class>com.worknest.filter.CsrfFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>CsrfFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
 
 <filter>
     <filter-name>AuthFilter</filter-name>

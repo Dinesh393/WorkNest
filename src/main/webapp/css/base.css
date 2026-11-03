@@ -206,3 +206,13 @@ p {
         transition-duration: 0.01ms;
     }
 }
+
+
+.csrf-security-error {
+    margin-block: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-muted);
+    color: var(--color-ink);
+}

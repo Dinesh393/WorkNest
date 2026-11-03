@@ -19,3 +19,6 @@ target/
 out/
 docs/screenshots/
 *.log
+*.crt
+*.cer
+*.der
