@@ -487,6 +487,15 @@
                 ? error.message
                 : "AI drafting is unavailable right now. You can complete the form manually and try again later.", true);
         } finally {
+            if (window.performance && typeof window.performance.measure === "function") {
+                try {
+                    window.performance.clearMeasures("worknest:ai-project-draft");
+                    window.performance.measure("worknest:ai-project-draft", {
+                        start: aiDraftStartedAt,
+                        end: window.performance.now()
+                    });
+                } catch (_) { /* diagnostics must not affect drafting */ }
+            }
             aiDraftButton.disabled = false;
             aiDraftButton.textContent = "Draft details with AI";
         }

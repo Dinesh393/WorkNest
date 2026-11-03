@@ -1,9 +1,10 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +30,6 @@ import com.worknest.util.PasswordUtil;
 public class DeleteFreelancerAccountServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/worknest_db";
     private static final String CSRF_ATTRIBUTE = "freelancerAccountCsrfToken";
     private static final SecureRandom RANDOM = new SecureRandom();
 
@@ -95,7 +95,7 @@ public class DeleteFreelancerAccountServlet extends HttpServlet {
             return;
         }
 
-        try (Connection connection = DriverManager.getConnection(DB_URL, dbUsername, dbPassword)) {
+        try (Connection connection = DatabaseUtil.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 // 1. Lock the freelancer row and verify the password.

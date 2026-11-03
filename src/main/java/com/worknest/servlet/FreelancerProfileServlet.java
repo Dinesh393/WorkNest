@@ -1,12 +1,13 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,8 +23,6 @@ import org.json.JSONObject;
 public class FreelancerProfileServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String DB_URL =
-            "jdbc:mysql://localhost:3306/worknest_db";
     private static final int MAX_BODY_CHARS = 16000;
     private static final BigDecimal MAX_RATE = new BigDecimal("99999999.99");
 
@@ -91,8 +90,7 @@ public class FreelancerProfileServlet extends HttpServlet {
                 + "ON fp.user_id = u.user_id "
                 + "WHERE u.user_id = ? AND u.role = 'FREELANCER'";
 
-        try (Connection connection = DriverManager.getConnection(
-                    DB_URL, username, password);
+        try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, targetUserId);
@@ -280,8 +278,7 @@ public class FreelancerProfileServlet extends HttpServlet {
                 + "linkedin_url = VALUES(linkedin_url), github_url = VALUES(github_url), "
                 + "updated_at = CURRENT_TIMESTAMP";
 
-        try (Connection connection = DriverManager.getConnection(
-                    DB_URL, username, password);
+        try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, userId);

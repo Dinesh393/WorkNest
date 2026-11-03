@@ -1,11 +1,12 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +25,6 @@ import com.worknest.util.GeminiApiClient.ApiException;
 /** Creates an editable proposal-letter draft for the signed-in freelancer. */
 public class AiProposalAssistServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/worknest_db";
     private static final int MAX_BODY_CHARS = 10000;
 
     @Override
@@ -79,63 +79,57 @@ public class AiProposalAssistServlet extends HttpServlet {
         JSONObject project;
         JSONObject profile = new JSONObject();
         long freelancerId = (Long) sessionUserId;
+        long databaseStarted = System.nanoTime();
+        long queryElapsedMs = -1L;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection connection = DriverManager.getConnection(
-                    DB_URL, dbUsername, dbPassword)) {
-                String projectSql = "SELECT title, description, required_skills, "
-                        + "project_type, budget_min, budget_max, deadline, status "
-                        + "FROM projects WHERE project_id = ?";
-                try (PreparedStatement statement = connection.prepareStatement(projectSql)) {
-                    statement.setLong(1, projectId);
-                    try (ResultSet result = statement.executeQuery()) {
-                        if (!result.next()) {
-                            writeError(response, HttpServletResponse.SC_NOT_FOUND,
-                                    "This project could not be found.");
-                            return;
-                        }
-                        if (!"OPEN".equalsIgnoreCase(result.getString("status"))) {
-                            writeError(response, HttpServletResponse.SC_CONFLICT,
-                                    "This project is no longer accepting proposals.");
-                            return;
-                        }
-                        project = new JSONObject()
-                                .put("title", safe(result.getString("title")))
-                                .put("description", safe(result.getString("description")))
-                                .put("requiredSkills", safe(result.getString("required_skills")))
-                                .put("projectType", safe(result.getString("project_type")))
-                                .put("budgetMin", result.getBigDecimal("budget_min"))
-                                .put("budgetMax", result.getBigDecimal("budget_max"))
-                                .put("deadline", result.getDate("deadline").toString());
+            String contextSql = "SELECT p.title, p.description, p.required_skills, "
+                    + "p.project_type, p.budget_min, p.budget_max, p.deadline, p.status, "
+                    + "fp.headline, fp.overview, fp.skills, "
+                    + "EXISTS (SELECT 1 FROM proposals submitted "
+                    + "WHERE submitted.project_id = p.project_id "
+                    + "AND submitted.freelancer_id = ?) AS has_proposal "
+                    + "FROM projects p LEFT JOIN freelancer_profiles fp "
+                    + "ON fp.user_id = ? WHERE p.project_id = ?";
+            try (Connection connection = DatabaseUtil.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(contextSql)) {
+                statement.setLong(1, freelancerId);
+                statement.setLong(2, freelancerId);
+                statement.setLong(3, projectId);
+                long queryStarted = System.nanoTime();
+                try (ResultSet result = statement.executeQuery()) {
+                    queryElapsedMs = (System.nanoTime() - queryStarted) / 1_000_000L;
+                    if (!result.next()) {
+                        writeError(response, HttpServletResponse.SC_NOT_FOUND,
+                                "This project could not be found.");
+                        return;
                     }
-                }
-
-                try (PreparedStatement statement = connection.prepareStatement(
-                        "SELECT 1 FROM proposals WHERE project_id = ? AND freelancer_id = ? LIMIT 1")) {
-                    statement.setLong(1, projectId);
-                    statement.setLong(2, freelancerId);
-                    try (ResultSet result = statement.executeQuery()) {
-                        if (result.next()) {
-                            writeError(response, HttpServletResponse.SC_CONFLICT,
-                                    "You have already submitted a proposal for this project.");
-                            return;
-                        }
+                    if (!"OPEN".equalsIgnoreCase(result.getString("status"))) {
+                        writeError(response, HttpServletResponse.SC_CONFLICT,
+                                "This project is no longer accepting proposals.");
+                        return;
                     }
-                }
-
-                try (PreparedStatement statement = connection.prepareStatement(
-                        "SELECT headline, overview, skills FROM freelancer_profiles WHERE user_id = ?")) {
-                    statement.setLong(1, freelancerId);
-                    try (ResultSet result = statement.executeQuery()) {
-                        if (result.next()) {
-                            profile.put("headline", safe(result.getString("headline")));
-                            profile.put("overview", safe(result.getString("overview")));
-                            profile.put("skills", safe(result.getString("skills")));
-                        }
+                    if (result.getBoolean("has_proposal")) {
+                        writeError(response, HttpServletResponse.SC_CONFLICT,
+                                "You have already submitted a proposal for this project.");
+                        return;
                     }
+                    project = new JSONObject()
+                            .put("title", safe(result.getString("title")))
+                            .put("description", safe(result.getString("description")))
+                            .put("requiredSkills", safe(result.getString("required_skills")))
+                            .put("projectType", safe(result.getString("project_type")))
+                            .put("budgetMin", result.getBigDecimal("budget_min"))
+                            .put("budgetMax", result.getBigDecimal("budget_max"))
+                            .put("deadline", result.getDate("deadline").toString());
+                    profile.put("headline", safe(result.getString("headline")));
+                    profile.put("overview", safe(result.getString("overview")));
+                    profile.put("skills", safe(result.getString("skills")));
                 }
             }
-        } catch (ClassNotFoundException | SQLException exception) {
+            getServletContext().log("PERF operation=ai-proposal-context dbMs="
+                    + ((System.nanoTime() - databaseStarted) / 1_000_000L)
+                    + " queryMs=" + queryElapsedMs);
+        } catch (SQLException exception) {
             getServletContext().log("Unable to prepare an AI proposal draft.", exception);
             writeError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Proposal drafting is unavailable right now.");

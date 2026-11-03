@@ -1,12 +1,13 @@
 
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,8 +27,6 @@ public class CancelProjectServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String DB_URL =
-            "jdbc:mysql://localhost:3306/worknest_db";
 
     private static final String DELETE_PROJECT_SQL =
             "DELETE FROM projects "
@@ -137,8 +136,7 @@ public class CancelProjectServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            try (Connection connection = DriverManager.getConnection(
-                        DB_URL, dbUsername, dbPassword)) {
+            try (Connection connection = DatabaseUtil.getConnection()) {
                 connection.setAutoCommit(false);
                 try {
                     try (PreparedStatement statement = connection.prepareStatement(

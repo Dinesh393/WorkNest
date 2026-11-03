@@ -1,8 +1,9 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,11 +32,7 @@ public class MyProposalsServlet extends HttpServlet {
             );
         }
 
-        return DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/worknest_db",
-            username,
-            password
-        );
+        return DatabaseUtil.getConnection();
     }
 
 

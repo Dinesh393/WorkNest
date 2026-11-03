@@ -1,11 +1,12 @@
 
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,8 +27,6 @@ public class UpdateProjectServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String DB_URL =
-            "jdbc:mysql://localhost:3306/worknest_db";
 
     private static final String UPDATE_SQL =
             "UPDATE projects SET title = ?, description = ?, "
@@ -201,8 +200,7 @@ public class UpdateProjectServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            try (Connection connection = DriverManager.getConnection(
-                        DB_URL, dbUsername, dbPassword);
+            try (Connection connection = DatabaseUtil.getConnection();
                  PreparedStatement statement =
                         connection.prepareStatement(UPDATE_SQL)) {
 

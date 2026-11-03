@@ -1,8 +1,9 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,7 +60,7 @@ public class LoginServlet extends HttpServlet {
         try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			String sql = "SELECT  user_id, full_name, password_hash, role FROM users where email = ?";
-			try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/worknest_db", dbUsername, dbPassword);
+			try(Connection connection = DatabaseUtil.getConnection();
 					PreparedStatement preparedStatement = connection.prepareStatement(sql)){
 		        preparedStatement.setString(1, email);
 		        

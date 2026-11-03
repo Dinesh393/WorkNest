@@ -1,10 +1,11 @@
 
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,11 +31,7 @@ public class OpenProjectsServlet extends HttpServlet {
             throw new SQLException("Database configuration is missing.");
         }
 
-        return DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/worknest_db",
-            username,
-            password
-        );
+        return DatabaseUtil.getConnection();
     }
 
 

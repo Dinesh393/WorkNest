@@ -1,8 +1,9 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +22,6 @@ import com.worknest.util.PasswordUtil;
 public class DeleteClientAccountServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/worknest_db";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -69,7 +69,7 @@ public class DeleteClientAccountServlet extends HttpServlet {
             return;
         }
 
-        try (Connection connection = DriverManager.getConnection(DB_URL, dbUsername, dbPassword)) {
+        try (Connection connection = DatabaseUtil.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 String passwordHash;

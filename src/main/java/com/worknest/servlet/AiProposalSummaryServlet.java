@@ -1,8 +1,9 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +22,6 @@ import com.worknest.util.GeminiApiClient.ApiException;
 /** Produces a structured proposal comparison for the owning client. */
 public class AiProposalSummaryServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/worknest_db";
     private static final int MAX_PROPOSALS = 20;
 
     @Override
@@ -82,8 +82,7 @@ public class AiProposalSummaryServlet extends HttpServlet {
                 + "ORDER BY p.created_at DESC, p.proposal_id DESC LIMIT 21";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection connection = DriverManager.getConnection(
-                    DB_URL, dbUsername, dbPassword)) {
+            try (Connection connection = DatabaseUtil.getConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement(projectSql)) {
                     statement.setLong(1, projectId);
                     statement.setLong(2, (Long) userIdValue);

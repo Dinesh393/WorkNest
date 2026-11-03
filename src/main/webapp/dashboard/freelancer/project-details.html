@@ -571,6 +571,7 @@
         draftProposalButton.textContent = "Drafting cover letter…";
         aiProposalStatus.classList.remove("ai-proposal-status--error");
         aiProposalStatus.textContent = "Creating a draft. This may take a few seconds.";
+        const aiProposalStartedAt = window.performance ? window.performance.now() : 0;
         try {
             const response = await fetch(`${contextPath}/ai-proposal-assist`, {
                 method: "POST",
@@ -599,6 +600,15 @@
             aiProposalStatus.textContent = error && error.message
                 ? error.message : "AI drafting is unavailable. You can write the cover letter manually.";
         } finally {
+            if (window.performance && typeof window.performance.measure === "function") {
+                try {
+                    window.performance.clearMeasures("worknest:ai-cover-letter");
+                    window.performance.measure("worknest:ai-cover-letter", {
+                        start: aiProposalStartedAt,
+                        end: window.performance.now()
+                    });
+                } catch (_) { /* diagnostics must not affect drafting */ }
+            }
             draftProposalButton.disabled = false;
             draftProposalButton.textContent = "Draft cover letter";
         }

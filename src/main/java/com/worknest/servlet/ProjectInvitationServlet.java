@@ -1,10 +1,11 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +26,6 @@ import com.worknest.util.NotificationUtil;
 /** Client-to-freelancer project offers that require freelancer acceptance. */
 public class ProjectInvitationServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/worknest_db";
     private static final Pattern ID_PATTERN = Pattern.compile("^[1-9]\\d{0,18}$");
 
     @Override
@@ -450,7 +450,7 @@ public class ProjectInvitationServlet extends HttpServlet {
         if (username == null || username.isBlank() || password == null || password.isEmpty()) {
             throw new SQLException("Database configuration is missing.");
         }
-        return DriverManager.getConnection(DB_URL, username, password);
+        return DatabaseUtil.getConnection();
     }
 
     private static boolean hasUser(HttpSession session) {

@@ -1,8 +1,9 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +19,6 @@ import org.json.JSONObject;
 /** Public, client-only view of freelancer profile information. */
 public class FreelancerDirectoryServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/worknest_db";
     private static final int RESULT_LIMIT = 100;
 
     @Override
@@ -75,7 +75,7 @@ public class FreelancerDirectoryServlet extends HttpServlet {
                 + "ORDER BY fp.updated_at DESC, u.full_name ASC LIMIT ?";
 
         JSONArray freelancers = new JSONArray();
-        try (Connection connection = DriverManager.getConnection(DB_URL, username, password);
+        try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, search);
             statement.setString(2, "%" + search + "%");

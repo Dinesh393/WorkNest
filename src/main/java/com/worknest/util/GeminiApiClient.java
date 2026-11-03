@@ -6,12 +6,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.logging.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 /** Small server-side REST client shared by WorkNest's AI features. */
 public final class GeminiApiClient {
+    private static final Logger LOGGER = Logger.getLogger(GeminiApiClient.class.getName());
     private static final String DEFAULT_MODEL = "gemini-3.5-flash-lite";
     private static final HttpClient HTTP = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
@@ -75,8 +77,18 @@ public final class GeminiApiClient {
                 .POST(HttpRequest.BodyPublishers.ofString(payload.toString()))
                 .build();
 
-        HttpResponse<String> response = HTTP.send(request,
-                HttpResponse.BodyHandlers.ofString());
+        long requestStarted = System.nanoTime();
+        final HttpResponse<String> response;
+        try {
+            response = HTTP.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException exception) {
+            logDuration("network_error", -1, requestStarted);
+            throw exception;
+        } catch (InterruptedException exception) {
+            logDuration("interrupted", -1, requestStarted);
+            throw exception;
+        }
+        logDuration("completed", response.statusCode(), requestStarted);
         if (response.statusCode() < 200 || response.statusCode() >= 300) {
             throw apiError(response.statusCode());
         }
@@ -101,6 +113,13 @@ public final class GeminiApiClient {
                     response.statusCode());
         }
         return text.trim();
+    }
+
+
+    private static void logDuration(String outcome, int status, long startedAt) {
+        long elapsedMs = (System.nanoTime() - startedAt) / 1_000_000L;
+        LOGGER.info("PERF operation=ai-generate outcome=" + outcome
+                + " status=" + status + " durationMs=" + elapsedMs);
     }
 
     private static ApiException apiError(int status) {

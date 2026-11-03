@@ -576,6 +576,16 @@ const freelancerDirectoryResults = document.getElementById("freelancer-directory
 const freelancerDirectoryMessage = document.getElementById("freelancer-directory-message");
 const filterTabs = Array.from(document.querySelectorAll(".filter-tab"));
 
+function recordBrowserTiming(name, startedAt) {
+    if (!window.performance || typeof window.performance.measure !== "function") return;
+    try {
+        window.performance.clearMeasures(name);
+        window.performance.measure(name, { start: startedAt, end: window.performance.now() });
+    } catch (_) {
+        // Performance entries are diagnostic only; the page must remain usable without them.
+    }
+}
+
 let allProjects = [];
 let proposalStats = null;          // Map(projectId -> { total, pending }) once loaded
 let activeFilter = "ALL";
@@ -1028,51 +1038,15 @@ searchInput.addEventListener("input", () => {
 
 function renderProjects(projects) {
     allProjects = projects;
-    proposalStats = null;
-    updateStats();
-    renderList();
-    loadProposalStats(projects);
-}
-
-/* Counts proposals for each OPEN project. Failures are ignored so the dashboard still works. */
-async function loadProposalStats(projects) {
-    const openProjects = projects.filter(project => normalizeStatus(project.status) === "OPEN");
-    if (!openProjects.length) {
-        proposalStats = new Map();
-        updateStats();
-        return;
-    }
-
-    const snapshot = projects;
-    const results = await Promise.all(openProjects.map(async project => {
+    proposalStats = new Map();
+    projects.forEach(project => {
+        if (normalizeStatus(project.status) !== "OPEN") return;
         const id = String(project.projectId ?? project.project_id);
-        try {
-            const response = await fetch(`../../client-project-proposals?projectId=${encodeURIComponent(id)}`, {
-                method: "GET",
-                credentials: "same-origin",
-                headers: { "Accept": "application/json" },
-                cache: "no-store"
-            });
-            if (!response.ok) return null;
-            const data = await response.json();
-            const list = Array.isArray(data.proposals) ? data.proposals : [];
-            return [id, {
-                total: list.length,
-                pending: list.filter(p => normalizeStatus(p.status) === "PENDING").length
-            }];
-        } catch {
-            return null;
-        }
-    }));
-
-    if (snapshot !== allProjects) return;   // a newer load replaced this list
-    const stats = new Map(results.filter(Boolean));
-    if (stats.size === 0) {
-        pendingCountEl.textContent = "–";
-        pendingNoteEl.textContent = "Unavailable right now";
-        return;
-    }
-    proposalStats = stats;
+        proposalStats.set(id, {
+            total: Number(project.proposalCount) || 0,
+            pending: Number(project.pendingProposalCount) || 0
+        });
+    });
     updateStats();
     renderList();
 }
@@ -1083,6 +1057,7 @@ async function loadClientProjects() {
     const controller = activeLoadController;
 
     lastProjectsRefreshAt = Date.now();
+    const projectsLoadStartedAt = window.performance ? window.performance.now() : 0;
     projectsError.hidden = true;
     projectsError.textContent = "";
     projectsList.setAttribute("aria-busy", "true");
@@ -1119,6 +1094,7 @@ async function loadClientProjects() {
         retry.addEventListener("click", loadClientProjects);
         projectsList.appendChild(retry);
     } finally {
+        recordBrowserTiming("worknest:client-projects-api", projectsLoadStartedAt);
         if (controller === activeLoadController) {
             projectsList.setAttribute("aria-busy", "false");
         }
@@ -1673,9 +1649,12 @@ if (params.has("projectCreated") || params.has("projectUpdated")) {
     window.history.replaceState({}, document.title, window.location.pathname);
 }
 
-loadClientProfile();
-loadClientProjects();
-loadFreelancerDirectory();
+const clientDashboardStartedAt = window.performance ? window.performance.now() : 0;
+Promise.allSettled([
+    loadClientProfile(),
+    loadClientProjects(),
+    loadFreelancerDirectory()
+]).then(() => recordBrowserTiming("worknest:client-dashboard-ready", clientDashboardStartedAt));
 </script>
 
     <script src="../../js/notifications.js"></script>

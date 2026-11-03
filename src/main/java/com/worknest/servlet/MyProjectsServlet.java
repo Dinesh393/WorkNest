@@ -1,9 +1,10 @@
 
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,13 +18,18 @@ public class MyProjectsServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String DB_URL =
-            "jdbc:mysql://localhost:3306/worknest_db";
 
     private static final String SELECT_PROJECTS_SQL =
             "SELECT project_id, title, description, required_skills, "
             + "project_type, budget_min, budget_max, deadline, "
-            + "status, created_at "
+            + "status, created_at, "
+            + "CASE WHEN projects.status = 'OPEN' THEN "
+            + "(SELECT COUNT(*) FROM proposals total_proposals "
+            + " WHERE total_proposals.project_id = projects.project_id) ELSE 0 END AS proposal_count, "
+            + "CASE WHEN projects.status = 'OPEN' THEN "
+            + "(SELECT COUNT(*) FROM proposals pending_proposals "
+            + " WHERE pending_proposals.project_id = projects.project_id "
+            + " AND pending_proposals.status = 'PENDING') ELSE 0 END AS pending_proposal_count "
             + "FROM projects "
             + "WHERE client_id = ? "
             + "ORDER BY created_at DESC";
@@ -63,7 +69,9 @@ public class MyProjectsServlet extends HttpServlet {
         }
 
         long clientId = (Long) session.getAttribute("userId");
-        log("MyProjectsServlet clientId = " + clientId);
+        long requestStarted = System.nanoTime();
+        long queryElapsedMs = -1L;
+        int rowCount = 0;
 
         // Read database credentials from environment variables.
         String dbUsername = System.getenv("DB_USERNAME");
@@ -86,22 +94,18 @@ public class MyProjectsServlet extends HttpServlet {
         json.append("{\"projects\":[");
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            try (Connection connection = DriverManager.getConnection(
-                        DB_URL, dbUsername, dbPassword);
+            try (Connection connection = DatabaseUtil.getConnection();
                  PreparedStatement statement =
                         connection.prepareStatement(SELECT_PROJECTS_SQL)) {
 
                 statement.setLong(1, clientId);
-                log("Fetching projects for client ID: " + clientId);
-
+                long queryStarted = System.nanoTime();
                 try (ResultSet rs = statement.executeQuery()) {
-
+                    queryElapsedMs = (System.nanoTime() - queryStarted) / 1_000_000L;
                     boolean first = true;
 
                     while (rs.next()) {
-                    	log("Found project: " + rs.getString("title"));
+                        rowCount++;
 
                         if (!first) {
                             json.append(",");
@@ -146,6 +150,12 @@ public class MyProjectsServlet extends HttpServlet {
                             .append(toJsonString(
                                     rs.getString("created_at")))
 
+                            .append(",\"proposalCount\":")
+                            .append(rs.getLong("proposal_count"))
+
+                            .append(",\"pendingProposalCount\":")
+                            .append(rs.getLong("pending_proposal_count"))
+
                             .append("}");
 
                         first = false;
@@ -157,8 +167,11 @@ public class MyProjectsServlet extends HttpServlet {
 
             res.setStatus(HttpServletResponse.SC_OK);
             res.getWriter().write(json.toString());
+            log("PERF path=/my-projects dbExecuteMs=" + queryElapsedMs
+                    + " rows=" + rowCount
+                    + " totalMs=" + ((System.nanoTime() - requestStarted) / 1_000_000L));
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
 
             // Keep technical details in the server logs only.
             log("Error retrieving client projects.", e);

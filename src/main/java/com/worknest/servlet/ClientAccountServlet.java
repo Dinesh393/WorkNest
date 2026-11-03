@@ -1,10 +1,11 @@
 package com.worknest.servlet;
 
+import com.worknest.util.DatabaseUtil;
+
 import java.io.IOException;
 import java.net.URI;
 import java.security.SecureRandom;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +24,6 @@ import org.json.JSONObject;
 public class ClientAccountServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/worknest_db";
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Override
@@ -306,7 +306,7 @@ public class ClientAccountServlet extends HttpServlet {
             throw new SQLException("Database credentials are not configured.");
         }
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(DB_URL, username, password);
+        return DatabaseUtil.getConnection();
     }
 
     private static boolean containsControlCharacter(String value) {
