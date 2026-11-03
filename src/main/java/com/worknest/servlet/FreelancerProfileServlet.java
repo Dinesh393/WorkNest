@@ -4,9 +4,9 @@ import com.worknest.util.DatabaseUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -144,11 +144,6 @@ public class FreelancerProfileServlet extends HttpServlet {
             HttpServletResponse response) throws IOException {
 
         prepareJson(response);
-        if (!isSameOriginRequest(request)) {
-            sendError(response, HttpServletResponse.SC_FORBIDDEN,
-                    "This request could not be verified.");
-            return;
-        }
 
         HttpSession session = request.getSession(false);
         Long userId = getUserId(session);
@@ -382,31 +377,7 @@ public class FreelancerProfileServlet extends HttpServlet {
         return value == null ? "" : value;
     }
 
-    private boolean isSameOriginRequest(HttpServletRequest request) {
-        String supplied = request.getHeader("Origin");
-        if (supplied == null || supplied.isBlank()) {
-            supplied = request.getHeader("Referer");
-        }
-        if (supplied == null || supplied.isBlank() || "null".equalsIgnoreCase(supplied)) {
-            return false;
-        }
-        try {
-            URI uri = new URI(supplied);
-            String scheme = uri.getScheme();
-            if (scheme == null || uri.getHost() == null || uri.getUserInfo() != null) {
-                return false;
-            }
-            int suppliedPort = uri.getPort() < 0 ? defaultPort(scheme) : uri.getPort();
-            int requestPort = request.getServerPort() < 0
-                    ? defaultPort(request.getScheme()) : request.getServerPort();
-            return scheme.equalsIgnoreCase(request.getScheme())
-                    && uri.getHost().equalsIgnoreCase(request.getServerName())
-                    && suppliedPort == requestPort;
-        } catch (URISyntaxException exception) {
-            return false;
-        }
-    }
-
+    
     private int defaultPort(String scheme) {
         if ("https".equalsIgnoreCase(scheme)) return 443;
         if ("http".equalsIgnoreCase(scheme)) return 80;

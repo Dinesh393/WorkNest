@@ -4,7 +4,6 @@ import com.worknest.util.DatabaseUtil;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -109,10 +108,6 @@ public class ProjectInvitationServlet extends HttpServlet {
             throws IOException {
         request.setCharacterEncoding("UTF-8");
         setJson(response);
-        if (!isSameOriginRequest(request)) {
-            send(response, HttpServletResponse.SC_FORBIDDEN, error("This request could not be verified."));
-            return;
-        }
         HttpSession session = request.getSession(false);
         if (!hasUser(session)) {
             send(response, HttpServletResponse.SC_UNAUTHORIZED, error("Please log in again."));
@@ -462,22 +457,7 @@ public class ProjectInvitationServlet extends HttpServlet {
         try { return Long.valueOf(value); } catch (NumberFormatException exception) { return null; }
     }
 
-    private static boolean isSameOriginRequest(HttpServletRequest request) {
-        String origin = request.getHeader("Origin");
-        if (origin == null || origin.isBlank()) origin = request.getHeader("Referer");
-        if (origin == null || origin.isBlank()) return false;
-        try {
-            URI uri = URI.create(origin);
-            int port = uri.getPort() < 0 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
-            int requestPort = request.getServerPort();
-            return request.getScheme().equalsIgnoreCase(uri.getScheme())
-                    && request.getServerName().equalsIgnoreCase(uri.getHost())
-                    && port == requestPort;
-        } catch (IllegalArgumentException exception) {
-            return false;
-        }
-    }
-
+    
     private static void setJson(HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");

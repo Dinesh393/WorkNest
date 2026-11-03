@@ -4,8 +4,6 @@ import com.worknest.util.DatabaseUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,11 +44,6 @@ public class UpdateProjectStatusServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Cache-Control", "no-store");
 
-        if (!isSameOriginRequest(request)) {
-            sendError(response, HttpServletResponse.SC_FORBIDDEN,
-                    "This request could not be verified.");
-            return;
-        }
 
         HttpSession session = request.getSession(false);
 
@@ -249,37 +242,7 @@ public class UpdateProjectStatusServlet extends HttpServlet {
         response.getWriter().write(error.toString());
     }
 
-    private boolean isSameOriginRequest(HttpServletRequest request) {
-        String suppliedOrigin = request.getHeader("Origin");
-        if (suppliedOrigin == null || suppliedOrigin.isBlank()) {
-            suppliedOrigin = request.getHeader("Referer");
-        }
-        if (suppliedOrigin == null || suppliedOrigin.isBlank()
-                || "null".equalsIgnoreCase(suppliedOrigin)) {
-            return false;
-        }
-
-        try {
-            URI supplied = new URI(suppliedOrigin);
-            String scheme = supplied.getScheme();
-            if (scheme == null || supplied.getHost() == null
-                    || supplied.getUserInfo() != null) {
-                return false;
-            }
-
-            int suppliedPort = supplied.getPort() < 0
-                    ? defaultPort(scheme) : supplied.getPort();
-            int requestPort = request.getServerPort() < 0
-                    ? defaultPort(request.getScheme()) : request.getServerPort();
-
-            return scheme.equalsIgnoreCase(request.getScheme())
-                    && supplied.getHost().equalsIgnoreCase(request.getServerName())
-                    && suppliedPort == requestPort;
-        } catch (URISyntaxException exception) {
-            return false;
-        }
-    }
-
+    
     private int defaultPort(String scheme) {
         if ("https".equalsIgnoreCase(scheme)) return 443;
         if ("http".equalsIgnoreCase(scheme)) return 80;

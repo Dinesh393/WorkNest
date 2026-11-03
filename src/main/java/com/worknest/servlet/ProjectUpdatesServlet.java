@@ -21,6 +21,8 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.worknest.util.NotificationUtil;
+
 public class ProjectUpdatesServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -272,7 +274,7 @@ public class ProjectUpdatesServlet extends HttpServlet {
 
             try {
                 String projectSql = """
-                    SELECT pr.status
+                    SELECT pr.status, pr.client_id, pr.title
                     FROM projects pr
                     INNER JOIN proposals p
                         ON p.project_id = pr.project_id
@@ -283,6 +285,8 @@ public class ProjectUpdatesServlet extends HttpServlet {
                     """;
 
                 String projectStatus;
+                long clientId;
+                String projectTitle;
 
                 try (PreparedStatement ps =
                          con.prepareStatement(projectSql)) {
@@ -304,6 +308,8 @@ public class ProjectUpdatesServlet extends HttpServlet {
                         }
 
                         projectStatus = rs.getString("status");
+                        clientId = rs.getLong("client_id");
+                        projectTitle = rs.getString("title");
                     }
                 }
 
@@ -344,6 +350,16 @@ public class ProjectUpdatesServlet extends HttpServlet {
                         updateId = keys.getLong(1);
                     }
                 }
+
+                Object nameValue = session.getAttribute("fullName");
+                String freelancerName = nameValue instanceof String
+                        && !((String) nameValue).isBlank()
+                            ? ((String) nameValue).trim()
+                            : "Your freelancer";
+                NotificationUtil.create(con, clientId, projectId,
+                        "PROGRESS_UPDATE", "Project progress updated",
+                        freelancerName + " shared a progress update for “"
+                                + projectTitle + "”. Open the project workspace to review it.");
 
                 con.commit();
 

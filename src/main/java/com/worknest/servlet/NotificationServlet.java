@@ -191,7 +191,8 @@ public class NotificationServlet extends HttpServlet {
                 return contextPath + "/dashboard/client/project-proposals.html?projectId=" + id;
             }
             if ("DELIVERY_SUBMITTED".equals(type)
-                    || "PROJECT_INVITATION_ACCEPTED".equals(type)) {
+                    || "PROJECT_INVITATION_ACCEPTED".equals(type)
+                    || "PROGRESS_UPDATE".equals(type)) {
                 return contextPath + "/dashboard/client/project-workspace.html?projectId=" + id;
             }
             return contextPath + "/dashboard/client/index.html";

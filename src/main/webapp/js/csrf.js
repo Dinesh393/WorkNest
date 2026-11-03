@@ -12,20 +12,38 @@
   const getToken = () => {
     if (cachedToken) return Promise.resolve(cachedToken);
     if (!tokenPromise) {
-      tokenPromise = tokenRequest(`${contextPath}/csrf-token`, {
-        method: "GET",
-        credentials: "same-origin",
-        cache: "no-store",
-        headers: { Accept: "application/json" }
-      }).then(async response => {
-        if (!response.ok) throw new Error("token-unavailable");
-        const payload = await response.json();
-        if (!payload || typeof payload.token !== "string" || !payload.token) {
-          throw new Error("token-unavailable");
+      tokenPromise = (async () => {
+        for (let attempt = 0; attempt < 2; attempt += 1) {
+          try {
+            const response = await tokenRequest(`${contextPath}/csrf-token`, {
+              method: "GET",
+              credentials: "same-origin",
+              cache: "no-store",
+              headers: { Accept: "application/json" }
+            });
+            if (!response.ok) {
+              if (attempt === 0 && [502, 503, 504].includes(response.status)) {
+                await new Promise(resolve => window.setTimeout(resolve, 350));
+                continue;
+              }
+              throw new Error("token-unavailable");
+            }
+            const payload = await response.json();
+            if (!payload || typeof payload.token !== "string" || !payload.token) {
+              throw new Error("token-unavailable");
+            }
+            cachedToken = payload.token;
+            return cachedToken;
+          } catch (error) {
+            if (attempt === 0 && error.name !== "AbortError") {
+              await new Promise(resolve => window.setTimeout(resolve, 350));
+              continue;
+            }
+            throw error;
+          }
         }
-        cachedToken = payload.token;
-        return cachedToken;
-      }).catch(error => {
+        throw new Error("token-unavailable");
+      })().catch(error => {
         tokenPromise = null;
         throw error;
       });

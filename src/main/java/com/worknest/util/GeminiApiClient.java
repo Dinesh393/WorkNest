@@ -135,8 +135,16 @@ public final class GeminiApiClient {
             return new ApiException(
                     "The AI service rejected its credentials or model access. Check the server configuration.", status);
         }
+        if (status == 400 || status == 404) {
+            return new ApiException(
+                    "The AI request or configured model was rejected. Check GEMINI_MODEL in the server settings.", status);
+        }
+        if (status >= 500) {
+            return new ApiException(
+                    "The AI provider is temporarily unavailable. Please try again shortly.", status);
+        }
         return new ApiException(
-                "The AI service is temporarily unavailable. Please try again later.", status);
+                "The AI request could not be completed (provider status " + status + "). Please try again.", status);
     }
 
     public static final class ApiException extends Exception {
