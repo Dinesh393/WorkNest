@@ -1379,6 +1379,9 @@ html body.dashboard-body header.site-header .site-header__actions .button {
 <link rel="stylesheet" href="../../css/client-ui.css">
     
     <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="stylesheet" href="../../css/marketplace-refresh.css">
+    <link rel="stylesheet" href="../../css/freelancer-ui.css">
+    <script src="../../js/freelancer-organizations.js"></script>
 </head>
 
 <body class="dashboard-body freelancer-dashboard">
@@ -1386,23 +1389,19 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     <!-- Header -->
     <header class="site-header">
     <div class="site-header__inner">
-        <a href="index.html" class="wordmark" aria-label="WorkNest home">
-            worknest<span class="wordmark__period">.</span>
-        </a>
-
+        <a href="index.html" class="wordmark" aria-label="WorkNest freelancer dashboard">worknest<span class="wordmark__period">.</span></a>
         <nav class="dashboard-nav" aria-label="Main navigation">
             <a href="index.html" class="site-nav__link">Overview</a>
             <a href="my-projects.html" class="site-nav__link" aria-current="page">My projects</a>
             <a href="find-work.html" class="site-nav__link">Find work</a>
             <a href="my-proposals.html" class="site-nav__link">My proposals</a>
-            <a href="profile.html" class="site-nav__link">My profile</a>
         </nav>
-
         <div class="site-header__actions">
             <span class="dashboard-role">Freelancer</span>
-            <form action="../../logout" method="post">
-                <button class="button button--dark" type="submit">Log out</button>
-            </form>
+            <a class="profile-entry-button" href="profile.html" aria-label="Freelancer profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
+                <span>Profile</span>
+            </a>
         </div>
     </div>
 </header>
@@ -1481,6 +1480,11 @@ html body.dashboard-body header.site-header .site-header__actions .button {
                 Loading...
             </p>
 
+            <section class="details-section" aria-labelledby="workspace-client-organization-title">
+                <h3 id="workspace-client-organization-title" class="workspace-section-label">Client organization</h3>
+                <div id="workspace-client-organization"></div>
+            </section>
+
         </section>
 
         <!-- Progress Updates-->
@@ -1544,6 +1548,7 @@ const projectStatus = document.getElementById("project-status");
 const projectDescription = document.getElementById("project-description");
 
 const clientName = document.getElementById("client-name");
+const clientOrganization = document.getElementById("workspace-client-organization");
 const agreedAmount = document.getElementById("agreed-amount");
 const projectDeadline = document.getElementById("project-deadline");
 const projectType = document.getElementById("project-type");
@@ -1605,6 +1610,10 @@ async function loadProject() {
 
         clientName.textContent =
             project.clientName || "Not available";
+        window.WorkNestOrganizations.renderInto(clientOrganization, project.clientOrganization, {
+            clientName: project.clientName,
+            compact: true
+        });
 
         agreedAmount.textContent =
             formatCurrency(project.agreedAmount, project.projectType);

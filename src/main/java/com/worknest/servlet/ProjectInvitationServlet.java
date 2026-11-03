@@ -44,10 +44,16 @@ public class ProjectInvitationServlet extends HttpServlet {
         if ("FREELANCER".equals(role)) {
             sql = "SELECT i.invitation_id, i.project_id, i.offered_amount, "
                     + "i.client_message, i.created_at, p.title, p.project_type, "
-                    + "p.budget_min, p.budget_max, u.full_name AS client_name "
+                    + "p.budget_min, p.budget_max, u.full_name AS client_name, "
+                    + "cp.organization_name AS client_organization_name, "
+                    + "cp.organization_type AS client_organization_type, "
+                    + "cp.industry AS client_industry, cp.website AS client_website, "
+                    + "cp.country AS client_country, cp.city AS client_city, "
+                    + "cp.business_description AS client_business_description "
                     + "FROM project_invitations i "
                     + "INNER JOIN projects p ON p.project_id = i.project_id "
                     + "INNER JOIN users u ON u.user_id = i.client_id "
+                    + "LEFT JOIN client_profiles cp ON cp.client_id = i.client_id "
                     + "WHERE i.freelancer_id = ? AND i.status = 'PENDING' "
                     + "AND p.status = 'OPEN' ORDER BY i.created_at DESC";
         } else if ("CLIENT".equals(role)) {
@@ -80,7 +86,8 @@ public class ProjectInvitationServlet extends HttpServlet {
                                 .put("projectType", safe(rs.getString("project_type")))
                                 .put("budgetMin", rs.getBigDecimal("budget_min"))
                                 .put("budgetMax", rs.getBigDecimal("budget_max"))
-                                .put("clientName", safe(rs.getString("client_name")));
+                                .put("clientName", safe(rs.getString("client_name")))
+                                .put("clientOrganization", organizationFrom(rs));
                     } else {
                         invitation.put("freelancerId", rs.getLong("freelancer_id"))
                                 .put("freelancerName", safe(rs.getString("freelancer_name")));
@@ -484,6 +491,17 @@ public class ProjectInvitationServlet extends HttpServlet {
 
     private static JSONObject error(String message) { return new JSONObject().put("error", message); }
     private static String safe(String value) { return value == null ? "" : value; }
+
+    private static JSONObject organizationFrom(ResultSet rs) throws SQLException {
+        return new JSONObject()
+                .put("organizationName", safe(rs.getString("client_organization_name")))
+                .put("organizationType", safe(rs.getString("client_organization_type")))
+                .put("industry", safe(rs.getString("client_industry")))
+                .put("website", safe(rs.getString("client_website")))
+                .put("country", safe(rs.getString("client_country")))
+                .put("city", safe(rs.getString("client_city")))
+                .put("businessDescription", safe(rs.getString("client_business_description")));
+    }
 
     private static void rollback(Connection connection, SQLException exception) {
         try { connection.rollback(); } catch (SQLException rollbackError) { exception.addSuppressed(rollbackError); }

@@ -473,29 +473,28 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     </style>
     <link rel="stylesheet" href="../../css/client-ui.css">
     <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="stylesheet" href="../../css/marketplace-refresh.css">
+    <link rel="stylesheet" href="../../css/freelancer-ui.css">
+    <script src="../../js/freelancer-organizations.js"></script>
 </head>
 
 <body class="dashboard-body freelancer-dashboard">
 
     <header class="site-header">
     <div class="site-header__inner">
-        <a href="index.html" class="wordmark" aria-label="WorkNest home">
-            worknest<span class="wordmark__period">.</span>
-        </a>
-
+        <a href="index.html" class="wordmark" aria-label="WorkNest freelancer dashboard">worknest<span class="wordmark__period">.</span></a>
         <nav class="dashboard-nav" aria-label="Main navigation">
             <a href="index.html" class="site-nav__link">Overview</a>
             <a href="my-projects.html" class="site-nav__link">My projects</a>
             <a href="find-work.html" class="site-nav__link" aria-current="page">Find work</a>
             <a href="my-proposals.html" class="site-nav__link">My proposals</a>
-            <a href="profile.html" class="site-nav__link">My profile</a>
         </nav>
-
         <div class="site-header__actions">
             <span class="dashboard-role">Freelancer</span>
-            <form action="../../logout" method="post">
-                <button class="button button--dark" type="submit">Log out</button>
-            </form>
+            <a class="profile-entry-button" href="profile.html" aria-label="Freelancer profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
+                <span>Profile</span>
+            </a>
         </div>
     </div>
 </header>
@@ -555,6 +554,11 @@ html body.dashboard-body header.site-header .site-header__actions .button {
                         <strong id="project-deadline"></strong>
                     </div>
                 </div>
+            </section>
+
+            <section class="details-section" aria-labelledby="client-organization-title">
+                <h2 id="client-organization-title">Client organization</h2>
+                <div id="project-client-organization"></div>
             </section>
 
             
@@ -809,6 +813,11 @@ html body.dashboard-body header.site-header .site-header__actions .button {
 
         document.getElementById("project-deadline").textContent =
             formatDeadline(project.deadline);
+        window.WorkNestOrganizations.renderInto(
+            document.getElementById("project-client-organization"),
+            project.clientOrganization,
+            { clientName: project.clientName }
+        );
 
         const skillsContainer = document.getElementById("project-skills");
 

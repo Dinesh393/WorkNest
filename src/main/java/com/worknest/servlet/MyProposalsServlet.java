@@ -38,6 +38,21 @@ public class MyProposalsServlet extends HttpServlet {
         );
     }
 
+
+    private String safe(String value) { return value == null ? "" : value; }
+
+    private JSONObject clientOrganization(ResultSet result) throws SQLException {
+        JSONObject organization = new JSONObject();
+        organization.put("organizationName", safe(result.getString("client_organization_name")));
+        organization.put("organizationType", safe(result.getString("client_organization_type")));
+        organization.put("industry", safe(result.getString("client_industry")));
+        organization.put("website", safe(result.getString("client_website")));
+        organization.put("country", safe(result.getString("client_country")));
+        organization.put("city", safe(result.getString("client_city")));
+        organization.put("businessDescription", safe(result.getString("client_business_description")));
+        return organization;
+    }
+
     private void sendJson(
             HttpServletResponse response,
             int status,
@@ -95,10 +110,16 @@ public class MyProposalsServlet extends HttpServlet {
             "p.proposed_amount, p.status AS proposal_status, " +
             "p.created_at, p.updated_at, " +
             "pr.title AS project_title, pr.project_type, " +
-            "pr.status AS project_status " +
+            "pr.status AS project_status, u.full_name AS client_name, " +
+            "cp.organization_name AS client_organization_name, " +
+            "cp.organization_type AS client_organization_type, " +
+            "cp.industry AS client_industry, cp.website AS client_website, " +
+            "cp.country AS client_country, cp.city AS client_city, " +
+            "cp.business_description AS client_business_description " +
             "FROM proposals p " +
-            "INNER JOIN projects pr " +
-            "ON p.project_id = pr.project_id " +
+            "INNER JOIN projects pr ON p.project_id = pr.project_id " +
+            "INNER JOIN users u ON u.user_id = pr.client_id " +
+            "LEFT JOIN client_profiles cp ON cp.client_id = pr.client_id " +
             "WHERE p.freelancer_id = ? " +
             "ORDER BY p.created_at DESC";
 
@@ -138,6 +159,8 @@ public class MyProposalsServlet extends HttpServlet {
                         "projectStatus",
                         result.getString("project_status")
                     );
+                    proposal.put("clientName", safe(result.getString("client_name")));
+                    proposal.put("clientOrganization", clientOrganization(result));
 
                     proposal.put(
                         "coverLetter",

@@ -762,6 +762,9 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     </style>
     <link rel="stylesheet" href="../../css/client-ui.css">
     <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="stylesheet" href="../../css/marketplace-refresh.css">
+    <link rel="stylesheet" href="../../css/freelancer-ui.css">
+    <script src="../../js/freelancer-organizations.js"></script>
 </head>
 
 <body class="dashboard-body freelancer-dashboard">
@@ -769,23 +772,19 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     <!-- WorkNest header -->
 <header class="site-header">
     <div class="site-header__inner">
-        <a href="index.html" class="wordmark" aria-label="WorkNest home">
-            worknest<span class="wordmark__period">.</span>
-        </a>
-
+        <a href="index.html" class="wordmark" aria-label="WorkNest freelancer dashboard">worknest<span class="wordmark__period">.</span></a>
         <nav class="dashboard-nav" aria-label="Main navigation">
             <a href="index.html" class="site-nav__link">Overview</a>
             <a href="my-projects.html" class="site-nav__link">My projects</a>
             <a href="find-work.html" class="site-nav__link" aria-current="page">Find work</a>
             <a href="my-proposals.html" class="site-nav__link">My proposals</a>
-            <a href="profile.html" class="site-nav__link">My profile</a>
         </nav>
-
         <div class="site-header__actions">
             <span class="dashboard-role">Freelancer</span>
-            <form action="../../logout" method="post">
-                <button class="button button--dark" type="submit">Log out</button>
-            </form>
+            <a class="profile-entry-button" href="profile.html" aria-label="Freelancer profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
+                <span>Profile</span>
+            </a>
         </div>
     </div>
 </header>
@@ -825,6 +824,11 @@ html body.dashboard-body header.site-header .site-header__actions .button {
                         placeholder="Search titles, descriptions, skills..."
                         autocomplete="off">
                 </div>
+            </div>
+
+            <div class="field-group organization-filter">
+                <label for="organization-filter">Client organization</label>
+                <input id="organization-filter" type="search" placeholder="Filter by organization name" autocomplete="off">
             </div>
 
             <div class="field-group">
@@ -888,6 +892,7 @@ html body.dashboard-body header.site-header .site-header__actions .button {
 
         const searchInput = document.getElementById("project-search");
         const typeFilter = document.getElementById("project-type-filter");
+        const organizationFilter = document.getElementById("organization-filter");
         const clearFiltersButton = document.getElementById("clear-filters-button");
         const projectResults = document.getElementById("project-results");
         const resultsCount = document.getElementById("results-count");
@@ -1044,6 +1049,12 @@ html body.dashboard-body header.site-header .site-header__actions .button {
 
             skillsContainer.append(skillsLabel, skillsTags);
 
+            const organizationContainer = document.createElement("div");
+            window.WorkNestOrganizations.renderInto(organizationContainer, project.clientOrganization, {
+                clientName: project.clientName,
+                compact: true
+            });
+
             const divider = document.createElement("div");
             divider.className = "project-card-divider";
 
@@ -1106,22 +1117,26 @@ html body.dashboard-body header.site-header .site-header__actions .button {
 
             footer.append(footerText, detailsLink);
 
-            card.append(top, title, description, skillsContainer, divider, meta, footer);
+            card.append(top, title, organizationContainer, description, skillsContainer, divider, meta, footer);
             return card;
         }
 
         function renderProjects() {
             const term = searchInput.value.trim().toLocaleLowerCase();
+            const organizationTerm = organizationFilter.value.trim().toLocaleLowerCase();
             const selectedType = typeFilter.value;
 
             const filteredProjects = allProjects.filter(project => {
                 const searchableText = [
                     project.title,
                     project.description,
-                    project.requiredSkills
+                    project.requiredSkills,
+                    project.clientName
                 ].map(value => String(value || "")).join(" ").toLocaleLowerCase();
+                const organizationName = window.WorkNestOrganizations.searchValue(project.clientOrganization);
 
                 return searchableText.includes(term) &&
+                    organizationName.includes(organizationTerm) &&
                     matchesSelectedType(project.projectType, selectedType);
             });
 
@@ -1228,10 +1243,12 @@ html body.dashboard-body header.site-header .site-header__actions .button {
         }
 
         searchInput.addEventListener("input", renderProjects);
+        organizationFilter.addEventListener("input", renderProjects);
         typeFilter.addEventListener("change", renderProjects);
 
         clearFiltersButton.addEventListener("click", () => {
             searchInput.value = "";
+            organizationFilter.value = "";
             typeFilter.value = "ALL";
             renderProjects();
             searchInput.focus();

@@ -635,29 +635,28 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     </style>
     <link rel="stylesheet" href="../../css/client-ui.css">
     <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="stylesheet" href="../../css/marketplace-refresh.css">
+    <link rel="stylesheet" href="../../css/freelancer-ui.css">
+    <script src="../../js/freelancer-organizations.js"></script>
 </head>
 
 <body class="dashboard-body freelancer-dashboard">
 
 <header class="site-header">
     <div class="site-header__inner">
-        <a href="index.html" class="wordmark" aria-label="WorkNest home">
-            worknest<span class="wordmark__period">.</span>
-        </a>
-
+        <a href="index.html" class="wordmark" aria-label="WorkNest freelancer dashboard">worknest<span class="wordmark__period">.</span></a>
         <nav class="dashboard-nav" aria-label="Main navigation">
             <a href="index.html" class="site-nav__link">Overview</a>
             <a href="my-projects.html" class="site-nav__link">My projects</a>
             <a href="find-work.html" class="site-nav__link">Find work</a>
             <a href="my-proposals.html" class="site-nav__link" aria-current="page">My proposals</a>
-            <a href="profile.html" class="site-nav__link">My profile</a>
         </nav>
-
         <div class="site-header__actions">
             <span class="dashboard-role">Freelancer</span>
-            <form action="../../logout" method="post">
-                <button class="button button--dark" type="submit">Log out</button>
-            </form>
+            <a class="profile-entry-button" href="profile.html" aria-label="Freelancer profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
+                <span>Profile</span>
+            </a>
         </div>
     </div>
 </header>
@@ -784,6 +783,12 @@ function renderInvitations(invitations) {
         sender.className = "invitation-card__meta";
         sender.textContent = "From " + (invitation.clientName || "WorkNest client");
         card.appendChild(sender);
+        const organization = document.createElement("div");
+        window.WorkNestOrganizations.renderInto(organization, invitation.clientOrganization, {
+            clientName: invitation.clientName,
+            compact: true
+        });
+        card.appendChild(organization);
         const amount = document.createElement("p");
         amount.className = "invitation-card__amount";
         amount.textContent = (String(invitation.projectType || "").toUpperCase() === "HOURLY"
@@ -988,6 +993,13 @@ function createProposalCard(proposal) {
 
     header.append(headingGroup, statusBadge);
     card.appendChild(header);
+
+    const organization = document.createElement("div");
+    window.WorkNestOrganizations.renderInto(organization, proposal.clientOrganization, {
+        clientName: proposal.clientName,
+        compact: true
+    });
+    card.appendChild(organization);
 
     const details = createElement("div", "proposal-details");
 

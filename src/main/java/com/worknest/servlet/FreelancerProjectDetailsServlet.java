@@ -35,6 +35,23 @@ public class FreelancerProjectDetailsServlet extends HttpServlet {
         );
     }
 
+
+    private JSONObject clientOrganization(ResultSet result) throws SQLException {
+        JSONObject organization = new JSONObject();
+        organization.put("organizationName", safe(result.getString("client_organization_name")));
+        organization.put("organizationType", safe(result.getString("client_organization_type")));
+        organization.put("industry", safe(result.getString("client_industry")));
+        organization.put("website", safe(result.getString("client_website")));
+        organization.put("country", safe(result.getString("client_country")));
+        organization.put("city", safe(result.getString("client_city")));
+        organization.put("businessDescription", safe(result.getString("client_business_description")));
+        return organization;
+    }
+
+    private String safe(String value) {
+        return value == null ? "" : value;
+    }
+
     private void sendJson(
             HttpServletResponse response,
             int status,
@@ -92,11 +109,18 @@ public class FreelancerProjectDetailsServlet extends HttpServlet {
         }
 
         String sql =
-            "SELECT project_id, title, description, required_skills, " +
-            "project_type, budget_min, budget_max, deadline, status, " +
-            "created_at, updated_at " +
-            "FROM projects " +
-            "WHERE project_id = ? AND status = 'OPEN'";
+            "SELECT p.project_id, p.title, p.description, p.required_skills, " +
+            "p.project_type, p.budget_min, p.budget_max, p.deadline, p.status, " +
+            "p.created_at, p.updated_at, u.full_name AS client_name, " +
+            "cp.organization_name AS client_organization_name, " +
+            "cp.organization_type AS client_organization_type, " +
+            "cp.industry AS client_industry, cp.website AS client_website, " +
+            "cp.country AS client_country, cp.city AS client_city, " +
+            "cp.business_description AS client_business_description " +
+            "FROM projects p " +
+            "INNER JOIN users u ON u.user_id = p.client_id " +
+            "LEFT JOIN client_profiles cp ON cp.client_id = p.client_id " +
+            "WHERE p.project_id = ? AND p.status = 'OPEN'";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -128,6 +152,8 @@ public class FreelancerProjectDetailsServlet extends HttpServlet {
                 project.put("deadline",
                     deadline == null ? JSONObject.NULL : deadline.toString());
                 project.put("status", result.getString("status"));
+                project.put("clientName", safe(result.getString("client_name")));
+                project.put("clientOrganization", clientOrganization(result));
 
                 java.sql.Timestamp createdAt = result.getTimestamp("created_at");
                 java.sql.Timestamp updatedAt = result.getTimestamp("updated_at");
