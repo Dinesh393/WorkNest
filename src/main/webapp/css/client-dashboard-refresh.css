@@ -122,10 +122,32 @@ html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link
     transition: color 160ms ease, background-color 160ms ease;
 }
 
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { position: relative; }
+
+/* Amber underline: the same hover cue used on the public homepage navigation. */
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link::after {
+    position: absolute;
+    inset-inline: 14px;
+    inset-block-end: 5px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--client-warm-accent);
+    content: "";
+    opacity: 0;
+    transition: opacity 160ms ease;
+}
+
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
     background-color: var(--color-accent-soft);
     color: var(--color-accent);
+}
+
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover::after,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible::after,
+html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"]::after {
+    opacity: 1;
 }
 
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
@@ -304,6 +326,7 @@ body.dashboard-body :is(.wn-banner--error, .field-error, .form-message--error, .
 }
 
 @media (prefers-reduced-motion: reduce) {
+    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link::after { transition: none; }
     body.dashboard-body :is(.button--dark, .button--primary, .primary-button, .action-button--primary, .edit-button--primary, .project-card, .proposal-card, .talent-directory-card) { transition: none; }
     body.dashboard-body :is(.project-card, .proposal-card, .talent-directory-card):hover,
     body.dashboard-body :is(.button--dark, .button--primary, .primary-button, .action-button--primary, .edit-button--primary):hover { transform: none; }
@@ -598,12 +621,12 @@ body.dashboard-body.create-project-page .project-posting-guide__note p { margin:
     body.dashboard-body.create-project-page .project-form-note { text-align: left; }
 }
 /* One identical header layout across client pages. */
-html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__inner {
+html body.dashboard-body:is(.client-dashboard, .freelancer-dashboard, .create-project-page) header.site-header .site-header__inner {
     display: grid;
     grid-template-columns: max-content minmax(0, 1fr) max-content;
     column-gap: 26px;
 }
-html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header nav.dashboard-nav {
+html body.dashboard-body:is(.client-dashboard, .freelancer-dashboard, .create-project-page) header.site-header nav.dashboard-nav {
     display: flex;
     width: 100%;
     min-width: 0;
@@ -613,26 +636,26 @@ html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site
     justify-content: center;
     gap: 8px;
 }
-html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__actions {
+html body.dashboard-body:is(.client-dashboard, .freelancer-dashboard, .create-project-page) header.site-header .site-header__actions {
     display: flex;
     margin: 0;
     gap: 12px;
 }
 @media (max-width: 900px) {
-    html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__inner {
+    html body.dashboard-body:is(.client-dashboard, .freelancer-dashboard, .create-project-page) header.site-header .site-header__inner {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
         column-gap: 16px;
     }
-    html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header nav.dashboard-nav {
+    html body.dashboard-body:is(.client-dashboard, .freelancer-dashboard, .create-project-page) header.site-header nav.dashboard-nav {
         order: 3;
         width: 100%;
         flex: 1 0 100%;
         justify-content: flex-start;
         gap: 8px;
     }
-    html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__actions {
+    html body.dashboard-body:is(.client-dashboard, .freelancer-dashboard, .create-project-page) header.site-header .site-header__actions {
         margin-inline-start: auto;
     }
 }

@@ -1,25 +1,10 @@
 /* Freelancer dashboard theme: match the client workspace palette and shared components. */
-html { background: #F8FAFC; }
+/* Palette tokens (--color-*, --client-*) come from client-dashboard-refresh.css; only aliases live here. */
 html body.dashboard-body.freelancer-dashboard {
-    --color-page: #F8FAFC;
-    --color-surface: #FFFFFF;
-    --color-surface-muted: #F1F5F9;
-    --color-ink: #0F172A;
-    --color-ink-soft: #334155;
-    --color-ink-muted: #64748B;
-    --color-border: #E2E8F0;
-    --color-accent: #1D4ED8;
-    --color-accent-hover: #1E40AF;
-    --color-accent-soft: #EFF6FF;
-    --color-focus: #1D4ED8;
-    --color-on-accent: #FFFFFF;
-    --color-success: #166534;
-    --color-warning: #92400E;
-    --color-danger: #B91C1C;
-    --color-primary: #1D4ED8;
-    --color-primary-hover: #1E40AF;
-    --color-primary-soft: #EFF6FF;
-    --color-primary-border: #BFDBFE;
+    --color-primary: var(--color-accent);
+    --color-primary-hover: var(--color-accent-hover);
+    --color-primary-soft: var(--color-accent-soft);
+    --color-primary-border: var(--client-accent-border);
     --wn-ink: var(--color-ink);
     --wn-muted: var(--color-ink-muted);
     --wn-border: var(--color-border);
@@ -29,7 +14,6 @@ html body.dashboard-body.freelancer-dashboard {
     --wn-purple-soft: var(--color-accent-soft);
     --wn-blue: var(--color-accent);
     --wn-blue-soft: var(--color-accent-soft);
-    --wn-shadow: 0 12px 34px rgba(15, 23, 42, .06);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -38,128 +22,6 @@ html body.dashboard-body.freelancer-dashboard {
     font-family: var(--font-body, "DM Sans", Arial, sans-serif);
 }
 html body.dashboard-body.freelancer-dashboard main { flex: 1 0 auto; }
-
-/* Match the client header: same logo position, navigation frame, height and actions. */
-html body.dashboard-body.freelancer-dashboard header.site-header {
-    position: sticky;
-    inset-block-start: 0;
-    z-index: 100;
-    background: var(--color-surface);
-    border-block-end: 1px solid var(--color-border);
-    box-shadow: 0 1px 2px rgba(15, 23, 42, .025), 0 8px 22px rgba(15, 23, 42, .045);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-}
-html body.dashboard-body.freelancer-dashboard header.site-header .site-header__inner {
-    display: flex;
-    width: min(calc(100% - 56px), 1320px);
-    min-height: 82px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 26px;
-    margin-inline: auto;
-    padding-block: 13px;
-}
-html body.dashboard-body.freelancer-dashboard header.site-header .wordmark {
-    flex: 0 0 auto;
-    color: var(--color-ink);
-    font-family: var(--font-body, "DM Sans", Arial, sans-serif);
-    font-size: 1.42rem;
-    font-weight: 700;
-    letter-spacing: -.07em;
-    line-height: 1;
-    text-decoration: none;
-}
-html body.dashboard-body.freelancer-dashboard header.site-header .wordmark:hover { color: var(--color-ink); background: transparent; }
-html body.dashboard-body.freelancer-dashboard header.site-header .wordmark__period { color: #D97706; }
-html body.dashboard-body.freelancer-dashboard header.site-header nav.dashboard-nav {
-    display: flex;
-    flex: 0 1 auto;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    min-width: 0;
-    margin-inline: auto;
-    padding: 5px;
-    border: 1px solid var(--color-border);
-    border-radius: 9px;
-    background: var(--color-page);
-    box-shadow: inset 0 1px 0 #FFFFFF;
-}
-html body.dashboard-body.freelancer-dashboard header.site-header nav.dashboard-nav > a.site-nav__link {
-    display: inline-flex;
-    min-height: 42px;
-    align-items: center;
-    justify-content: center;
-    padding: 0 14px;
-    border: 0;
-    border-radius: 7px;
-    background: transparent;
-    color: var(--color-ink-soft);
-    font-family: var(--font-body, "DM Sans", Arial, sans-serif);
-    font-size: .9rem;
-    font-weight: 600;
-    line-height: 1.3;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: color 160ms ease, background-color 160ms ease;
-}
-html body.dashboard-body.freelancer-dashboard header.site-header nav.dashboard-nav > a.site-nav__link:hover,
-html body.dashboard-body.freelancer-dashboard header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
-    background: var(--color-accent-soft);
-    color: var(--color-accent);
-}
-html body.dashboard-body.freelancer-dashboard header.site-header .site-header__actions {
-    display: flex;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-inline-start: 0;
-}
-html body.dashboard-body.freelancer-dashboard header.site-header .dashboard-role {
-    display: inline-flex;
-    min-height: 36px;
-    align-items: center;
-    padding: 0 14px;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    background: var(--color-surface);
-    color: var(--color-ink-soft);
-    font-family: var(--font-body, "DM Sans", Arial, sans-serif);
-    font-size: .8rem;
-    font-weight: 600;
-    white-space: nowrap;
-}
-html body.dashboard-body.freelancer-dashboard header.site-header .site-header__actions .profile-entry-button {
-    display: inline-flex;
-    min-width: 104px;
-    min-height: 46px;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 0 18px;
-    border: 1px solid var(--color-accent);
-    border-radius: 8px;
-    background: var(--color-accent);
-    color: #FFFFFF;
-    font-family: var(--font-body, "DM Sans", Arial, sans-serif);
-    font-size: .9rem;
-    font-weight: 650;
-    text-decoration: none;
-    box-shadow: 0 3px 0 #1E40AF, 0 7px 16px rgba(29, 78, 216, .16);
-    transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-}
-html body.dashboard-body.freelancer-dashboard header.site-header .site-header__actions .profile-entry-button:hover {
-    border-color: var(--color-accent-hover);
-    background: var(--color-accent-hover);
-    color: #FFFFFF;
-}
-html body.dashboard-body.freelancer-dashboard header.site-header .profile-entry-button svg { width: 18px; height: 18px; flex: 0 0 18px; }
-html body.dashboard-body.freelancer-dashboard header.site-header :is(.wordmark, .site-nav__link, .profile-entry-button):focus-visible {
-    outline: 3px solid rgba(29, 78, 216, .3);
-    outline-offset: 3px;
-}
 
 /* Shared page width and typographic hierarchy. */
 html body.dashboard-body.freelancer-dashboard :is(.dashboard-page, .find-work-page, .workspace-page, .proposals-page, .profile-page, .freelancer-details-page) {
@@ -231,22 +93,22 @@ html body.dashboard-body.freelancer-dashboard :is(input, select, textarea) {
 }
 html body.dashboard-body.freelancer-dashboard :is(input, select, textarea):focus {
     border-color: var(--color-accent);
-    outline: 3px solid rgba(29, 78, 216, .16);
+    outline: 3px solid rgba(var(--client-primary-rgb), .16);
     outline-offset: 1px;
 }
-html body.dashboard-body.freelancer-dashboard :is(input, textarea)::placeholder { color: #64748B; opacity: 1; }
+html body.dashboard-body.freelancer-dashboard :is(input, textarea)::placeholder { color: var(--color-ink-muted); opacity: 1; }
 html body.dashboard-body.freelancer-dashboard :is(.button--primary, .primary-button, .profile-save, .proposals-primary-link, .find-work-page .button, .freelancer-details-page .button, .workspace-page .button) {
     border-color: var(--color-accent);
     border-radius: 8px;
     background: var(--color-accent);
-    color: #FFFFFF;
-    box-shadow: 0 3px 0 #1E40AF, 0 7px 16px rgba(29, 78, 216, .14);
+    color: var(--color-on-accent);
+    box-shadow: 0 3px 0 var(--color-accent-hover), 0 7px 16px rgba(var(--client-primary-rgb), .14);
     transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
 html body.dashboard-body.freelancer-dashboard :is(.button--primary, .primary-button, .profile-save, .proposals-primary-link, .find-work-page .button, .freelancer-details-page .button, .workspace-page .button):hover {
     border-color: var(--color-accent-hover);
     background: var(--color-accent-hover);
-    color: #FFFFFF;
+    color: var(--color-on-accent);
 }
 html body.dashboard-body.freelancer-dashboard :is(.button--secondary, .button--outline, .profile-cancel, .clear-filters-button, .back-link, .back-dashboard-link, .workspace-back, .text-link) {
     color: var(--color-accent);
@@ -256,16 +118,9 @@ html body.dashboard-body.freelancer-dashboard :is(.find-work-page-footer, .dashb
 html body.dashboard-body.freelancer-dashboard .profile-message { border-radius: 9px; }
 
 @media (max-width: 900px) {
-    html body.dashboard-body.freelancer-dashboard header.site-header .site-header__inner { width: min(calc(100% - 36px), 1320px); min-height: 72px; flex-wrap: wrap; gap: 8px 16px; padding-block: 10px; }
-    html body.dashboard-body.freelancer-dashboard header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; overflow-x: auto; margin: 0; }
     html body.dashboard-body.freelancer-dashboard :is(.dashboard-page, .find-work-page, .workspace-page, .proposals-page, .profile-page, .freelancer-details-page) { width: min(calc(100% - 36px), 1240px); padding-block: 32px 56px; }
 }
 @media (max-width: 650px) {
-    html body.dashboard-body.freelancer-dashboard header.site-header .site-header__inner { width: min(calc(100% - 28px), 1320px); gap: 8px 12px; }
-    html body.dashboard-body.freelancer-dashboard header.site-header .wordmark { font-size: 1.28rem; }
-    html body.dashboard-body.freelancer-dashboard header.site-header nav.dashboard-nav { width: 100%; gap: 2px; }
-    html body.dashboard-body.freelancer-dashboard header.site-header nav.dashboard-nav > a.site-nav__link { min-height: 38px; padding-inline: 10px; font-size: .82rem; }
-    html body.dashboard-body.freelancer-dashboard header.site-header .dashboard-role { display: none; }
     html body.dashboard-body.freelancer-dashboard :is(.dashboard-page, .find-work-page, .workspace-page, .proposals-page, .profile-page, .freelancer-details-page) { width: min(calc(100% - 28px), 1240px); padding-block: 24px 44px; }
     html body.dashboard-body.freelancer-dashboard :is(.dashboard-stat, .summary-card, .profile-progress-card, .profile-form-card, .profile-account-card, .details-card, .proposal-section, .workspace-card, .workspace-list > *, .proposal-card) { padding: 18px; }
 }
@@ -297,8 +152,8 @@ html body.dashboard-body.freelancer-dashboard :is(.work-project-card__divider, .
 html body.dashboard-body.freelancer-dashboard .workspace-delivery-status--approved { background: #E8F5EE; color: #17633A; }
 html body.dashboard-body.freelancer-dashboard .workspace-delivery-status--submitted { background: var(--color-primary-soft); color: var(--color-primary); }
 html body.dashboard-body.freelancer-dashboard .workspace-delivery-status--revision { background: #FFF4D6; color: #805400; }
-html body.dashboard-body.freelancer-dashboard .invitation-card__actions .accept-invitation { border-color: var(--color-primary); background: var(--color-primary); color: #fff; }
-html body.dashboard-body.freelancer-dashboard .invitation-card__actions .accept-invitation:hover:not(:disabled) { border-color: var(--color-primary-hover); background: var(--color-primary-hover); color: #fff; }
+html body.dashboard-body.freelancer-dashboard .invitation-card__actions .accept-invitation { border-color: var(--color-primary); background: var(--color-primary); color: var(--color-on-accent); }
+html body.dashboard-body.freelancer-dashboard .invitation-card__actions .accept-invitation:hover:not(:disabled) { border-color: var(--color-primary-hover); background: var(--color-primary-hover); color: var(--color-on-accent); }
 html body.dashboard-body.freelancer-dashboard .invitation-card__actions button:not(.accept-invitation) { border-color: var(--color-border); background: var(--color-surface); color: var(--color-ink); }
 html body.dashboard-body.freelancer-dashboard .invitation-card__actions button:not(.accept-invitation):hover:not(:disabled) { background: var(--color-surface-muted); color: var(--color-primary); }
 html body.dashboard-body.freelancer-dashboard .client-organization { border-color: var(--color-border); background: var(--color-surface-muted); box-shadow: none; }
@@ -316,7 +171,6 @@ html body.dashboard-body.freelancer-dashboard .find-work-page .find-work-toolbar
 }
 html body.dashboard-body.freelancer-dashboard .find-work-page .clear-filters-button { min-height: 46px; white-space: nowrap; }
 html body.dashboard-body.freelancer-dashboard .find-work-page :is(.find-work-notice, .find-work-state, .proposals-message, .details-message, .profile-message) { border-radius: 10px; }
-html body.dashboard-body.freelancer-dashboard .profile-entry-button { min-height: 48px; padding-inline: 20px; }
 @media (max-width: 1000px) {
     html body.dashboard-body.freelancer-dashboard .find-work-page .find-work-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     html body.dashboard-body.freelancer-dashboard .find-work-page .clear-filters-button { grid-column: 2; }
@@ -367,7 +221,7 @@ html body.dashboard-body.freelancer-dashboard .workspace-message {
 }
 html body.dashboard-body.freelancer-dashboard .workspace-message::before { content: ""; width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: var(--color-accent); }
 html body.dashboard-body.freelancer-dashboard .workspace-message:empty { display: none; }
-html body.dashboard-body.freelancer-dashboard .workspace-message--error { border-color: #FECACA; background: #FEF2F2; color: var(--color-danger); }
+html body.dashboard-body.freelancer-dashboard .workspace-message--error { border-color: var(--client-danger-border); background: var(--client-danger-soft); color: var(--color-danger); }
 html body.dashboard-body.freelancer-dashboard .workspace-message--error::before { background: var(--color-danger); }
 
 /* Client organization details: tidy label / value grid (proposals, invitations, project pages). */
@@ -390,23 +244,23 @@ html body.dashboard-body.freelancer-dashboard .profile-settings-intro h1 { font-
 html body.dashboard-body.freelancer-dashboard .profile-settings-intro .eyebrow { margin: 0; color: var(--color-accent); font-size: .75rem; font-weight: 700; letter-spacing: .1em; }
 html body.dashboard-body.freelancer-dashboard .settings-sidebar,
 html body.dashboard-body.freelancer-dashboard .settings-panel { border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-surface); box-shadow: 0 2px 5px rgba(15, 23, 42, .025), 0 12px 28px rgba(15, 23, 42, .045); }
-html body.dashboard-body.freelancer-dashboard .settings-nav__item[aria-current="page"] { border-color: #BFDBFE; background: var(--color-accent-soft); color: var(--color-accent); }
+html body.dashboard-body.freelancer-dashboard .settings-nav__item[aria-current="page"] { border-color: var(--client-accent-border); background: var(--color-accent-soft); color: var(--color-accent); }
 html body.dashboard-body.freelancer-dashboard .settings-nav__item--danger { color: var(--color-danger); }
-html body.dashboard-body.freelancer-dashboard .settings-nav__item--danger[aria-current="page"] { border-color: #FECACA; background: #FEF2F2; color: var(--color-danger); }
+html body.dashboard-body.freelancer-dashboard .settings-nav__item--danger[aria-current="page"] { border-color: var(--client-danger-border); background: var(--client-danger-soft); color: var(--color-danger); }
 html body.dashboard-body.freelancer-dashboard .settings-panel__heading h2 { font-family: var(--font-display); font-weight: 400; letter-spacing: -.02em; }
 html body.dashboard-body.freelancer-dashboard .settings-block { display: grid; gap: 14px; padding: 0 0 26px; margin-bottom: 26px; border-bottom: 1px solid var(--color-border); }
 html body.dashboard-body.freelancer-dashboard .settings-block--form { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
 html body.dashboard-body.freelancer-dashboard .settings-block__title { margin: 0; color: var(--color-ink); font-family: var(--font-body); font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; }
-html body.dashboard-body.freelancer-dashboard .settings-progress { margin: 0 0 26px; padding: 18px 20px; border: 1px solid #BFDBFE; border-radius: 12px; background: var(--color-accent-soft); }
-html body.dashboard-body.freelancer-dashboard .settings-progress .profile-progress-track { background: #FFFFFF; }
+html body.dashboard-body.freelancer-dashboard .settings-progress { margin: 0 0 26px; padding: 18px 20px; border: 1px solid var(--client-accent-border); border-radius: 12px; background: var(--color-accent-soft); }
+html body.dashboard-body.freelancer-dashboard .settings-progress .profile-progress-track { background: var(--color-surface); }
 html body.dashboard-body.freelancer-dashboard .settings-progress .profile-progress-head span { color: var(--color-accent); }
 html body.dashboard-body.freelancer-dashboard .settings-panel .profile-field input[readonly] { background: var(--color-surface-muted); color: var(--color-ink-soft); cursor: not-allowed; }
-html body.dashboard-body.freelancer-dashboard .settings-panel .profile-field :is(input, textarea, select) { border-color: #CBD5E1; }
-html body.dashboard-body.freelancer-dashboard .settings-panel .profile-field select { width: 100%; min-height: 46px; padding: 11px 13px; border: 1px solid #CBD5E1; border-radius: 9px; background: #fff; color: var(--color-ink); font: inherit; }
-html body.dashboard-body.freelancer-dashboard .settings-panel .profile-save { border: 1px solid var(--color-accent); border-radius: 8px; background: var(--color-accent); box-shadow: 0 3px 0 #173EA8, 0 7px 16px rgba(29, 78, 216, .16); }
+html body.dashboard-body.freelancer-dashboard .settings-panel .profile-field :is(input, textarea, select) { border-color: var(--client-border-strong); }
+html body.dashboard-body.freelancer-dashboard .settings-panel .profile-field select { width: 100%; min-height: 46px; padding: 11px 13px; border: 1px solid var(--client-border-strong); border-radius: 9px; background: var(--color-surface); color: var(--color-ink); font: inherit; }
+html body.dashboard-body.freelancer-dashboard .settings-panel .profile-save { border: 1px solid var(--color-accent); border-radius: 8px; background: var(--color-accent); box-shadow: 0 3px 0 var(--client-primary-shadow), 0 7px 16px rgba(var(--client-primary-rgb), .16); }
 html body.dashboard-body.freelancer-dashboard .settings-panel .profile-save:hover:not(:disabled) { background: var(--color-accent-hover); }
-html body.dashboard-body.freelancer-dashboard .settings-delete-button { min-height: 46px; padding: 0 20px; border: 1px solid #B91C1C; border-radius: 8px; background: #B91C1C; color: #FFFFFF; font: inherit; font-weight: 650; cursor: pointer; }
-html body.dashboard-body.freelancer-dashboard .settings-delete-button:hover:not(:disabled) { background: #991B1B; }
+html body.dashboard-body.freelancer-dashboard .settings-delete-button { min-height: 46px; padding: 0 20px; border: 1px solid var(--color-danger); border-radius: 8px; background: var(--color-danger); color: var(--color-on-accent); font: inherit; font-weight: 650; cursor: pointer; }
+html body.dashboard-body.freelancer-dashboard .settings-delete-button:hover:not(:disabled) { background: var(--client-danger-hover); }
 html body.dashboard-body.freelancer-dashboard .settings-delete-button:disabled { opacity: .6; cursor: wait; }
 @media (max-width: 860px) {
     html body.dashboard-body.freelancer-dashboard .profile-settings-layout { grid-template-columns: minmax(0, 1fr); }
