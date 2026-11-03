@@ -121,6 +121,26 @@
 </servlet-mapping>
 
 <servlet>
+    <servlet-name>ClientAccountServlet</servlet-name>
+    <servlet-class>com.worknest.servlet.ClientAccountServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ClientAccountServlet</servlet-name>
+    <url-pattern>/client-account</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>DeleteClientAccountServlet</servlet-name>
+    <servlet-class>com.worknest.servlet.DeleteClientAccountServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>DeleteClientAccountServlet</servlet-name>
+    <url-pattern>/delete-client-account</url-pattern>
+</servlet-mapping>
+
+<servlet>
     <servlet-name>FreelancerProfileServlet</servlet-name>
     <servlet-class>com.worknest.servlet.FreelancerProfileServlet</servlet-class>
 </servlet>

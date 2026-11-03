@@ -1,0 +1,242 @@
+.profile-settings-main {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: clamp(32px, 5vw, 56px) 0 64px;
+}
+
+.profile-settings-intro {
+    max-width: 720px;
+    margin-bottom: 28px;
+}
+
+.profile-settings-intro h1 {
+    margin: 8px 0 10px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+.profile-settings-intro p:last-child {
+    margin: 0;
+    color: var(--color-ink-muted);
+    line-height: 1.65;
+}
+
+.profile-settings-layout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.settings-sidebar,
+.settings-panel {
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    background: var(--color-surface);
+    box-shadow: var(--wn-shadow);
+}
+
+.settings-sidebar {
+    position: sticky;
+    top: 96px;
+    padding: 12px;
+}
+
+.settings-sidebar__label {
+    margin: 8px 10px 12px;
+    color: var(--color-ink-muted);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.settings-nav {
+    display: grid;
+    gap: 4px;
+}
+
+.settings-nav__item {
+    display: flex;
+    width: 100%;
+    min-height: 42px;
+    align-items: center;
+    padding: 9px 11px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-ink-soft);
+    font: inherit;
+    font-size: .9rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.settings-nav__item:hover {
+    background: var(--color-surface-muted);
+    color: var(--color-ink);
+}
+
+.settings-nav__item[aria-current="page"] {
+    border-color: var(--client-accent-border);
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+}
+
+.settings-nav__item--danger { color: var(--color-danger); }
+.settings-nav__item--danger:hover { background: var(--client-danger-soft); color: var(--color-danger); }
+
+.settings-sidebar__divider {
+    height: 1px;
+    margin: 12px 4px;
+    border: 0;
+    background: var(--color-border);
+}
+
+.settings-signout { margin: 0; }
+.settings-signout button {
+    width: 100%;
+    min-height: 42px;
+    padding: 9px 11px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-ink-soft);
+    font: inherit;
+    font-size: .9rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: color 160ms ease, background-color 160ms ease;
+}
+
+.settings-signout button:hover { background: var(--color-surface-muted); color: var(--color-ink); }
+
+.settings-panel { min-width: 0; padding: clamp(22px, 4vw, 34px); }
+.settings-panel[hidden] { display: none; }
+
+.settings-panel__heading {
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.settings-panel__heading h2 {
+    margin: 0 0 7px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.settings-panel__heading p { margin: 0; color: var(--color-ink-muted); line-height: 1.6; }
+
+.settings-form { display: grid; gap: 18px; max-width: 650px; }
+.settings-field { display: grid; gap: 7px; }
+.settings-field label { color: var(--color-ink); font-size: .88rem; font-weight: 650; }
+.settings-field input {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 13px;
+    border: 1px solid var(--client-border-strong);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font: inherit;
+}
+
+.settings-field select,
+.settings-field textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 13px;
+    border: 1px solid var(--client-border-strong);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font: inherit;
+}
+
+.settings-field textarea { min-height: 112px; resize: vertical; }
+
+.settings-field input[readonly] { background: var(--color-surface-muted); color: var(--color-ink-soft); }
+.settings-field input:focus-visible { outline: 3px solid rgba(var(--client-primary-rgb), .2); border-color: var(--color-accent); }
+.settings-field select:focus-visible,
+.settings-field textarea:focus-visible { outline: 3px solid rgba(var(--client-primary-rgb), .2); border-color: var(--color-accent); }
+.settings-field small { color: var(--color-ink-muted); font-size: .82rem; line-height: 1.5; }
+.settings-optional { color: var(--color-ink-muted); font-size: .8rem; font-weight: 500; }
+.settings-field--split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.settings-field--split > div { display: grid; gap: 7px; }
+.settings-field__hint { margin: -8px 0 0; color: var(--color-ink-muted); font-size: .82rem; line-height: 1.55; }
+
+
+.settings-message {
+    margin: 0;
+    padding: 11px 13px;
+    border: 1px solid var(--client-accent-border);
+    border-radius: 8px;
+    background: var(--color-accent-soft);
+    color: var(--color-accent-text);
+    font-size: .9rem;
+    line-height: 1.5;
+}
+
+.settings-message--error { border-color: var(--client-danger-border); background: var(--client-danger-soft); color: var(--color-danger); }
+.settings-message--success { border-color: var(--client-success-border); background: var(--client-success-soft); color: var(--color-success); }
+.settings-message[hidden] { display: none; }
+
+.settings-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.settings-fact { min-width: 0; padding: 15px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-page); }
+.settings-fact span { display: block; margin-bottom: 7px; color: var(--color-ink-muted); font-size: .8rem; }
+.settings-fact strong { display: block; color: var(--color-ink); font-size: .98rem; font-weight: 650; overflow-wrap: anywhere; }
+
+.settings-inline-links { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+.settings-inline-links a { color: var(--color-accent); font-weight: 650; text-underline-offset: 3px; }
+.settings-inline-links a:hover { color: var(--color-accent-hover); }
+
+.settings-delete-box { padding: 18px; border: 1px solid var(--client-danger-border); border-radius: 10px; background: var(--client-danger-soft); }
+.settings-delete-box h3 { margin: 0 0 8px; color: var(--color-danger); font-size: 1rem; }
+.settings-delete-box p { margin: 0 0 15px; color: var(--color-ink-soft); line-height: 1.6; }
+.settings-delete-box .settings-form { gap: 14px; }
+.settings-delete-box .settings-field input { background: var(--color-surface); }
+.settings-delete-button {
+    justify-self: start;
+    min-height: 44px;
+    padding: 10px 15px;
+    border: 1px solid var(--color-danger);
+    border-radius: 8px;
+    background: var(--color-danger);
+    color: var(--color-surface);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.settings-delete-button:hover:not(:disabled) { background: var(--client-danger-hover); border-color: var(--client-danger-hover); }
+.settings-delete-button:disabled { opacity: .65; cursor: wait; }
+.settings-nav__item:focus-visible,
+.settings-signout button:focus-visible,
+.settings-delete-button:focus-visible,
+.settings-field select:focus-visible,
+.settings-field textarea:focus-visible,
+.settings-inline-links a:focus-visible { outline: 3px solid rgba(var(--client-primary-rgb), .28); outline-offset: 3px; }
+
+@media (max-width: 760px) {
+    .profile-settings-layout { grid-template-columns: 1fr; }
+    .settings-sidebar { position: static; }
+    .settings-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 480px) {
+    .profile-settings-main { width: min(calc(100% - 28px), 1120px); }
+    .settings-panel { padding: 20px 16px; }
+    .settings-nav { grid-template-columns: 1fr; }
+    .settings-facts { grid-template-columns: 1fr; }
+    .settings-field--split { grid-template-columns: 1fr; }
+}

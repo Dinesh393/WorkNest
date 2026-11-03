@@ -303,102 +303,6 @@ button:disabled { opacity:.58; cursor:not-allowed !important; transform:none !im
 @media (prefers-reduced-motion:reduce) {
     *,*::before,*::after { scroll-behavior:auto !important; transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
 }
-/* ===== Shared freelancer header: identical on every freelancer page ===== */
-html body.dashboard-body header.site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(255, 255, 255, .96);
-    border-bottom: 1px solid #E2E8F0;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-}
-html body.dashboard-body header.site-header .site-header__inner {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    min-height: 88px;
-}
-html body.dashboard-body header.site-header .wordmark {
-    flex: 0 0 auto;
-    color: #0F172A;
-    font-size: 1.6rem;
-    font-weight: 800;
-    letter-spacing: -.055em;
-    text-decoration: none;
-}
-html body.dashboard-body header.site-header nav.dashboard-nav {
-    display: flex;
-    flex: 1 1 auto;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-width: 0;
-}
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link {
-    display: inline-flex;
-    align-items: center;
-    min-height: 46px;
-    padding: 0 18px;
-    border-radius: 10px;
-    background: transparent;
-    color: #64748B;
-    font-size: .95rem;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: none;
-}
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
-    background: #EFF6FF;
-    color: #1D4ED8;
-}
-html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
-html body.dashboard-body header.site-header .wordmark:focus-visible,
-html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
-    outline: 2px solid #1D4ED8;
-    outline-offset: 2px;
-}
-html body.dashboard-body header.site-header .site-header__actions {
-    display: flex;
-    flex: 0 0 auto;
-    align-items: center;
-    gap: 16px;
-}
-html body.dashboard-body header.site-header .dashboard-role {
-    display: inline-flex;
-    align-items: center;
-    min-height: 34px;
-    padding: 0 13px;
-    border: 1px solid #E2E8F0;
-    border-radius: 999px;
-    background: #FFFFFF;
-    color: #64748B;
-    font-size: .8rem;
-    font-weight: 700;
-    white-space: nowrap;
-}
-html body.dashboard-body header.site-header .site-header__actions form { margin: 0; }
-html body.dashboard-body header.site-header .site-header__actions .button {
-    min-height: 46px;
-    padding: 0 20px;
-    border-radius: 10px;
-    transition: none;
-}
-@media (max-width: 900px) {
-    html body.dashboard-body header.site-header .site-header__inner { flex-wrap: wrap; gap: 8px 16px; min-height: 0; padding-block: 14px; }
-    html body.dashboard-body header.site-header nav.dashboard-nav { order: 3; flex: 1 0 100%; justify-content: flex-start; }
-    html body.dashboard-body header.site-header .site-header__actions { margin-left: auto; }
-}
-@media (max-width: 650px) {
-    html body.dashboard-body header.site-header .wordmark { font-size: 1.4rem; }
-    html body.dashboard-body header.site-header nav.dashboard-nav { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
-    html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link { flex: 0 0 auto; min-height: 42px; padding: 0 13px; font-size: .88rem; }
-    html body.dashboard-body header.site-header .dashboard-role { display: none; }
-}
-
 /* ---- Stats, filters, badges, countdown ---- */
 .dashboard-stat__value.is-pending { color:#B7B9B2; }
 .dashboard-stat--attention { border-color:#DED9FA; background:linear-gradient(115deg,#F7F5FF 0%,#FFFFFF 80%); }
@@ -456,9 +360,10 @@ html body.dashboard-body header.site-header .site-header__actions .button {
         </nav>
         <div class="site-header__actions">
             <span class="dashboard-role">Client account</span>
-            <form action="../../logout" method="post">
-                <button class="button button--dark" type="submit">Log out</button>
-            </form>
+            <a class="button button--dark profile-entry-button" href="profile-settings.html" aria-label="Profile and settings">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
+                <span>Profile</span>
+            </a>
         </div>
     </div>
 </header>

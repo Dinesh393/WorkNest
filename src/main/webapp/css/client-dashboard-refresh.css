@@ -597,7 +597,7 @@ body.dashboard-body.create-project-page .project-posting-guide__note p { margin:
     body.dashboard-body.create-project-page .project-form-actions .button { width: 100%; box-sizing: border-box; }
     body.dashboard-body.create-project-page .project-form-note { text-align: left; }
 }
-/* One identical three-column header layout for the client Overview and Post a project pages. */
+/* One identical header layout across client pages. */
 html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__inner {
     display: grid;
     grid-template-columns: max-content minmax(0, 1fr) max-content;
@@ -635,4 +635,18 @@ html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site
     html body.dashboard-body:is(.client-dashboard, .create-project-page) header.site-header .site-header__actions {
         margin-inline-start: auto;
     }
+}
+/* Client profile action replaces the former header logout control. */
+html body.dashboard-body header.site-header .site-header__actions a.profile-entry-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 104px;
+    text-decoration: none;
+}
+html body.dashboard-body header.site-header .site-header__actions .profile-entry-button svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
 }

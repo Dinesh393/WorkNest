@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your WorkNest client profile and account settings.">
+    <title>Profile and settings | WorkNest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/design-tokens.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/freelancer-dashboard.css">
+    <link rel="stylesheet" href="../../css/notifications.css">
+    <link rel="stylesheet" href="../../css/client-dashboard-refresh.css?v=20261103-header">
+    <link rel="stylesheet" href="../../css/profile-settings.css">
+</head>
+<body class="dashboard-body client-dashboard profile-settings-page-body">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a href="index.html" class="wordmark" aria-label="WorkNest client dashboard">worknest<span class="wordmark__period">.</span></a>
+            <nav class="dashboard-nav" aria-label="Main navigation">
+                <a href="index.html" class="site-nav__link">Overview</a>
+                <a href="index.html#your-projects" class="site-nav__link">Your projects</a>
+                <a href="create-project.html" class="site-nav__link">Post a project</a>
+            </nav>
+            <div class="site-header__actions">
+                <span class="dashboard-role">Client account</span>
+                <a class="button button--dark profile-entry-button" href="profile-settings.html" aria-current="page" aria-label="Profile and settings">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
+                    <span>Profile</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="profile-settings-main">
+        <div class="profile-settings-intro">
+            <p class="eyebrow">CLIENT ACCOUNT</p>
+            <h1>Profile and settings</h1>
+            <p>Manage your personal details and account preferences.</p>
+        </div>
+
+        <div class="profile-settings-layout">
+            <aside class="settings-sidebar" aria-label="Account settings">
+                <p class="settings-sidebar__label">Account</p>
+                <nav class="settings-nav" aria-label="Settings sections">
+                    <button class="settings-nav__item" type="button" data-settings-tab="profile" aria-current="page">Personal profile</button>
+                    <button class="settings-nav__item" type="button" data-settings-tab="organization">Organization</button>
+                    <button class="settings-nav__item" type="button" data-settings-tab="account">Account overview</button>
+                    <button class="settings-nav__item" type="button" data-settings-tab="notifications">Notifications</button>
+                    <button class="settings-nav__item" type="button" data-settings-tab="help">Help and legal</button>
+                    <button class="settings-nav__item settings-nav__item--danger" type="button" data-settings-tab="delete">Delete account</button>
+                </nav>
+                <hr class="settings-sidebar__divider">
+                <form class="settings-signout" action="../../logout" method="post">
+                    <button type="submit">Log out</button>
+                </form>
+            </aside>
+
+            <section class="settings-panel" data-settings-panel="profile" aria-labelledby="profile-panel-title">
+                <div class="settings-panel__heading">
+                    <h2 id="profile-panel-title" tabindex="-1">Personal profile</h2>
+                    <p>Update the name shown to people you work with. Your sign-in email cannot be changed here.</p>
+                </div>
+                <p id="profile-load-message" class="settings-message" role="status">Loading your account details…</p>
+                <p id="profile-error-message" class="settings-message settings-message--error" role="alert" hidden></p>
+                <form id="profile-form" class="settings-form" hidden>
+                    <div class="settings-field">
+                        <label for="full-name">Full name</label>
+                        <input id="full-name" name="fullName" type="text" autocomplete="name" maxlength="100" required>
+                    </div>
+                    <div class="settings-field">
+                        <label for="email-address">Email address</label>
+                        <input id="email-address" name="email" type="email" autocomplete="email" readonly aria-describedby="email-note">
+                        <small id="email-note">This is the email address connected to your account.</small>
+                    </div>
+                    <p id="profile-save-message" class="settings-message" role="status" hidden></p>
+                    <button class="button button--primary" type="submit">Save changes</button>
+                </form>
+            </section>
+
+            <section class="settings-panel" data-settings-panel="organization" aria-labelledby="organization-panel-title" hidden>
+                <div class="settings-panel__heading">
+                    <h2 id="organization-panel-title" tabindex="-1">Organization details</h2>
+                    <p>Add the organization information clients can share with freelancers. Keep it accurate and current.</p>
+                </div>
+                <p id="organization-load-message" class="settings-message" role="status" hidden></p>
+                <p id="organization-error-message" class="settings-message settings-message--error" role="alert" hidden></p>
+                <form id="organization-form" class="settings-form organization-form" hidden>
+                    <div class="settings-field">
+                        <label for="organization-name">Organization name</label>
+                        <input id="organization-name" name="organizationName" type="text" maxlength="160" autocomplete="organization" required>
+                    </div>
+                    <div class="settings-field">
+                        <label for="organization-type">Organization type</label>
+                        <select id="organization-type" name="organizationType" required>
+                            <option value="">Select an organization type</option>
+                            <option value="Individual">Individual</option>
+                            <option value="Startup">Startup</option>
+                            <option value="Small business">Small business</option>
+                            <option value="Medium business">Medium business</option>
+                            <option value="Enterprise">Enterprise</option>
+                            <option value="Nonprofit">Nonprofit</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="settings-field">
+                        <label for="organization-industry">Industry</label>
+                        <input id="organization-industry" name="industry" type="text" maxlength="80" placeholder="For example, software or education" required>
+                    </div>
+                    <div class="settings-field">
+                        <label for="organization-website">Website <span class="settings-optional">Optional</span></label>
+                        <input id="organization-website" name="website" type="url" maxlength="255" placeholder="https://example.com" autocomplete="url">
+                    </div>
+                    <div class="settings-field settings-field--split">
+                        <div>
+                            <label for="organization-country">Country</label>
+                            <input id="organization-country" name="country" type="text" maxlength="100" autocomplete="country-name" required>
+                        </div>
+                        <div>
+                            <label for="organization-city">City</label>
+                            <input id="organization-city" name="city" type="text" maxlength="100" autocomplete="address-level2" required>
+                        </div>
+                    </div>
+                    <div class="settings-field">
+                        <label for="organization-about">What does your organization do? <span class="settings-optional">Optional</span></label>
+                        <textarea id="organization-about" name="businessDescription" rows="4" maxlength="2000"></textarea>
+                    </div>
+                    <p class="settings-field__hint">Only share information that is safe to show to freelancers. Do not enter passwords, financial details, or identity document numbers.</p>
+                    <p id="organization-save-message" class="settings-message" role="status" hidden></p>
+                    <button class="button button--primary" type="submit">Save changes</button>
+                </form>
+            </section>
+
+            <section class="settings-panel" data-settings-panel="account" aria-labelledby="account-panel-title" hidden>
+                <div class="settings-panel__heading">
+                    <h2 id="account-panel-title" tabindex="-1">Account overview</h2>
+                    <p>A quick summary of your WorkNest client account.</p>
+                </div>
+                <div class="settings-facts">
+                    <div class="settings-fact"><span>Account type</span><strong>Client</strong></div>
+                    <div class="settings-fact"><span>Member since</span><strong id="account-created">Loading…</strong></div>
+                    <div class="settings-fact"><span>Projects posted</span><strong id="account-project-count">—</strong></div>
+                    <div class="settings-fact"><span>Open or in progress</span><strong id="account-active-count">—</strong></div>
+                </div>
+            </section>
+
+            <section class="settings-panel" data-settings-panel="notifications" aria-labelledby="notifications-panel-title" hidden>
+                <div class="settings-panel__heading">
+                    <h2 id="notifications-panel-title" tabindex="-1">Notifications</h2>
+                    <p>Review project proposals, invitations, and delivery updates from the notification bell in the header.</p>
+                </div>
+                <a class="button button--secondary" href="index.html">Return to your overview</a>
+            </section>
+
+            <section class="settings-panel" data-settings-panel="help" aria-labelledby="help-panel-title" hidden>
+                <div class="settings-panel__heading">
+                    <h2 id="help-panel-title" tabindex="-1">Help and legal</h2>
+                    <p>Find support information and review the terms that apply to your account.</p>
+                </div>
+                <div class="settings-inline-links">
+                    <a href="../../legal/help.html">Help and support</a>
+                    <a href="../../legal/terms.html">Terms and conditions</a>
+                    <a href="../../legal/privacy.html">Privacy policy</a>
+                </div>
+            </section>
+
+            <section class="settings-panel" data-settings-panel="delete" aria-labelledby="delete-panel-title" hidden>
+                <div class="settings-panel__heading">
+                    <h2 id="delete-panel-title" tabindex="-1">Delete account</h2>
+                    <p>Account deletion removes your personal account details from WorkNest.</p>
+                </div>
+                <div class="settings-delete-box">
+                    <h3>Before you continue</h3>
+                    <p>Your past project records are retained for history and anonymized. You must close or complete any open or in-progress projects before your account can be deleted. This action cannot be undone.</p>
+                    <form id="delete-account-form" class="settings-form">
+                        <div class="settings-field">
+                            <label for="current-password">Current password</label>
+                            <input id="current-password" name="currentPassword" type="password" autocomplete="current-password" required>
+                        </div>
+                        <div class="settings-field">
+                            <label for="delete-confirmation">Type DELETE to confirm</label>
+                            <input id="delete-confirmation" name="confirmation" type="text" autocomplete="off" required>
+                        </div>
+                        <input id="delete-csrf-token" name="csrfToken" type="hidden">
+                        <p id="delete-message" class="settings-message" role="status" hidden></p>
+                        <button id="delete-account-button" class="settings-delete-button" type="submit">Delete my account</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../../js/notifications.js"></script>
+    <script src="../../js/client-account-settings.js"></script>
+    <script src="../../js/worknest-footer.js"></script>
+</body>
+</html>

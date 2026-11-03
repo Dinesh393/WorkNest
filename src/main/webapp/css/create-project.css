@@ -287,3 +287,16 @@
         text-align: left;
     }
 }
+
+
+/* Hide budget number spinners for a cleaner field. */
+.create-project-page .project-form input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.create-project-page .project-form input[type="number"]::-webkit-inner-spin-button,
+.create-project-page .project-form input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
