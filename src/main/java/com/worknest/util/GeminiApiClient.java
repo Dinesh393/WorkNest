@@ -41,7 +41,8 @@ public final class GeminiApiClient {
             throws IOException, InterruptedException, ApiException {
         String apiKey = System.getenv("GEMINI_API_KEY");
         if (apiKey == null || apiKey.isBlank()) {
-            throw new ApiException("AI drafting is not configured on the server.", 0);
+            LOGGER.warning("AI configuration is missing: GEMINI_API_KEY is not set on this server.");
+            throw new ApiException("AI is not configured on this server. Add GEMINI_API_KEY to the deployed service environment.", 0);
         }
         if (prompt == null || prompt.isBlank()
                 || maxOutputTokens < 1 || maxOutputTokens > 4096) {
@@ -94,6 +95,7 @@ public final class GeminiApiClient {
         }
         logDuration("completed", response.statusCode(), requestStarted);
         if (response.statusCode() < 200 || response.statusCode() >= 300) {
+            logProviderError(response.statusCode(), response.body());
             throw apiError(response.statusCode());
         }
 
@@ -126,14 +128,37 @@ public final class GeminiApiClient {
                 + " status=" + status + " durationMs=" + elapsedMs);
     }
 
+    private static void logProviderError(int status, String body) {
+        String code = "unknown";
+        String detail = "";
+        try {
+            JSONObject providerError = new JSONObject(body).optJSONObject("error");
+            if (providerError != null) {
+                code = providerError.optString("status", "unknown");
+                detail = providerError.optString("message", "");
+            }
+        } catch (RuntimeException ignored) {
+            // Do not log the response body when the provider returns an unknown format.
+        }
+        LOGGER.warning("AI provider error status=" + status
+                + " code=" + safeLogValue(code, 80)
+                + (detail.isBlank() ? "" : " detail=" + safeLogValue(detail, 240)));
+    }
+
+    private static String safeLogValue(String value, int maxLength) {
+        if (value == null) return "";
+        String clean = value.replace('\r', ' ').replace('\n', ' ')
+                .replace('\t', ' ').trim().replaceAll("\\s+", " ");
+        return clean.length() <= maxLength ? clean : clean.substring(0, maxLength);
+    }
     private static ApiException apiError(int status) {
         if (status == 429) {
             return new ApiException(
-                    "The AI service is busy. Wait a little and try again.", status);
+                    "The Gemini API quota or rate limit was reached. Check the server key quota and try again later.", status);
         }
         if (status == 401 || status == 403) {
             return new ApiException(
-                    "The AI service rejected its credentials or model access. Check the server configuration.", status);
+                    "The AI provider rejected its credentials or model access. Check GEMINI_API_KEY and Gemini API access in the server settings.", status);
         }
         if (status == 400 || status == 404) {
             return new ApiException(

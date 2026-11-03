@@ -118,7 +118,7 @@ public class AiProjectUpdatesSummaryServlet extends HttpServlet {
                 + "newest first. Project title: " + new JSONObject().put("title", projectTitle)
                 + " Updates JSON: " + updates;
         try {
-            String summary = GeminiApiClient.generateText(prompt, 700).trim();
+            String summary = GeminiApiClient.generateText(prompt, 550).trim();
             if (summary.length() > 3500) summary = summary.substring(0, 3500).trim();
             if (summary.length() < 20) {
                 writeError(response, HttpServletResponse.SC_BAD_GATEWAY,

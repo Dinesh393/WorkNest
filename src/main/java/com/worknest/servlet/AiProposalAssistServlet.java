@@ -147,7 +147,7 @@ public class AiProposalAssistServlet extends HttpServlet {
                 + "\nFreelancer's own notes JSON: " + new JSONObject().put("notes", notes);
 
         try {
-            String coverLetter = GeminiApiClient.generateText(prompt, 650).trim();
+            String coverLetter = GeminiApiClient.generateText(prompt, 450).trim();
             if (coverLetter.length() > 5000) {
                 coverLetter = coverLetter.substring(0, 5000).trim();
             }

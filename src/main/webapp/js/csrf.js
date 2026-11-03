@@ -13,7 +13,7 @@
     if (cachedToken) return Promise.resolve(cachedToken);
     if (!tokenPromise) {
       tokenPromise = (async () => {
-        for (let attempt = 0; attempt < 2; attempt += 1) {
+        for (let attempt = 0; attempt < 3; attempt += 1) {
           try {
             const response = await tokenRequest(`${contextPath}/csrf-token`, {
               method: "GET",
@@ -22,7 +22,7 @@
               headers: { Accept: "application/json" }
             });
             if (!response.ok) {
-              if (attempt === 0 && [502, 503, 504].includes(response.status)) {
+              if (attempt < 2 && [429, 502, 503, 504].includes(response.status)) {
                 await new Promise(resolve => window.setTimeout(resolve, 350));
                 continue;
               }
@@ -35,7 +35,7 @@
             cachedToken = payload.token;
             return cachedToken;
           } catch (error) {
-            if (attempt === 0 && error.name !== "AbortError") {
+            if (attempt < 2 && error.name !== "AbortError") {
               await new Promise(resolve => window.setTimeout(resolve, 350));
               continue;
             }
