@@ -47,7 +47,9 @@
     document.querySelectorAll("footer").forEach(footer => footer.remove());
 
     const footer = document.createElement("footer");
-    footer.className = "worknest-footer";
+    footer.className = isClient
+        ? "worknest-footer worknest-footer--client"
+        : "worknest-footer";
     const inner = document.createElement("div");
     inner.className = "worknest-footer__inner";
 

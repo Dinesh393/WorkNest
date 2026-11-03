@@ -89,6 +89,51 @@ body > footer.worknest-footer .worknest-footer__bottom p {
     line-height: 1.5;
 }
 
+/* Client dashboard footer follows the light public homepage footer palette. */
+body > footer.worknest-footer.worknest-footer--client {
+    margin-top: 64px;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-ink);
+}
+
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__inner {
+    width: min(1240px, calc(100% - 48px));
+    gap: 36px;
+    padding-block: 44px 38px;
+}
+
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__wordmark {
+    color: var(--color-ink);
+}
+
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__brand p,
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__group a,
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__bottom p {
+    color: var(--color-ink-muted);
+}
+
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__group h2 {
+    color: var(--color-ink);
+}
+
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__group a:hover {
+    color: var(--color-accent);
+}
+
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__group a:focus-visible,
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__wordmark:focus-visible {
+    outline-color: var(--color-focus);
+}
+
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__bottom {
+    border-top-color: var(--color-border);
+}
+
+body > footer.worknest-footer.worknest-footer--client .worknest-footer__bottom p {
+    width: min(1240px, calc(100% - 48px));
+}
+
 @media (max-width: 720px) {
     body > footer.worknest-footer .worknest-footer__inner {
         grid-template-columns: repeat(2, minmax(0, 1fr));
