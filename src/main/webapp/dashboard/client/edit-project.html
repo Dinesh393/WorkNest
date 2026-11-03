@@ -443,7 +443,7 @@ html body.dashboard-body header.site-header .site-header__actions .button {
 
 <script src="../../js/skill-chips.js"></script>
 <script>
-    const contextPath = "/WorkNest";
+    const contextPath = window.location.pathname.split("/dashboard/")[0];
     const params = new URLSearchParams(window.location.search);
     const projectId = params.get("id");
 

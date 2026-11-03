@@ -785,7 +785,7 @@
 <script>
 "use strict";
 
-const contextPath = "/WorkNest";
+const contextPath = window.location.pathname.split("/dashboard/")[0];
 
 const params = new URLSearchParams(window.location.search);
 const projectId = params.get("projectId");

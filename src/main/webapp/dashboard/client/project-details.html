@@ -346,7 +346,7 @@ dialog::backdrop { background: rgba(24, 26, 22, .48); }
 <script>
 "use strict";
 
-const contextPath = "/WorkNest";
+const contextPath = window.location.pathname.split("/dashboard/")[0];
 const params = new URLSearchParams(window.location.search);
 const projectId = params.get("id");
 

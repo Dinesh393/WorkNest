@@ -683,7 +683,7 @@
     </footer>
     <script>
         "use strict";
-        const contextPath = "/WorkNest";
+        const contextPath = window.location.pathname.split("/dashboard/")[0];
         const searchInput = document.getElementById("project-search");
         const typeFilter = document.getElementById("project-type-filter");
         const clearFiltersButton = document.getElementById("clear-filters-button");

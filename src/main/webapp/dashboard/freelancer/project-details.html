@@ -537,7 +537,7 @@
 
     "use strict";
 
-    const contextPath = "/WorkNest";
+    const contextPath = window.location.pathname.split("/dashboard/")[0];
 
     const detailsMessage = document.getElementById("details-message");
     const detailsCard = document.getElementById("project-details-card");

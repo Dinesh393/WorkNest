@@ -249,7 +249,7 @@
 <script src="../../js/skill-chips.js"></script>
 <script>
 "use strict";
-const contextPath = "/WorkNest";
+const contextPath = window.location.pathname.split("/dashboard/")[0];
 const form = document.getElementById("profile-form");
 const accountNameInput = document.getElementById("account-name");
 const accountEmailInput = document.getElementById("account-email");

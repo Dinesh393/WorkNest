@@ -504,7 +504,7 @@
 </footer>
 <script type="module">
 "use strict";
-const contextPath = "/WorkNest";
+const contextPath = window.location.pathname.split("/dashboard/")[0];
 const welcomeHeading = document.getElementById("welcome-heading");
 const activeCount = document.getElementById("active-projects-count");
 const completedCount = document.getElementById("completed-projects-count");

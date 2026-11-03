@@ -119,7 +119,7 @@
 <footer class="dashboard-footer"><p>© WorkNest. Built for better collaboration.</p></footer>
 <script>
 "use strict";
-const contextPath = "/WorkNest";
+const contextPath = window.location.pathname.split("/dashboard/")[0];
 const query = new URLSearchParams(window.location.search);
 const userId = query.get("userId");
 const projectId = query.get("projectId");
