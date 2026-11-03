@@ -21,8 +21,8 @@
         }
 
         body.dashboard-body {
-            background: #F8F7F2;
-            color: #24271F;
+            background: #F8FAFC;
+            color: #0F172A;
         }
 
         /* Shared Freelancer Dashboard header: keep navigation identical on every freelancer page. */
@@ -69,7 +69,7 @@
             text-decoration: none;
             transition: color .18s ease, background-color .18s ease, box-shadow .18s ease;
         }.dashboard-nav .site-nav__link:focus-visible {
-            outline: 3px solid rgba(80, 64, 216, .28);
+            outline: 3px solid rgba(29,78,216, .28);
             outline-offset: 2px;
         }
 
@@ -77,7 +77,7 @@
         .dashboard-mobile-nav a:focus-visible,
         .freelancer-active-project a:focus-visible,
         .freelancer-active-project--clickable:focus-visible {
-            outline: 3px solid rgba(80, 64, 216, .35);
+            outline: 3px solid rgba(29,78,216, .35);
             outline-offset: 3px;
         }
 
@@ -130,7 +130,7 @@
             width: min(1080px, calc(100% - 48px));
             margin: 0 auto;
             padding: 42px 0 68px;
-            color: #24271F;
+            color: #0F172A;
             min-height: 62vh;
         }
 
@@ -141,7 +141,7 @@
 
         .proposals-eyebrow {
             margin: 0 0 10px;
-            color: #77796F;
+            color: #64748B;
             font-size: .76rem;
             font-weight: 750;
             letter-spacing: .12em;
@@ -150,7 +150,7 @@
 
         .proposals-heading {
             margin: 0;
-            color: #24271F;
+            color: #0F172A;
             font-family: inherit;
             font-size: clamp(2rem, 4vw, 2.7rem);
             font-weight: 750;
@@ -161,7 +161,7 @@
         .proposals-intro {
             max-width: 680px;
             margin: 14px 0 0;
-            color: #6B6D66;
+            color: #64748B;
             line-height: 1.75;
         }
 
@@ -175,7 +175,7 @@
         .summary-card {
             min-width: 0;
             padding: 21px 22px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 17px;
             background: #FFFFFF;
             box-shadow: 0 7px 24px rgb(36 39 31 / 3%);
@@ -184,14 +184,14 @@
         .summary-card span {
             display: block;
             margin-bottom: 11px;
-            color: #77796F;
+            color: #64748B;
             font-size: .82rem;
             font-weight: 650;
         }
 
         .summary-card strong {
             display: block;
-            color: #24271F;
+            color: #0F172A;
             font-size: 1.85rem;
             font-weight: 750;
             letter-spacing: -.04em;
@@ -208,10 +208,10 @@
         }
 
         .proposals-toolbar h2 {
-            margin: 0;
-            color: #292B25;
-            font-size: 1.35rem;
-            font-weight: 750;
+            margin: 0; font-family: var(--font-display);
+            color: #0F172A;
+            font-size: 1.6rem;
+            font-weight: 400;
             letter-spacing: -.02em;
         }
 
@@ -219,17 +219,17 @@
             min-height: 44px;
             min-width: 180px;
             padding: 9px 35px 9px 12px;
-            border: 1px solid #DDDAD0;
+            border: 1px solid #E2E8F0;
             border-radius: 10px;
             background: #FFFFFF;
-            color: #24271F;
+            color: #0F172A;
             font: inherit;
             font-size: .88rem;
         }
 
         .proposals-filter:focus-visible {
             outline: none;
-            border-color: #5040D8;
+            border-color: #1D4ED8;
             box-shadow: 0 0 0 3px rgb(80 64 216 / 13%);
         }
 
@@ -241,7 +241,7 @@
         .proposal-card {
             min-width: 0;
             padding: clamp(20px, 3vw, 26px);
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 18px;
             background: #FFFFFF;
             box-shadow: 0 7px 24px rgb(36 39 31 / 3%);
@@ -250,21 +250,21 @@
         .invitations-section { margin: 0 0 32px; }
         .invitations-section h2 { margin: 0 0 14px; font-size: 1.25rem; }
         .invitations-list { display: grid; gap: 14px; }
-        .invitation-card { padding: 20px; border: 1px solid var(--border, #E8E5DC); border-radius: 12px; background: #fff; }
+        .invitation-card { padding: 20px; border: 1px solid var(--border, #E2E8F0); border-radius: 12px; background: #fff; }
         .invitation-card h3 { margin: 0 0 6px; font-size: 1.05rem; }
-        .invitation-card__meta, .invitation-card__message { margin: 8px 0 0; color: var(--text-muted, #62645E); line-height: 1.55; }
+        .invitation-card__meta, .invitation-card__message { margin: 8px 0 0; color: var(--text-muted, #334155); line-height: 1.55; }
         .invitation-card__amount { margin: 14px 0 0; font-weight: 700; }
         .invitation-card__actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
-        .invitation-card__actions button { min-height: 40px; padding: 0 14px; border: 1px solid var(--wn-border, #E8E5DC); border-radius: 8px; background: #fff; color: var(--wn-ink, #24271F); font-family: inherit; font-weight: 700; cursor: pointer; }
-        .invitation-card__actions .accept-invitation { border-color: var(--wn-purple, #5040D8); background: var(--wn-purple, #5040D8); color: #fff; }
-        .invitation-card__actions button:hover:not(:disabled) { background: var(--wn-purple-soft, #F0EEFF); color: var(--wn-purple, #5040D8); }
-        .invitation-card__actions .accept-invitation:hover:not(:disabled) { background: #4031B8; color: #fff; }
-        .invitation-card__actions button:focus-visible { outline: 3px solid rgba(80,64,216,.28); outline-offset: 2px; }
+        .invitation-card__actions button { min-height: 40px; padding: 0 14px; border: 1px solid var(--wn-border, #E2E8F0); border-radius: 8px; background: #fff; color: var(--wn-ink, #0F172A); font-family: inherit; font-weight: 700; cursor: pointer; }
+        .invitation-card__actions .accept-invitation { border-color: var(--wn-purple, #1D4ED8); background: var(--wn-purple, #1D4ED8); color: #fff; }
+        .invitation-card__actions button:hover:not(:disabled) { background: var(--wn-purple-soft, #EFF6FF); color: var(--wn-purple, #1D4ED8); }
+        .invitation-card__actions .accept-invitation:hover:not(:disabled) { background: #1D4ED8; color: #fff; }
+        .invitation-card__actions button:focus-visible { outline: 3px solid rgba(29,78,216,.28); outline-offset: 2px; }
         .invitation-card__actions button:disabled { opacity: .6; cursor: wait; }
-        .invitation-empty { padding: 18px; border: 1px dashed var(--wn-border, #E8E5DC); border-radius: 10px; color: var(--wn-muted, #6B6D66); }
+        .invitation-empty { padding: 18px; border: 1px dashed var(--wn-border, #E2E8F0); border-radius: 10px; color: var(--wn-muted, #64748B); }
 
         .proposal-card:hover {
-            border-color: #D8D2F7;
+            border-color: #BFDBFE;
             box-shadow: 0 11px 28px rgb(36 39 31 / 6%);
         }
 
@@ -279,7 +279,7 @@
 
         .proposal-card h3 {
             margin: 0 0 9px;
-            color: #24271F;
+            color: #0F172A;
             font-size: 1.12rem;
             font-weight: 750;
             line-height: 1.45;
@@ -291,16 +291,16 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 8px;
-            color: #77796F;
+            color: #64748B;
             font-size: .81rem;
         }
 
         .proposal-type {
             padding: 5px 9px;
-            border: 1px solid #EAE8E0;
+            border: 1px solid #E2E8F0;
             border-radius: 7px;
-            background: #F8F7F2;
-            color: #55574F;
+            background: #F8FAFC;
+            color: #334155;
             font-weight: 650;
         }
 
@@ -327,20 +327,20 @@
 
         .proposal-status--pending {
             border-color: #F0DCA9;
-            background: #FFF6DF;
+            background: #FEF3C7;
             color: #805300;
         }
 
         .proposal-status--accepted {
             border-color: #CBE5D2;
             background: #EAF5ED;
-            color: #267444;
+            color: #166534;
         }
 
         .proposal-status--rejected {
             border-color: #F1CCCC;
-            background: #FFF0F0;
-            color: #A52820;
+            background: #FEF2F2;
+            color: #B91C1C;
         }
 
         .proposal-details {
@@ -353,22 +353,22 @@
         .proposal-detail {
             min-width: 0;
             padding: 14px 15px;
-            border: 1px solid #EFEEE8;
+            border: 1px solid #F8FAFC;
             border-radius: 12px;
-            background: #FAF9F6;
+            background: #F8FAFC;
             overflow-wrap: anywhere;
         }
 
         .proposal-detail span {
             display: block;
             margin-bottom: 7px;
-            color: #77796F;
+            color: #64748B;
             font-size: .78rem;
             font-weight: 600;
         }
 
         .proposal-detail strong {
-            color: #292B25;
+            color: #1D4ED8;
             font-size: .93rem;
             font-weight: 750;
             line-height: 1.5;
@@ -377,14 +377,14 @@
 
         .proposal-cover-heading {
             margin: 0 0 8px;
-            color: #34362F;
+            color: #1D4ED8;
             font-size: .87rem;
             font-weight: 750;
         }
 
         .proposal-cover-letter {
             margin: 0;
-            color: #62645C;
+            color: #334155;
             font-size: .9rem;
             line-height: 1.75;
             white-space: pre-wrap;
@@ -394,26 +394,26 @@
         .proposals-message,
         .proposals-empty {
             padding: 34px 24px;
-            border: 1px solid #E8E5DC;
+            border: 1px solid #E2E8F0;
             border-radius: 17px;
             background: #FFFFFF;
             text-align: center;
         }
 
         .proposals-message {
-            color: #62645C;
+            color: #334155;
             line-height: 1.7;
         }
 
         .proposals-message--error {
             border-color: #F2C6C2;
-            background: #FFF0EF;
-            color: #A52820;
+            background: #FEF2F2;
+            color: #B91C1C;
         }
 
         .proposals-empty h2 {
             margin: 0 0 9px;
-            color: #34362F;
+            color: #1D4ED8;
             font-size: 1.25rem;
             font-weight: 750;
         }
@@ -421,7 +421,7 @@
         .proposals-empty p {
             max-width: 520px;
             margin: 0 auto 20px;
-            color: #6B6D66;
+            color: #64748B;
             line-height: 1.7;
         }
 
@@ -432,9 +432,9 @@
             justify-content: center;
             min-height: 44px;
             padding: 0 17px;
-            border: 1px solid #24271F;
+            border: 1px solid #0F172A;
             border-radius: 9px;
-            background: #24271F;
+            background: #1D4ED8;
             color: #FFFFFF;
             font: inherit;
             font-size: .86rem;
@@ -446,8 +446,8 @@
 
         .proposals-primary-link:hover,
         .proposals-retry-button:hover {
-            border-color: #5040D8;
-            background: #5040D8;
+            border-color: #1D4ED8;
+            background: #1E40AF;
         }
 
         .visually-hidden {
@@ -543,7 +543,7 @@ html body.dashboard-body header.site-header {
     top: 0;
     z-index: 50;
     background: rgba(248, 247, 242, .94);
-    border-bottom: 1px solid #E8E5DC;
+    border-bottom: 1px solid #E2E8F0;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
 }
@@ -555,7 +555,7 @@ html body.dashboard-body header.site-header .site-header__inner {
 }
 html body.dashboard-body header.site-header .wordmark {
     flex: 0 0 auto;
-    color: #24271F;
+    color: #0F172A;
     font-size: 1.6rem;
     font-weight: 800;
     letter-spacing: -.055em;
@@ -576,7 +576,7 @@ html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link
     padding: 0 18px;
     border-radius: 10px;
     background: transparent;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .95rem;
     font-weight: 600;
     text-decoration: none;
@@ -586,13 +586,13 @@ html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
-    background: #F0EEFF;
-    color: #5040D8;
+    background: #EFF6FF;
+    color: #1D4ED8;
 }
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body.dashboard-body header.site-header .wordmark:focus-visible,
 html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
-    outline: 2px solid #5040D8;
+    outline: 2px solid #1D4ED8;
     outline-offset: 2px;
 }
 html body.dashboard-body header.site-header .site-header__actions {
@@ -606,10 +606,10 @@ html body.dashboard-body header.site-header .dashboard-role {
     align-items: center;
     min-height: 34px;
     padding: 0 13px;
-    border: 1px solid #E8E5DC;
+    border: 1px solid #E2E8F0;
     border-radius: 999px;
     background: #FFFFFF;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .8rem;
     font-weight: 700;
     white-space: nowrap;
@@ -636,7 +636,8 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     <link rel="stylesheet" href="../../css/client-ui.css">
     <link rel="stylesheet" href="../../css/notifications.css">
     <link rel="stylesheet" href="../../css/marketplace-refresh.css">
-    <link rel="stylesheet" href="../../css/freelancer-ui.css">
+    <link rel="stylesheet" href="../../css/client-dashboard-refresh.css?v=20261103-freelancer">
+    <link rel="stylesheet" href="../../css/freelancer-ui.css?v=20261103-blue2">
     <script src="../../js/freelancer-organizations.js"></script>
 </head>
 
@@ -653,7 +654,7 @@ html body.dashboard-body header.site-header .site-header__actions .button {
         </nav>
         <div class="site-header__actions">
             <span class="dashboard-role">Freelancer</span>
-            <a class="profile-entry-button" href="profile.html" aria-label="Freelancer profile">
+            <a class="button button--dark profile-entry-button" href="profile.html" aria-label="Freelancer profile">
                 <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
                 <span>Profile</span>
             </a>
@@ -1168,6 +1169,10 @@ loadProjectInvitations();
 </script>
 
     <script src="../../js/notifications.js"></script>
-    <script src="../../js/worknest-footer.js"></script>
+    <script src="../../js/worknest-footer.js?v=20261103-light"></script>
 </body>
 </html>
+
+
+
+

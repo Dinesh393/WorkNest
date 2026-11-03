@@ -141,6 +141,16 @@
 </servlet-mapping>
 
 <servlet>
+    <servlet-name>DeleteFreelancerAccountServlet</servlet-name>
+    <servlet-class>com.worknest.servlet.DeleteFreelancerAccountServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>DeleteFreelancerAccountServlet</servlet-name>
+    <url-pattern>/delete-freelancer-account</url-pattern>
+</servlet-mapping>
+
+<servlet>
     <servlet-name>FreelancerProfileServlet</servlet-name>
     <servlet-class>com.worknest.servlet.FreelancerProfileServlet</servlet-class>
 </servlet>

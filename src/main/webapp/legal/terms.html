@@ -4,50 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Terms and conditions for using WorkNest.">
+    <meta name="theme-color" content="#F8FAFC">
     <title>Terms and Conditions | WorkNest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/design-tokens.css">
     <link rel="stylesheet" href="../css/base.css">
-    <style>
-        .legal-page { width: min(calc(100% - 40px), 860px); margin: 48px auto 64px; }
-        .legal-page h1 { margin: 0 0 12px; font-size: clamp(2rem, 5vw, 3rem); }
-        .legal-page__intro { margin-bottom: 28px; color: var(--color-ink-muted); }
-        .legal-section { padding: 22px 0; border-top: 1px solid var(--color-border); }
-        .legal-section h2 { margin: 0 0 10px; font-size: 1.2rem; }
-        .legal-section p, .legal-section li { color: var(--color-ink-soft); line-height: 1.7; }
-        .legal-section ul { padding-left: 22px; }
-        .legal-back { display: inline-block; margin-bottom: 22px; color: var(--color-accent); font-weight: 700; }
-    </style>
+    <link rel="stylesheet" href="../css/worknest-footer.css">
+    <link rel="stylesheet" href="../css/legal.css">
 </head>
-<body>
-    <main class="legal-page">
-        <a class="legal-back" href="../login.html">WorkNest</a>
+<body class="legal-body">
+    <header class="legal-header">
+        <div class="legal-header__inner">
+            <a class="wordmark" href="../index.html" aria-label="WorkNest home">worknest<span class="wordmark__period">.</span></a>
+            <nav class="legal-header__actions" aria-label="Help and legal">
+                <a class="legal-header__link" href="help.html">Help</a>
+                <a class="legal-header__link" href="terms.html" aria-current="page">Terms</a>
+                <a class="legal-header__link" href="privacy.html">Privacy</a>
+                <a class="legal-header__cta" href="../login.html">Sign in <span aria-hidden="true">&#8594;</span></a>
+            </nav>
+        </div>
+    </header>
+    <main class="legal-page" id="main-content">
+        <a class="legal-back" href="../login.html"><span aria-hidden="true">&#8592;</span> Back to sign in</a>
+        <p class="legal-eyebrow">LEGAL</p>
         <h1>Terms and conditions</h1>
         <p class="legal-page__intro">These terms describe how WorkNest is intended to be used as a project collaboration application.</p>
-
-        <section class="legal-section">
+        <div class="legal-card">
+            <section class="legal-section">
             <h2>Using WorkNest</h2>
             <p>Keep account details accurate, protect your sign-in credentials, and use the application only for lawful project collaboration. You are responsible for activity performed through your account.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>Projects and proposals</h2>
             <p>Clients are responsible for describing project requirements and reviewing proposals. Freelancers are responsible for the accuracy of their profiles, proposals, progress updates, and submitted work. WorkNest helps organize these interactions; users make their own selection and delivery decisions.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>AI-assisted content</h2>
             <p>AI-generated project drafts, proposal drafts, comparisons, and progress summaries are suggestions. They may be incomplete or inaccurate. Review and edit generated content before relying on it or submitting it.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>Payments and project arrangements</h2>
             <p>WorkNest does not currently process payments or provide escrow or freelancer payouts. Clients and freelancers are responsible for agreeing on and handling payment arrangements outside the application.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>Content and availability</h2>
             <p>Do not upload or share content that you do not have permission to use, or content that is unlawful, harmful, or abusive. WorkNest is provided as a project application and may change as it is maintained.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>Contact and changes</h2>
             <p>These terms may be updated when the application changes. If you have a question about this project, use the support information provided with the WorkNest project repository.</p>
         </section>
+        </div>
     </main>
     <script src="../js/worknest-footer.js"></script>
 </body>

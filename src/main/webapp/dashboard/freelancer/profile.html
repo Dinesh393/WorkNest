@@ -14,41 +14,41 @@
     <style>
         .profile-page { width: min(calc(100% - 32px), 900px); margin: 42px auto 70px; }
         .profile-intro { max-width: 690px; margin-bottom: 25px; }
-        .profile-eyebrow { margin: 0 0 9px; color: #5040D8; font-size: .75rem; font-weight: 750; letter-spacing: .1em; }
-        .profile-title { margin: 0; color: #24271F; font-size: clamp(1.9rem, 4vw, 2.55rem); letter-spacing: -.045em; }
-        .profile-subtitle { margin: 12px 0 0; color: #6B6D66; line-height: 1.65; }
-        .profile-progress-card, .profile-form-card, .profile-account-card { margin-top: 20px; padding: 24px; border: 1px solid #E8E5DC; border-radius: 16px; background: #fff; box-shadow: 0 8px 28px rgba(36,39,31,.04); }
-        .profile-account-card h2, .profile-group-title { margin: 0 0 16px; color: #24271F; font-size: 1.1rem; font-weight: 700; }
-        .profile-field input[readonly] { background: #F7F6F2; color: #62645D; cursor: not-allowed; }
-        .profile-section-divider { margin: 4px 0 0; padding-top: 18px; border-top: 1px solid #E8E5DC; }
-        .profile-field select { width: 100%; min-height: 46px; padding: 11px 13px; border: 1px solid #DAD8CF; border-radius: 9px; background: #fff; color: #24271F; font: inherit; }
-        .profile-field select:focus { outline: 3px solid rgba(80,64,216,.18); border-color: #5040D8; }
+        .profile-eyebrow { margin: 0 0 9px; color: #1D4ED8; font-size: .75rem; font-weight: 750; letter-spacing: .1em; }
+        .profile-title { margin: 0; color: #0F172A; font-size: clamp(1.9rem, 4vw, 2.55rem); letter-spacing: -.045em; }
+        .profile-subtitle { margin: 12px 0 0; color: #64748B; line-height: 1.65; }
+        .profile-progress-card, .profile-form-card, .profile-account-card { margin-top: 20px; padding: 24px; border: 1px solid #E2E8F0; border-radius: 16px; background: #fff; box-shadow: 0 8px 28px rgba(15,23,42,.04); }
+        .profile-account-card h2, .profile-group-title { margin: 0 0 16px; color: #0F172A; font-size: 1.1rem; font-weight: 700; }
+        .profile-field input[readonly] { background: #F8FAFC; color: #334155; cursor: not-allowed; }
+        .profile-section-divider { margin: 4px 0 0; padding-top: 18px; border-top: 1px solid #E2E8F0; }
+        .profile-field select { width: 100%; min-height: 46px; padding: 11px 13px; border: 1px solid #E2E8F0; border-radius: 9px; background: #fff; color: #0F172A; font: inherit; }
+        .profile-field select:focus { outline: 3px solid rgba(29,78,216,.18); border-color: #1D4ED8; }
         .profile-progress-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-        .profile-progress-head strong { color: #24271F; }
-        .profile-progress-head span { color: #5040D8; font-weight: 750; }
-        .profile-progress-track { height: 9px; margin-top: 13px; overflow: hidden; border-radius: 999px; background: #F0EEFF; }
-        .profile-progress-fill { width: 0; height: 100%; border-radius: inherit; background: #5040D8; transition: width 180ms ease; }
-        .profile-progress-hint { margin: 10px 0 0; color: #6B6D66; font-size: .85rem; }
+        .profile-progress-head strong { color: #0F172A; }
+        .profile-progress-head span { color: #1D4ED8; font-weight: 750; }
+        .profile-progress-track { height: 9px; margin-top: 13px; overflow: hidden; border-radius: 999px; background: #EFF6FF; }
+        .profile-progress-fill { width: 0; height: 100%; border-radius: inherit; background: #1D4ED8; transition: width 180ms ease; }
+        .profile-progress-hint { margin: 10px 0 0; color: #64748B; font-size: .85rem; }
         .profile-form { display: grid; gap: 20px; }
         .profile-field { display: grid; gap: 8px; min-width: 0; }
-        .profile-field label { color: #30322C; font-size: .9rem; font-weight: 700; }
-        .profile-field input, .profile-field textarea { width: 100%; min-height: 46px; padding: 11px 13px; border: 1px solid #DAD8CF; border-radius: 9px; background: #fff; color: #24271F; font: inherit; }
+        .profile-field label { color: #0F172A; font-size: .9rem; font-weight: 700; }
+        .profile-field input, .profile-field textarea { width: 100%; min-height: 46px; padding: 11px 13px; border: 1px solid #E2E8F0; border-radius: 9px; background: #fff; color: #0F172A; font: inherit; }
         .profile-field textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
-        .profile-field input:focus, .profile-field textarea:focus { outline: 3px solid rgba(80,64,216,.18); border-color: #5040D8; }
-        .profile-field small { color: #77786F; line-height: 1.45; }
+        .profile-field input:focus, .profile-field textarea:focus { outline: 3px solid rgba(29,78,216,.18); border-color: #1D4ED8; }
+        .profile-field small { color: #64748B; line-height: 1.45; }
         .profile-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
         .profile-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 3px; }
-        .profile-save { min-height: 46px; padding: 0 20px; border: 0; border-radius: 9px; background: #5040D8; color: #fff; font: inherit; font-weight: 750; cursor: pointer; }
-        .profile-save:hover { background: #4332C8; }
+        .profile-save { min-height: 46px; padding: 0 20px; border: 0; border-radius: 9px; background: #1D4ED8; color: #fff; font: inherit; font-weight: 750; cursor: pointer; }
+        .profile-save:hover { background: #1D4ED8; }
         .profile-save:disabled { opacity: .6; cursor: wait; }
-        .profile-cancel { color: #55564F; font-weight: 650; text-decoration: none; }
-        .profile-cancel:hover { color: #5040D8; text-decoration: underline; }
-        .profile-message { margin: 0; padding: 12px 14px; border-radius: 9px; background: #EAF7EE; color: #176B38; line-height: 1.5; }
-        .profile-message--error { background: #FDECEC; color: #A52828; }
+        .profile-cancel { color: #334155; font-weight: 650; text-decoration: none; }
+        .profile-cancel:hover { color: #1D4ED8; text-decoration: underline; }
+        .profile-message { margin: 0; padding: 12px 14px; border-radius: 9px; background: #F0FDF4; color: #176B38; line-height: 1.5; }
+        .profile-message--error { background: #FEF2F2; color: #B91C1C; }
         .profile-message[hidden] { display: none; }
         .profile-form .skill-chips { min-height: 46px; }
         .profile-form .skill-chips__entry { min-width: 180px; }
-        .profile-footer { padding: 26px 20px; border-top: 1px solid #E8E5DC; color: #77786F; text-align: center; font-size: .85rem; }
+        .profile-footer { padding: 26px 20px; border-top: 1px solid #E2E8F0; color: #64748B; text-align: center; font-size: .85rem; }
         @media (max-width: 650px) { .profile-grid { grid-template-columns: 1fr; } .profile-page { margin-top: 28px; } .profile-form-card, .profile-progress-card, .profile-account-card { padding: 19px; } .profile-actions { align-items: stretch; flex-direction: column; } .profile-save { width: 100%; } .profile-cancel { text-align: center; padding: 8px; } }
     /* ===== Shared freelancer header: identical on every freelancer page ===== */
 html body.dashboard-body header.site-header {
@@ -56,7 +56,7 @@ html body.dashboard-body header.site-header {
     top: 0;
     z-index: 50;
     background: rgba(248, 247, 242, .94);
-    border-bottom: 1px solid #E8E5DC;
+    border-bottom: 1px solid #E2E8F0;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
 }
@@ -68,7 +68,7 @@ html body.dashboard-body header.site-header .site-header__inner {
 }
 html body.dashboard-body header.site-header .wordmark {
     flex: 0 0 auto;
-    color: #24271F;
+    color: #0F172A;
     font-size: 1.6rem;
     font-weight: 800;
     letter-spacing: -.055em;
@@ -89,7 +89,7 @@ html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link
     padding: 0 18px;
     border-radius: 10px;
     background: transparent;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .95rem;
     font-weight: 600;
     text-decoration: none;
@@ -99,13 +99,13 @@ html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:hover,
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link[aria-current="page"] {
-    background: #F0EEFF;
-    color: #5040D8;
+    background: #EFF6FF;
+    color: #1D4ED8;
 }
 html body.dashboard-body header.site-header nav.dashboard-nav > a.site-nav__link:focus-visible,
 html body.dashboard-body header.site-header .wordmark:focus-visible,
 html body.dashboard-body header.site-header .site-header__actions .button:focus-visible {
-    outline: 2px solid #5040D8;
+    outline: 2px solid #1D4ED8;
     outline-offset: 2px;
 }
 html body.dashboard-body header.site-header .site-header__actions {
@@ -119,10 +119,10 @@ html body.dashboard-body header.site-header .dashboard-role {
     align-items: center;
     min-height: 34px;
     padding: 0 13px;
-    border: 1px solid #E8E5DC;
+    border: 1px solid #E2E8F0;
     border-radius: 999px;
     background: #FFFFFF;
-    color: #6B6D66;
+    color: #64748B;
     font-size: .8rem;
     font-weight: 700;
     white-space: nowrap;
@@ -146,12 +146,13 @@ html body.dashboard-body header.site-header .site-header__actions .button {
     html body.dashboard-body header.site-header .dashboard-role { display: none; }
 }
     </style>
+    <link rel="stylesheet" href="../../css/profile-settings.css">
     <link rel="stylesheet" href="../../css/notifications.css">
     <link rel="stylesheet" href="../../css/marketplace-refresh.css">
-    <link rel="stylesheet" href="../../css/freelancer-ui.css">
-    <script src="../../js/freelancer-organizations.js"></script>
+    <link rel="stylesheet" href="../../css/client-dashboard-refresh.css?v=20261103-freelancer">
+    <link rel="stylesheet" href="../../css/freelancer-ui.css?v=20261103-blue3">
 </head>
-<body class="dashboard-body freelancer-dashboard">
+<body class="dashboard-body freelancer-dashboard profile-settings-page-body">
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header">
     <div class="site-header__inner">
@@ -164,98 +165,105 @@ html body.dashboard-body header.site-header .site-header__actions .button {
         </nav>
         <div class="site-header__actions">
             <span class="dashboard-role">Freelancer</span>
-            <a class="profile-entry-button" href="profile.html" aria-label="Freelancer profile" aria-current="page">
+            <a class="button button--dark profile-entry-button" href="profile.html" aria-label="Freelancer profile" aria-current="page">
                 <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
                 <span>Profile</span>
             </a>
         </div>
     </div>
 </header>
-
-<main id="main-content" class="profile-page">
-    <div class="profile-intro">
-        <p class="profile-eyebrow">YOUR PROFESSIONAL PROFILE</p>
-        <h1 class="profile-title">Tell clients what you do best</h1>
-        <p class="profile-subtitle">Give clients a clear picture of your experience, skills, working style, and the work you can deliver.</p>
+<main id="main-content" class="profile-settings-main">
+    <div class="profile-settings-intro">
+        <p class="eyebrow">FREELANCER ACCOUNT</p>
+        <h1>My profile</h1>
+        <p>Show clients your experience, skills and the work you can deliver, and manage your account.</p>
     </div>
+    <div class="profile-settings-layout">
+        <aside class="settings-sidebar" aria-label="Account settings">
+            <p class="settings-sidebar__label">Account</p>
+            <nav class="settings-nav" aria-label="Settings sections">
+                <button class="settings-nav__item" type="button" data-settings-tab="profile" aria-current="page">My profile</button>
+                <button class="settings-nav__item settings-nav__item--danger" type="button" data-settings-tab="delete">Delete account</button>
+            </nav>
+            <hr class="settings-sidebar__divider">
+            <form class="settings-signout" action="../../logout" method="post">
+                <button type="submit">Log out</button>
+            </form>
+        </aside>
 
-    <section class="profile-account-card" aria-labelledby="account-details-title">
-        <h2 id="account-details-title">Account details</h2>
-        <div class="profile-grid">
-            <div class="profile-field">
-                <label for="account-name">Full name</label>
-                <input id="account-name" type="text" readonly aria-readonly="true" autocomplete="name" value="Loading…">
-                <small>Your account name is managed by WorkNest and cannot be edited here.</small>
+        <section class="settings-panel" data-settings-panel="profile" aria-labelledby="profile-panel-title">
+            <div class="settings-panel__heading">
+                <h2 id="profile-panel-title" tabindex="-1">My profile</h2>
+                <p>This is what clients see when they review your proposals and browse freelancers.</p>
             </div>
-            <div class="profile-field">
-                <label for="account-email">Email address</label>
-                <input id="account-email" type="email" readonly aria-readonly="true" autocomplete="email" value="Loading…">
-                <small>Your account email is private and cannot be edited here.</small>
+            <div class="settings-block" aria-labelledby="account-details-title">
+                <h3 id="account-details-title" class="settings-block__title">Account details</h3>
+                <div class="profile-grid">
+                    <div class="profile-field">
+                        <label for="account-name">Full name</label>
+                        <input id="account-name" type="text" readonly aria-readonly="true" autocomplete="name" value="Loading…">
+                        <small>Your account name is managed by WorkNest and cannot be edited here.</small>
+                    </div>
+                    <div class="profile-field">
+                        <label for="account-email">Email address</label>
+                        <input id="account-email" type="email" readonly aria-readonly="true" autocomplete="email" value="Loading…">
+                        <small>Your account email is private and cannot be edited here.</small>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <section class="profile-progress-card" aria-labelledby="profile-progress-title">
-        <div class="profile-progress-head">
-            <strong id="profile-progress-title">Profile completeness</strong>
-            <span id="profile-completeness">0%</span>
-        </div>
-        <div class="profile-progress-track" role="progressbar" aria-label="Profile completeness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="profile-progress-bar">
-            <div class="profile-progress-fill" id="profile-progress-fill"></div>
-        </div>
-        <p class="profile-progress-hint" id="profile-progress-hint">Add a headline, overview, skills, location, and rate to help clients understand your profile.</p>
-    </section>
-
-    <section class="profile-form-card" aria-label="Freelancer profile details">
-        <form id="profile-form" class="profile-form" novalidate>
+            <div class="settings-progress" aria-labelledby="profile-progress-title">
+                <div class="profile-progress-head">
+                    <strong id="profile-progress-title">Profile completeness</strong>
+                    <span id="profile-completeness">0%</span>
+                </div>
+                <div class="profile-progress-track" role="progressbar" aria-label="Profile completeness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="profile-progress-bar">
+                    <div class="profile-progress-fill" id="profile-progress-fill"></div>
+                </div>
+                <p class="profile-progress-hint" id="profile-progress-hint">Add a headline, overview, skills, location, and rate to help clients understand your profile.</p>
+            </div>
+            <div class="settings-block settings-block--form" aria-label="Freelancer profile details">
+                <h3 class="settings-block__title">Professional details</h3>
+                <form id="profile-form" class="profile-form settings-profile-form" novalidate>
             <div class="profile-field">
                 <label for="profile-headline">Professional headline</label>
                 <input id="profile-headline" name="headline" type="text" maxlength="120" autocomplete="organization-title" placeholder="For example, Java developer building reliable web applications">
                 <small>Keep it clear and specific. Maximum 120 characters.</small>
             </div>
-
             <div class="profile-field">
                 <label for="profile-overview">About you</label>
                 <textarea id="profile-overview" name="overview" maxlength="3000" placeholder="Describe your experience, the work you enjoy, and what clients can expect when working with you."></textarea>
                 <small id="overview-count">0 / 3000</small>
             </div>
-
             <div class="profile-field">
                 <label for="profile-skills">Skills</label>
                 <input id="profile-skills" name="skills" type="text" maxlength="1000" data-placeholder="Type a skill, then press Enter" aria-describedby="skills-help">
                 <small id="skills-help">Press Enter after each skill. Multi-word skills are supported.</small>
             </div>
-
             <div class="profile-field">
                 <label for="profile-experience-years">Years of experience</label>
                 <input id="profile-experience-years" name="experienceYears" type="number" min="0" max="60" step="1" inputmode="numeric" placeholder="For example, 3">
                 <small>Enter 0 if you are starting your professional journey.</small>
             </div>
-
             <div class="profile-field">
                 <label for="profile-experience">Relevant experience</label>
                 <textarea id="profile-experience" name="experience" maxlength="2500" placeholder="Describe relevant roles, projects, responsibilities, or results. You can include dates and tools you used."></textarea>
                 <small id="experience-count">0 / 2500</small>
             </div>
-
             <div class="profile-field">
                 <label for="profile-education">Education</label>
                 <textarea id="profile-education" name="education" maxlength="1500" placeholder="Degree or course, institution, and graduation year (optional)."></textarea>
                 <small id="education-count">0 / 1500</small>
             </div>
-
             <div class="profile-field">
                 <label for="profile-certifications">Certifications and courses</label>
                 <textarea id="profile-certifications" name="certifications" maxlength="1500" placeholder="List relevant certifications, courses, or professional training."></textarea>
                 <small id="certifications-count">0 / 1500</small>
             </div>
-
             <div class="profile-field">
                 <label for="profile-languages">Languages</label>
                 <input id="profile-languages" name="languages" type="text" maxlength="500" data-placeholder="Add a language, then press Enter" aria-describedby="languages-help">
                 <small id="languages-help">Press Enter after each language. Multi-word names are supported.</small>
             </div>
-
             <div class="profile-grid">
                 <div class="profile-field">
                     <label for="profile-location">Location</label>
@@ -282,13 +290,11 @@ html body.dashboard-body header.site-header .site-header__actions .button {
                     <small>Optional. Enter your preferred rate in Indian rupees.</small>
                 </div>
             </div>
-
             <div class="profile-field">
                 <label for="profile-portfolio">Portfolio or work sample URL</label>
                 <input id="profile-portfolio" name="portfolioUrl" type="url" maxlength="2048" inputmode="url" placeholder="https://example.com/your-work">
                 <small>Use a complete link starting with http:// or https://.</small>
             </div>
-
             <div class="profile-grid">
                 <div class="profile-field">
                     <label for="profile-linkedin">LinkedIn URL (optional)</label>
@@ -299,24 +305,39 @@ html body.dashboard-body header.site-header .site-header__actions .button {
                     <input id="profile-github" name="githubUrl" type="url" maxlength="2048" inputmode="url" placeholder="https://github.com/your-name">
                 </div>
             </div>
-
             <p id="profile-message" class="profile-message" role="status" aria-live="polite" hidden></p>
             <div class="profile-actions">
                 <button id="profile-save" class="profile-save" type="submit">Save profile</button>
                 <a class="profile-cancel" href="index.html">Back to dashboard</a>
             </div>
         </form>
-    </section>
-    <section class="profile-account-actions" aria-labelledby="profile-account-actions-title">
-        <h2 id="profile-account-actions-title">Account</h2>
-        <p>Sign out of your WorkNest account on this device.</p>
-        <form action="../../logout" method="post">
-            <button class="button button--secondary" type="submit">Log out</button>
-        </form>
-    </section>
-</main>
+            </div>
+        </section>
 
-<footer class="profile-footer"><p>© WorkNest. Built for better collaboration.</p></footer>
+        <section class="settings-panel" data-settings-panel="delete" aria-labelledby="delete-panel-title" hidden>
+            <div class="settings-panel__heading">
+                <h2 id="delete-panel-title" tabindex="-1">Delete account</h2>
+                <p>Account deletion removes your personal account details from WorkNest.</p>
+            </div>
+            <div class="settings-delete-box">
+                <h3>Before you continue</h3>
+                <p>Your profile is removed and your pending proposals and offers are withdrawn. Past project records are kept for history without your personal details. Finish any in-progress projects before deleting your account. This action cannot be undone.</p>
+                <form id="delete-account-form" class="settings-form">
+                    <div class="settings-field">
+                        <label for="current-password">Current password</label>
+                        <input id="current-password" name="currentPassword" type="password" autocomplete="current-password" required>
+                    </div>
+                    <div class="settings-field">
+                        <label for="delete-confirmation">Type DELETE to confirm</label>
+                        <input id="delete-confirmation" name="confirmation" type="text" autocomplete="off" required>
+                    </div>
+                    <p id="delete-message" class="settings-message" role="status" hidden></p>
+                    <button id="delete-account-button" class="settings-delete-button" type="submit">Delete my account</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</main>
 <script src="../../js/skill-chips.js"></script>
 <script>
 "use strict";
@@ -351,13 +372,11 @@ const progressFill = document.getElementById("profile-progress-fill");
 const progressHint = document.getElementById("profile-progress-hint");
 const chips = window.initSkillChips(skillsInput, { max: 1000, maxEach: 60, onChange: updateCompleteness });
 const languageChips = window.initSkillChips(languagesInput, { max: 500, maxEach: 40 });
-
 function showMessage(text, isError) {
     message.textContent = text;
     message.classList.toggle("profile-message--error", Boolean(isError));
     message.hidden = !text;
 }
-
 function updateCompleteness() {
     const values = [headlineInput.value, overviewInput.value, skillsInput.value, experienceYearsInput.value, locationInput.value, availabilityInput.value];
     const done = values.filter(value => String(value || "").trim() !== "").length;
@@ -369,7 +388,6 @@ function updateCompleteness() {
         ? "Your key profile details are complete. Add education, certifications, languages, or work samples to give clients more context."
         : "Add a headline, overview, skills, experience, location, and availability to build a strong profile.";
 }
-
 overviewInput.addEventListener("input", () => {
     overviewCount.textContent = overviewInput.value.length + " / 3000";
     updateCompleteness();
@@ -381,7 +399,6 @@ overviewInput.addEventListener("input", () => {
 availabilityInput.addEventListener("change", updateCompleteness);
 skillsInput.addEventListener("input", updateCompleteness);
 languagesInput.addEventListener("input", updateCompleteness);
-
 async function readResponse(response, fallback) {
     let data = {};
     try { data = await response.json(); } catch (_) { /* handled below */ }
@@ -392,7 +409,6 @@ async function readResponse(response, fallback) {
     if (!response.ok) throw new Error(data.error || fallback);
     return data;
 }
-
 async function loadProfile() {
     try {
         const response = await fetch(contextPath + "/freelancer-profile", {
@@ -427,12 +443,10 @@ async function loadProfile() {
         showMessage(error.message || "Unable to load your profile.", true);
     }
 }
-
 form.addEventListener("submit", async event => {
     event.preventDefault();
     chips.commit();
     languageChips.commit();
-
     if (!form.reportValidity()) return;
     for (const [input, label] of [[portfolioInput, "Portfolio"], [linkedinInput, "LinkedIn"], [githubInput, "GitHub"]]) {
         const value = input.value.trim();
@@ -446,7 +460,6 @@ form.addEventListener("submit", async event => {
             return;
         }
     }
-
     saveButton.disabled = true;
     saveButton.textContent = "Saving...";
     showMessage("", false);
@@ -482,10 +495,78 @@ form.addEventListener("submit", async event => {
         saveButton.textContent = "Save profile";
     }
 });
-
 loadProfile();
+
+/* ---- Sidebar tabs and account deletion ---- */
+(function () {
+    const panels = Array.from(document.querySelectorAll("[data-settings-panel]"));
+    const tabs = Array.from(document.querySelectorAll("[data-settings-tab]"));
+    const deleteForm = document.getElementById("delete-account-form");
+    const deleteMessage = document.getElementById("delete-message");
+    const deleteButton = document.getElementById("delete-account-button");
+    let deleteCsrfToken = "";
+    function setDeleteMessage(text, kind) {
+        deleteMessage.textContent = text;
+        deleteMessage.hidden = !text;
+        deleteMessage.classList.remove("settings-message--error", "settings-message--success");
+        if (kind === "error") deleteMessage.classList.add("settings-message--error");
+        if (kind === "success") deleteMessage.classList.add("settings-message--success");
+    }
+    function activatePanel(name, updateHash) {
+        const target = panels.find(panel => panel.dataset.settingsPanel === name);
+        if (!target) return;
+        panels.forEach(panel => { panel.hidden = panel !== target; });
+        tabs.forEach(tab => {
+            if (tab.dataset.settingsTab === name) tab.setAttribute("aria-current", "page");
+            else tab.removeAttribute("aria-current");
+        });
+        if (updateHash) window.history.replaceState(null, "", "#" + name);
+    }
+    tabs.forEach(tab => tab.addEventListener("click", () => activatePanel(tab.dataset.settingsTab, true)));
+    const initial = window.location.hash.replace("#", "");
+    if (initial) activatePanel(initial, false);
+    async function loadDeleteToken() {
+        try {
+            const response = await fetch(contextPath + "/delete-freelancer-account", {
+                credentials: "same-origin", cache: "no-store", headers: { Accept: "application/json" }
+            });
+            const data = await response.json();
+            deleteCsrfToken = data.csrfToken || "";
+        } catch (_) { deleteCsrfToken = ""; }
+    }
+    deleteForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        setDeleteMessage("Checking your account…");
+        deleteButton.disabled = true;
+        try {
+            if (!deleteCsrfToken) await loadDeleteToken();
+            const body = new URLSearchParams({
+                currentPassword: document.getElementById("current-password").value,
+                confirmation: document.getElementById("delete-confirmation").value,
+                csrfToken: deleteCsrfToken
+            });
+            const response = await fetch(contextPath + "/delete-freelancer-account", {
+                method: "POST", credentials: "same-origin",
+                headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8", Accept: "application/json" },
+                body
+            });
+            let data = {};
+            try { data = await response.json(); } catch (_) { /* handled below */ }
+            if (response.status === 401) { window.location.replace(contextPath + "/login.html"); return; }
+            if (!response.ok || data.success === false) {
+                throw new Error(data.error || data.message || "Your account could not be deleted.");
+            }
+            if (data.redirect) window.location.assign(data.redirect);
+            else setDeleteMessage(data.message || "Account deleted.", "success");
+        } catch (error) {
+            setDeleteMessage(error.message || "Your account could not be deleted.", "error");
+            deleteButton.disabled = false;
+        }
+    });
+    loadDeleteToken();
+}());
 </script>
     <script src="../../js/notifications.js"></script>
-    <script src="../../js/worknest-footer.js"></script>
+    <script src="../../js/worknest-footer.js?v=20261103-light"></script>
 </body>
 </html>

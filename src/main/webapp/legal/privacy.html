@@ -4,46 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="WorkNest privacy information.">
+    <meta name="theme-color" content="#F8FAFC">
     <title>Privacy Policy | WorkNest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/design-tokens.css">
     <link rel="stylesheet" href="../css/base.css">
-    <style>
-        .legal-page { width: min(calc(100% - 40px), 860px); margin: 48px auto 64px; }
-        .legal-page h1 { margin: 0 0 12px; font-size: clamp(2rem, 5vw, 3rem); }
-        .legal-page__intro { margin-bottom: 28px; color: var(--color-ink-muted); }
-        .legal-section { padding: 22px 0; border-top: 1px solid var(--color-border); }
-        .legal-section h2 { margin: 0 0 10px; font-size: 1.2rem; }
-        .legal-section p, .legal-section li { color: var(--color-ink-soft); line-height: 1.7; }
-        .legal-section ul { padding-left: 22px; }
-        .legal-back { display: inline-block; margin-bottom: 22px; color: var(--color-accent); font-weight: 700; }
-    </style>
+    <link rel="stylesheet" href="../css/worknest-footer.css">
+    <link rel="stylesheet" href="../css/legal.css">
 </head>
-<body>
-    <main class="legal-page">
-        <a class="legal-back" href="../login.html">WorkNest</a>
+<body class="legal-body">
+    <header class="legal-header">
+        <div class="legal-header__inner">
+            <a class="wordmark" href="../index.html" aria-label="WorkNest home">worknest<span class="wordmark__period">.</span></a>
+            <nav class="legal-header__actions" aria-label="Help and legal">
+                <a class="legal-header__link" href="help.html">Help</a>
+                <a class="legal-header__link" href="terms.html">Terms</a>
+                <a class="legal-header__link" href="privacy.html" aria-current="page">Privacy</a>
+                <a class="legal-header__cta" href="../login.html">Sign in <span aria-hidden="true">&#8594;</span></a>
+            </nav>
+        </div>
+    </header>
+    <main class="legal-page" id="main-content">
+        <a class="legal-back" href="../login.html"><span aria-hidden="true">&#8592;</span> Back to sign in</a>
+        <p class="legal-eyebrow">LEGAL</p>
         <h1>Privacy policy</h1>
         <p class="legal-page__intro">This page explains the information WorkNest uses to provide project collaboration features.</p>
-
-        <section class="legal-section">
+        <div class="legal-card">
+            <section class="legal-section">
             <h2>Information stored by the application</h2>
             <p>WorkNest may store account details such as your name, email address, and role, along with freelancer profile information, project descriptions, proposals, invitations, progress updates, delivery notes, and notifications.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>AI features</h2>
             <p>When you choose an AI feature, the relevant project summary, project details, profile details, proposal content, or progress notes are sent to the configured AI service to produce a draft or summary. Avoid including passwords, payment credentials, or other sensitive information in these fields.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>How information is used</h2>
             <p>Information is used to display project workspaces, profiles, proposals, invitations, notifications, and other features requested by users. Account and project access is restricted according to the signed-in user and their role.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>Local project setup</h2>
             <p>In a local installation, application data is stored in the configured WorkNest database. The project maintainer controls database hosting, backups, and retention. Do not use real sensitive information in a demo installation.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>Changes</h2>
             <p>This notice may be updated as application features or data handling change. Check this page again after major project updates.</p>
         </section>
+        </div>
     </main>
     <script src="../js/worknest-footer.js"></script>
 </body>

@@ -4,42 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Help using WorkNest project collaboration features.">
+    <meta name="theme-color" content="#F8FAFC">
     <title>Help and Support | WorkNest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/design-tokens.css">
     <link rel="stylesheet" href="../css/base.css">
-    <style>
-        .legal-page { width: min(calc(100% - 40px), 860px); margin: 48px auto 64px; }
-        .legal-page h1 { margin: 0 0 12px; font-size: clamp(2rem, 5vw, 3rem); }
-        .legal-page__intro { margin-bottom: 28px; color: var(--color-ink-muted); }
-        .legal-section { padding: 22px 0; border-top: 1px solid var(--color-border); }
-        .legal-section h2 { margin: 0 0 10px; font-size: 1.2rem; }
-        .legal-section p { color: var(--color-ink-soft); line-height: 1.7; }
-        .legal-section a { color: var(--color-accent); text-decoration: underline; }
-        .legal-back { display: inline-block; margin-bottom: 22px; color: var(--color-accent); font-weight: 700; }
-    </style>
+    <link rel="stylesheet" href="../css/worknest-footer.css">
+    <link rel="stylesheet" href="../css/legal.css">
 </head>
-<body>
-    <main class="legal-page">
-        <a class="legal-back" href="../login.html">WorkNest</a>
+<body class="legal-body">
+    <header class="legal-header">
+        <div class="legal-header__inner">
+            <a class="wordmark" href="../index.html" aria-label="WorkNest home">worknest<span class="wordmark__period">.</span></a>
+            <nav class="legal-header__actions" aria-label="Help and legal">
+                <a class="legal-header__link" href="help.html" aria-current="page">Help</a>
+                <a class="legal-header__link" href="terms.html">Terms</a>
+                <a class="legal-header__link" href="privacy.html">Privacy</a>
+                <a class="legal-header__cta" href="../login.html">Sign in <span aria-hidden="true">&#8594;</span></a>
+            </nav>
+        </div>
+    </header>
+    <main class="legal-page" id="main-content">
+        <a class="legal-back" href="../login.html"><span aria-hidden="true">&#8592;</span> Back to sign in</a>
+        <p class="legal-eyebrow">SUPPORT</p>
         <h1>Help and support</h1>
         <p class="legal-page__intro">Quick guidance for the main WorkNest workflows.</p>
-
-        <section class="legal-section">
+        <div class="legal-card">
+            <section class="legal-section">
             <h2>Clients</h2>
             <p>Post a project, review proposals, and accept a pending proposal to start the project. Use the workspace to follow updates and review the freelancer’s delivery.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>Freelancers</h2>
             <p>Complete your profile, find an open project, and submit a proposal. Use My projects to follow accepted work, post progress updates, and submit a final delivery.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>AI features</h2>
             <p>AI drafts and summaries are optional. Review generated content before using it. If AI is unavailable, continue with the normal project and proposal forms.</p>
         </section>
-        <section class="legal-section">
+            <section class="legal-section">
             <h2>Need more help?</h2>
             <p>WorkNest is maintained as a project application and does not include a support desk. For project-specific help, contact the maintainer through the repository where you received the project.</p>
         </section>
+        </div>
     </main>
     <script src="../js/worknest-footer.js"></script>
 </body>

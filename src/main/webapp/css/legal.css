@@ -1,0 +1,154 @@
+/* WorkNest legal and help pages: same palette, type and header as the home, login and client pages. */
+:root { --legal-canvas: #F8FAFC; }
+html { background-color: var(--legal-canvas); }
+
+body.legal-body {
+    --color-page: var(--legal-canvas);
+    --color-surface: #FFFFFF;
+    --color-surface-muted: #F1F5F9;
+    --color-ink: #0F172A;
+    --color-ink-soft: #334155;
+    --color-ink-muted: #64748B;
+    --color-border: #E2E8F0;
+    --color-accent: #1D4ED8;
+    --color-accent-hover: #1E40AF;
+    --color-accent-soft: #EFF6FF;
+    --color-focus: #1D4ED8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+}
+
+body.legal-body :is(a, button):focus-visible { outline: 3px solid rgba(29, 78, 216, .32); outline-offset: 3px; }
+
+/* Header: matches the login and dashboard header. */
+.legal-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 100;
+    border-block-end: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .025), 0 8px 22px rgba(15, 23, 42, .045);
+}
+.legal-header__inner {
+    display: flex;
+    width: min(calc(100% - 56px), 1320px);
+    min-height: 82px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-inline: auto;
+}
+.legal-header .wordmark {
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1.42rem;
+    font-weight: 700;
+    letter-spacing: -.07em;
+    line-height: 1;
+}
+.legal-header .wordmark__period { color: #D97706; }
+.legal-header__actions { display: flex; align-items: center; gap: 12px; }
+.legal-header__link {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    padding: 0 14px;
+    border-radius: 7px;
+    color: var(--color-ink-soft);
+    font-size: .9rem;
+    font-weight: 600;
+    transition: color 160ms ease, background-color 160ms ease;
+}
+.legal-header__link:hover { background-color: var(--color-accent-soft); color: var(--color-accent); }
+.legal-header__link[aria-current="page"] { background-color: var(--color-accent-soft); color: var(--color-accent); }
+.legal-header .legal-header__cta {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 18px;
+    border: 1px solid var(--color-accent);
+    border-radius: 8px;
+    background-color: var(--color-accent);
+    color: #FFFFFF;
+    font-size: .9rem;
+    font-weight: 650;
+    box-shadow: 0 3px 0 #173EA8, 0 7px 16px rgba(29, 78, 216, .16);
+    transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+.legal-header .legal-header__cta:hover {
+    border-color: var(--color-accent-hover);
+    background-color: var(--color-accent-hover);
+    box-shadow: 0 2px 0 #173782, 0 9px 18px rgba(29, 78, 216, .19);
+    transform: translateY(-1px);
+}
+
+/* Content. */
+.legal-page { flex: 1 0 auto; width: min(calc(100% - 56px), 880px); margin: 0 auto; padding: 48px 0 24px; }
+.legal-back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 26px; color: var(--color-accent); font-size: .92rem; font-weight: 650; }
+.legal-back:hover { color: var(--color-accent-hover); }
+.legal-eyebrow { margin: 0 0 10px; color: var(--color-accent); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.legal-page h1 {
+    margin: 0 0 14px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 4vw, 3rem);
+    font-weight: 400;
+    letter-spacing: -.045em;
+    line-height: 1.08;
+}
+.legal-page__intro { max-width: 62ch; margin: 0 0 30px; color: var(--color-ink-muted); font-size: 1.05rem; line-height: 1.65; }
+
+.legal-card {
+    padding: clamp(8px, 2vw, 14px) clamp(22px, 3.5vw, 36px);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    background-color: var(--color-surface);
+    box-shadow: 0 2px 5px rgba(15, 23, 42, .025), 0 12px 28px rgba(15, 23, 42, .045);
+}
+.legal-section { padding: 24px 0; border-top: 1px solid var(--color-border); }
+.legal-section:first-child { border-top: 0; }
+.legal-section h2 {
+    margin: 0 0 10px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: -.02em;
+    line-height: 1.2;
+}
+.legal-section p, .legal-section li { color: var(--color-ink-soft); line-height: 1.7; }
+.legal-section p { margin: 0; }
+.legal-section ul { margin: 10px 0 0; padding-left: 22px; }
+.legal-section a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+.legal-section a:hover { color: var(--color-accent-hover); }
+
+/* Footer: same light footer used on the dashboards. */
+body.legal-body > footer.worknest-footer {
+    margin-top: 64px;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-ink);
+}
+body.legal-body > footer.worknest-footer .worknest-footer__inner { width: min(1240px, calc(100% - 56px)); gap: 36px; padding-block: 44px 38px; }
+body.legal-body > footer.worknest-footer .worknest-footer__wordmark,
+body.legal-body > footer.worknest-footer .worknest-footer__group h2 { color: var(--color-ink); }
+body.legal-body > footer.worknest-footer .worknest-footer__brand p,
+body.legal-body > footer.worknest-footer .worknest-footer__group a,
+body.legal-body > footer.worknest-footer .worknest-footer__bottom p { color: var(--color-ink-muted); }
+body.legal-body > footer.worknest-footer .worknest-footer__group a:hover { color: var(--color-accent); }
+body.legal-body > footer.worknest-footer .worknest-footer__group a:focus-visible,
+body.legal-body > footer.worknest-footer .worknest-footer__wordmark:focus-visible { outline-color: var(--color-focus); }
+body.legal-body > footer.worknest-footer .worknest-footer__bottom { border-top-color: var(--color-border); }
+body.legal-body > footer.worknest-footer .worknest-footer__bottom p { width: min(1240px, calc(100% - 56px)); }
+
+@media (max-width: 650px) {
+    .legal-header__inner { width: min(calc(100% - 28px), 1320px); min-height: 72px; }
+    .legal-header .wordmark { font-size: 1.28rem; }
+    .legal-header__link { display: none; }
+    .legal-page { width: min(calc(100% - 28px), 880px); padding-top: 32px; }
+}

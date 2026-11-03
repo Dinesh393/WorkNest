@@ -14,7 +14,7 @@
         const stylesheet = document.createElement("link");
         stylesheet.id = "worknest-footer-styles";
         stylesheet.rel = "stylesheet";
-        stylesheet.href = appRoot + "/css/worknest-footer.css";
+        stylesheet.href = appRoot + "/css/worknest-footer.css?v=20261103-light";
         document.head.appendChild(stylesheet);
     }
 
@@ -47,7 +47,7 @@
     document.querySelectorAll("footer").forEach(footer => footer.remove());
 
     const footer = document.createElement("footer");
-    footer.className = isClient
+    footer.className = isClient || isFreelancer
         ? "worknest-footer worknest-footer--client"
         : "worknest-footer";
     const inner = document.createElement("div");
@@ -91,3 +91,7 @@
     footer.appendChild(bottom);
     document.body.appendChild(footer);
 }());
+
+
+
+
