@@ -56,6 +56,10 @@ public final class GeminiApiClient {
 
         JSONObject generationConfig = new JSONObject()
                 .put("maxOutputTokens", maxOutputTokens);
+        if ("gemini-3.5-flash-lite".equals(model)) {
+            generationConfig.put("thinkingConfig",
+                    new JSONObject().put("thinkingLevel", "minimal"));
+        }
         if (responseSchema != null) {
             generationConfig.put("responseMimeType", "application/json")
                     .put("responseSchema", responseSchema);

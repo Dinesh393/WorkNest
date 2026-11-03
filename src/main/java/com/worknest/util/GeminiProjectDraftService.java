@@ -24,7 +24,7 @@ public final class GeminiProjectDraftService {
         final String generatedText;
         try {
             generatedText = GeminiApiClient.generateJson(
-                    buildPrompt(summary), buildSchema(), 1200);
+                    buildPrompt(summary), buildSchema(), 900);
         } catch (GeminiApiClient.ApiException exception) {
             throw new DraftException(exception.getMessage());
         }

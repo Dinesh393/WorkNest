@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.net.http.HttpTimeoutException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -146,7 +147,7 @@ public class AiProposalAssistServlet extends HttpServlet {
                 + "\nFreelancer's own notes JSON: " + new JSONObject().put("notes", notes);
 
         try {
-            String coverLetter = GeminiApiClient.generateText(prompt, 900).trim();
+            String coverLetter = GeminiApiClient.generateText(prompt, 650).trim();
             if (coverLetter.length() > 5000) {
                 coverLetter = coverLetter.substring(0, 5000).trim();
             }
@@ -170,7 +171,13 @@ public class AiProposalAssistServlet extends HttpServlet {
             Thread.currentThread().interrupt();
             writeError(response, HttpServletResponse.SC_SERVICE_UNAVAILABLE,
                     "Proposal drafting was interrupted. Please try again.");
+        } catch (HttpTimeoutException exception) {
+            getServletContext().log("Gemini cover-letter request timed out.");
+            writeError(response, HttpServletResponse.SC_GATEWAY_TIMEOUT,
+                    "The AI request took too long. Please try again, or write the cover letter manually.");
         } catch (IOException exception) {
+            getServletContext().log("Gemini cover-letter request failed: "
+                    + exception.getClass().getSimpleName());
             writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
                     "The AI service is temporarily unavailable. You can write the cover letter manually.");
         }

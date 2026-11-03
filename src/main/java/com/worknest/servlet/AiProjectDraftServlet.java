@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.net.http.HttpTimeoutException;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -89,7 +90,13 @@ public class AiProjectDraftServlet extends HttpServlet {
             Thread.currentThread().interrupt();
             writeError(response, HttpServletResponse.SC_SERVICE_UNAVAILABLE,
                     "AI drafting was interrupted. Please try again.");
+        } catch (HttpTimeoutException exception) {
+            getServletContext().log("Gemini project draft request timed out.");
+            writeError(response, HttpServletResponse.SC_GATEWAY_TIMEOUT,
+                    "The AI request took too long. Please try again, or complete the form manually.");
         } catch (IOException exception) {
+            getServletContext().log("Gemini project draft request failed: "
+                    + exception.getClass().getSimpleName());
             writeError(response, HttpServletResponse.SC_BAD_GATEWAY,
                     "The AI service is temporarily unavailable. You can still complete the form manually.");
         }
